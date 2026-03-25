@@ -1,12 +1,16 @@
 <p align="center">
-  <img src="assets/hora-icon.png" alt="hora Calendar" width="96">
+  <img src="assets/hora-icon.png" alt="hora Calendar" width="128">
 </p>
 
 <h1 align="center">hora Calendar</h1>
 
+<h3 align="center">
+  The Google Calendar client that macOS deserves.
+</h3>
+
 <p align="center">
-  Native macOS client for Google Calendar.<br>
-  No Electron. No CalDAV. Just fast, native SwiftUI.
+  Pure SwiftUI. Direct Google Calendar API. Zero compromises.<br>
+  <strong>No Electron. No CalDAV. Just fast.</strong>
 </p>
 
 <p align="center">
@@ -14,13 +18,13 @@
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/SwiftUI-blue?logo=swift&logoColor=white" alt="SwiftUI">
   <img src="https://img.shields.io/badge/Google_Calendar_API-4285F4?logo=googlecalendar&logoColor=white" alt="Google Calendar API">
-  <img src="https://img.shields.io/badge/GitHub_Pages-222?logo=github&logoColor=white" alt="GitHub Pages">
 </p>
 
 <p align="center">
-  <a href="https://szamski.github.io/hora-web/">Website</a> &middot;
-  <a href="https://szamski.github.io/hora-web/#privacy">Privacy Policy</a> &middot;
-  <a href="https://szamski.github.io/hora-web/#terms">Terms of Service</a>
+  <a href="https://szamski.github.io/hora-web/"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://szamski.github.io/hora-web/#privacy">Privacy</a> &nbsp;&middot;&nbsp;
+  <a href="https://szamski.github.io/hora-web/#terms">Terms</a> &nbsp;&middot;&nbsp;
+  <a href="https://x.com/moto_szama">Follow @moto_szama</a>
 </p>
 
 ---
@@ -33,18 +37,28 @@
 
 ### Features
 
-- **3 Calendar Views** — Day, Week, and Month styled after Apple Calendar
-- **Full CRUD** — Create, edit, delete events with drag & drop
-- **Google Meet** — Add conference links directly when creating events
-- **Menu Bar Widget** — Today's events and current meeting at a glance
-- **Keyboard Shortcuts** — Google Calendar-style: D/W/M, C, /, J/K, T
-- **Smart Sync** — Incremental sync with native macOS notifications
-- **Multi-Account** — Multiple Google accounts, color-coded calendars
-- **Attendees** — Invite people with autocomplete from Google Contacts
+| | Feature | Description |
+|---|---|---|
+| **Week & Month** | 3 Calendar Views | Apple Calendar-style layout. Day View coming soon. |
+| **Drag & Drop** | Full CRUD | Create, edit, resize, delete. Feels native because it is. |
+| **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
+| **D/W/M/C/T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
+| **Incremental** | Smart Sync | Configurable intervals. Native macOS notifications. |
+| **Multi-Account** | Color-Coded | Multiple Google accounts, each with its own color. |
+| **Autocomplete** | Attendees | Invite people from Google Contacts with instant suggestions. |
+
+### Road to Launch
+
+| # | Milestone | Status |
+|---|---|---|
+| 1 | Day View | Next up |
+| 2 | Menu Bar Widget | Planned |
+| 3 | Apple Intelligence (focus time, meeting briefings) | Planned |
+| 4 | Deeper Google Integration (Gmail context for AI) | Planned |
 
 ### About this repo
 
-This is the public website for hora Calendar — hosting the landing page, privacy policy, and terms of service required for Google OAuth verification and App Store distribution.
+Landing page, privacy policy, and terms of service for hora Calendar -- required for Google OAuth verification and App Store distribution.
 
 ```
 index.html              Landing page + Privacy Policy + Terms of Service
@@ -57,8 +71,7 @@ assets/                 App icon, demo GIF, Bumbbled font
 | | |
 |---|---|
 | Website | [szamski.github.io/hora-web](https://szamski.github.io/hora-web/) |
-| Privacy Policy | [#privacy](https://szamski.github.io/hora-web/#privacy) |
-| Terms of Service | [#terms](https://szamski.github.io/hora-web/#terms) |
+| X / Twitter | [@moto_szama](https://x.com/moto_szama) |
 | Developer | [szamowski.dev](https://szamowski.dev) |
 
 ---

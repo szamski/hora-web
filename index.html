@@ -49,11 +49,16 @@
         :root {
             --bg: #0A0A0A;
             --surface: #141414;
+            --surface-hover: #1a1a1a;
             --border: #222;
+            --border-light: #2a2a2a;
             --text: #FAFAFA;
             --text-muted: #888;
-            --accent: #A855F7;
-            --accent-hover: #9333EA;
+            --accent: #FF383C;
+            --accent-glow: #FF736E;
+            --accent-hover: #E6322F;
+            --accent-subtle: rgba(255, 56, 60, 0.08);
+            --accent-subtle-border: rgba(255, 56, 60, 0.15);
             --max-w: 960px;
         }
 
@@ -65,6 +70,16 @@
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+        }
+
+        .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
+
+        /* Gradient text utility */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Nav */
@@ -103,18 +118,18 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 400;
-            transition: color 0.15s;
+            transition: color 0.2s;
         }
         .nav-links a:hover { color: var(--text); }
-        .nav-links a.btn { color: #000; font-weight: 600; }
-        .nav-links a.btn:hover { color: #000; }
+        .nav-links a.btn { color: #fff; font-weight: 600; }
+        .nav-links a.btn:hover { color: #fff; }
 
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: var(--accent);
-            color: #000;
+            background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+            color: #fff;
             border: none;
             border-radius: 999px;
             padding: 8px 18px;
@@ -123,16 +138,19 @@
             font-family: inherit;
             text-decoration: none;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: all 0.2s;
         }
-        .btn:hover { background: var(--accent-hover); }
+        .btn:hover {
+            background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+            box-shadow: 0 4px 24px rgba(255, 56, 60, 0.25);
+        }
         .btn-lg { padding: 12px 28px; font-size: 15px; }
         .btn-outline {
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
         }
-        .btn-outline:hover { background: var(--surface); border-color: #333; }
+        .btn-outline:hover { background: var(--surface); border-color: #333; box-shadow: none; }
         .btn-disabled { opacity: 0.5; pointer-events: none; cursor: default; }
 
         /* Hero */
@@ -142,15 +160,70 @@
             padding: 80px 24px 60px;
             text-align: center;
         }
+        .hero-icon-wrapper {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Outer halo — slow color-shifting smoke */
+        .hero-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 320px;
+            height: 320px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255, 56, 60, 0.2) 0%, rgba(255, 140, 100, 0.08) 40%, transparent 65%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: halo-shift 6s ease-in-out infinite;
+            filter: blur(20px);
+        }
+        /* Inner core glow — brighter, tighter */
+        .hero-icon-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255, 56, 60, 0.45) 0%, rgba(255, 115, 110, 0.2) 45%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: core-breathe 4s ease-in-out infinite;
+            filter: blur(12px);
+        }
+        @keyframes halo-shift {
+            0%   { background: radial-gradient(circle, rgba(255, 56, 60, 0.2) 0%, rgba(255, 140, 100, 0.08) 40%, transparent 65%); transform: translate(-50%, -50%) scale(1); }
+            33%  { background: radial-gradient(circle, rgba(255, 100, 80, 0.22) 0%, rgba(255, 56, 60, 0.1) 40%, transparent 65%); transform: translate(-50%, -50%) scale(1.06); }
+            66%  { background: radial-gradient(circle, rgba(255, 140, 100, 0.18) 0%, rgba(255, 80, 70, 0.1) 40%, transparent 65%); transform: translate(-50%, -50%) scale(1.03); }
+            100% { background: radial-gradient(circle, rgba(255, 56, 60, 0.2) 0%, rgba(255, 140, 100, 0.08) 40%, transparent 65%); transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes core-breathe {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.12); }
+        }
         .hero-icon {
             width: 96px;
             height: 96px;
             border-radius: 20px;
-            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+            animation: hero-float 3s ease-in-out infinite;
+        }
+        @keyframes hero-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
         .hero h1 {
             font-family: 'Bumbbled', 'Geist', sans-serif;
-            font-size: 44px;
+            font-size: 48px;
             font-weight: 400;
             letter-spacing: 0.01em;
             margin-bottom: 12px;
@@ -171,23 +244,33 @@
             max-width: 100%;
             border-radius: 12px;
             border: 1px solid var(--border);
-            box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
             overflow: hidden;
         }
         .demo-frame img { width: 100%; height: auto; display: block; }
+
+        /* Section headings */
+        .section-heading {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-heading h2 {
+            font-family: 'Bumbbled', 'Geist', sans-serif;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            margin-bottom: 8px;
+        }
+        .section-heading p {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
 
         /* Features */
         .features {
             max-width: var(--max-w);
             margin: 0 auto;
-            padding: 60px 24px 80px;
-        }
-        .features h2 {
-            font-size: 24px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 40px;
-            letter-spacing: -0.01em;
+            padding: 80px 24px;
         }
         .features-grid {
             display: grid;
@@ -198,12 +281,17 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .feature-card:hover {
+            border-color: var(--border-light);
+            background: var(--surface-hover);
         }
         .feature-icon {
             width: 32px;
             height: 32px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             color: var(--accent);
         }
         .feature-card h3 {
@@ -215,6 +303,99 @@
             font-size: 13px;
             color: var(--text-muted);
             line-height: 1.5;
+        }
+
+        /* Roadmap */
+        .roadmap {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 80px 24px;
+            border-top: 1px solid var(--border);
+        }
+        .roadmap-timeline {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        /* Vertical line */
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-glow), var(--border));
+            border-radius: 1px;
+        }
+        .roadmap-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px 0;
+            position: relative;
+        }
+        .roadmap-dot {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            transition: all 0.2s;
+        }
+        .roadmap-item:hover .roadmap-dot {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(255, 56, 60, 0.4);
+        }
+        .roadmap-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            transition: color 0.2s;
+        }
+        .roadmap-item:hover .roadmap-content h3 {
+            color: var(--accent-glow);
+        }
+        .roadmap-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Follow CTA */
+        .follow-section {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px 48px;
+            text-align: center;
+        }
+        .follow-card {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            background: var(--accent-subtle);
+            border: 1px solid var(--accent-subtle-border);
+            border-radius: 16px;
+            padding: 32px 48px;
+        }
+        .follow-card p {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+        .follow-card .btn {
+            font-size: 15px;
+            padding: 10px 24px;
         }
 
         /* Star CTA */
@@ -247,7 +428,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 48px;
         }
-        .legal {}
         .legal h2 {
             font-size: 24px;
             font-weight: 600;
@@ -303,28 +483,34 @@
         .footer-links { display: flex; gap: 16px; }
         .footer-links a {
             color: var(--text-muted);
-            transition: color 0.15s;
+            transition: color 0.2s;
         }
         .footer-links a:hover { color: var(--text); }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 28px; }
+            .hero h1 { font-size: 32px; }
             .hero .subtitle { font-size: 16px; }
+            .section-heading h2 { font-size: 26px; }
             .features-grid { grid-template-columns: 1fr; }
             .legal-grid { grid-template-columns: 1fr; gap: 0; padding: 40px 16px 60px; }
             .nav-links a.hide-mobile { display: none; }
             .footer-inner { flex-direction: column; gap: 12px; }
+            .follow-card { padding: 24px 32px; }
         }
         @media (max-width: 480px) {
             .hero { padding: 48px 16px 40px; }
             .hero-icon { width: 72px; height: 72px; }
             .hero-cta { flex-direction: column; align-items: center; }
-            .features, .legal { padding: 40px 16px 60px; }
+            .features, .roadmap { padding: 48px 16px; }
+            .legal { padding: 40px 16px 60px; }
+            .follow-card { padding: 24px 20px; width: 100%; }
         }
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
+            .hero-icon { animation: none; }
+            .hero-icon-wrapper::before, .hero-icon-wrapper::after { animation: none; }
         }
     </style>
 </head>
@@ -339,6 +525,7 @@
         </a>
         <div class="nav-links">
             <a href="#features" class="hide-mobile">Features</a>
+            <a href="#roadmap" class="hide-mobile">Roadmap</a>
             <a href="#privacy">Privacy</a>
             <a href="#terms">Terms</a>
             <a href="#download" class="btn">Get the App</a>
@@ -348,9 +535,11 @@
 
 <!-- Hero -->
 <section class="hero">
-    <img src="assets/hora-icon.png" alt="hora Calendar icon" class="hero-icon" width="96" height="96">
-    <h1>hora Calendar</h1>
-    <p class="subtitle">Native macOS client for Google Calendar</p>
+    <div class="hero-icon-wrapper">
+        <img src="assets/hora-icon.png" alt="hora Calendar icon" class="hero-icon" width="96" height="96">
+    </div>
+    <h1 class="branded">hora <span class="gradient-text">Calendar</span></h1>
+    <p class="subtitle">The Google Calendar client that macOS deserves</p>
     <p class="tagline">No Electron. No CalDAV. Just fast, native SwiftUI.</p>
     <div class="hero-cta" id="download">
         <a href="#" class="btn btn-lg btn-disabled">
@@ -369,12 +558,15 @@
 
 <!-- Features -->
 <section class="features" id="features">
-    <h2>Features</h2>
+    <div class="section-heading">
+        <h2 class="branded">What you <span class="gradient-text">get</span></h2>
+        <p>Built for speed. Designed for clarity.</p>
+    </div>
     <div class="features-grid">
         <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             <h3>3 Calendar Views</h3>
-            <p>Day, Week, and Month views styled after Apple Calendar. Smooth transitions between views.</p>
+            <p>Week and Month views styled after Apple Calendar. Day View coming soon. Smooth transitions between views.</p>
         </div>
         <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -382,14 +574,9 @@
             <p>Create, edit, delete events with drag and drop. Resize events by dragging edges.</p>
         </div>
         <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l5-3v10l-5-3z"/></svg>
             <h3>Google Meet</h3>
             <p>Add conference links directly when creating events. One click to join meetings.</p>
-        </div>
-        <div class="feature-card">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            <h3>Menu Bar Widget</h3>
-            <p>See today's events and current meeting at a glance from the macOS menu bar.</p>
         </div>
         <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
@@ -401,6 +588,11 @@
             <h3>Smart Sync</h3>
             <p>Incremental sync with configurable intervals. Native macOS notifications for upcoming events.</p>
         </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <h3>Multi-Account</h3>
+            <p>Multiple Google accounts with color-coded calendars. Switch context without switching apps.</p>
+        </div>
     </div>
 </section>
 
@@ -409,6 +601,55 @@
     <div class="star-inner">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <p>Star the project on <a href="https://github.com/szamski/hora-web">GitHub</a> to stay up to date with new releases.</p>
+    </div>
+</section>
+
+<!-- Roadmap -->
+<section class="roadmap" id="roadmap">
+    <div class="section-heading">
+        <h2 class="branded">Road to <span class="gradient-text">Launch</span></h2>
+        <p>What's coming before the official release.</p>
+    </div>
+    <div class="roadmap-timeline">
+        <div class="roadmap-item">
+            <span class="roadmap-dot">1</span>
+            <div class="roadmap-content">
+                <h3>Day View</h3>
+                <p>Full day view with hourly layout, matching the Apple Calendar experience.</p>
+            </div>
+        </div>
+        <div class="roadmap-item">
+            <span class="roadmap-dot">2</span>
+            <div class="roadmap-content">
+                <h3>Menu Bar Widget</h3>
+                <p>Fully functional menu-bar helper showing today's agenda and current meeting at a glance.</p>
+            </div>
+        </div>
+        <div class="roadmap-item">
+            <span class="roadmap-dot">3</span>
+            <div class="roadmap-content">
+                <h3>Apple Intelligence</h3>
+                <p>Focus time planning and meeting briefings powered by on-device AI.</p>
+            </div>
+        </div>
+        <div class="roadmap-item">
+            <span class="roadmap-dot">4</span>
+            <div class="roadmap-content">
+                <h3>Deeper Google Integration</h3>
+                <p>Gmail look-up for references and context, feeding richer data into AI-powered features.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Follow -->
+<section class="follow-section">
+    <div class="follow-card">
+        <p>Follow the build process and be first to know when it drops.</p>
+        <a href="https://x.com/moto_szama" target="_blank" rel="noopener" class="btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Follow @moto_szama on X
+        </a>
     </div>
 </section>
 
@@ -500,6 +741,9 @@
             </a>
             <a href="https://github.com/szamski" aria-label="GitHub">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a href="https://x.com/moto_szama" aria-label="X / Twitter">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
         </div>
     </div>
