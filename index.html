@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hora Calendar — Native macOS Google Calendar Client</title>
-    <meta name="description" content="Hora Calendar is a native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
+    <title>hora Calendar — Native macOS Google Calendar Client</title>
+    <meta name="description" content="hora Calendar is a native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
     <link rel="icon" href="assets/hora-icon.png" type="image/png">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <style>
@@ -131,6 +131,7 @@
             color: var(--text);
         }
         .btn-outline:hover { background: var(--surface); border-color: #333; }
+        .btn-disabled { opacity: 0.5; pointer-events: none; cursor: default; }
 
         /* Hero */
         .hero {
@@ -171,7 +172,7 @@
             box-shadow: 0 24px 48px rgba(0,0,0,0.4);
             overflow: hidden;
         }
-        .demo-frame img { width: 100%; display: block; }
+        .demo-frame img { width: 100%; height: auto; display: block; }
 
         /* Features */
         .features {
@@ -214,13 +215,37 @@
             line-height: 1.5;
         }
 
+        /* Star CTA */
+        .star-section {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px 48px;
+            text-align: center;
+        }
+        .star-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 12px 24px;
+        }
+        .star-inner p { font-size: 14px; color: var(--text-muted); }
+        .star-inner a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .star-inner a:hover { text-decoration: underline; }
+
         /* Legal sections */
-        .legal {
+        .legal-grid {
             max-width: var(--max-w);
             margin: 0 auto;
             padding: 60px 24px 80px;
             border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
         }
+        .legal {}
         .legal h2 {
             font-size: 24px;
             font-weight: 600;
@@ -285,6 +310,7 @@
             .hero h1 { font-size: 28px; }
             .hero .subtitle { font-size: 16px; }
             .features-grid { grid-template-columns: 1fr; }
+            .legal-grid { grid-template-columns: 1fr; gap: 0; padding: 40px 16px 60px; }
             .nav-links a.hide-mobile { display: none; }
             .footer-inner { flex-direction: column; gap: 12px; }
         }
@@ -307,35 +333,35 @@
     <div class="nav-inner">
         <a href="#" class="nav-brand">
             <img src="assets/hora-icon.png" alt="" width="28" height="28">
-            Hora Calendar
+            Calendar
         </a>
         <div class="nav-links">
             <a href="#features" class="hide-mobile">Features</a>
             <a href="#privacy">Privacy</a>
             <a href="#terms">Terms</a>
-            <a href="https://github.com/szamski/hora-calendar/releases" class="btn">Download</a>
+            <a href="#download" class="btn">Get the App</a>
         </div>
     </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
-    <img src="assets/hora-icon.png" alt="Hora Calendar icon" class="hero-icon" width="96" height="96">
-    <h1>Hora Calendar</h1>
+    <img src="assets/hora-icon.png" alt="hora Calendar icon" class="hero-icon" width="96" height="96">
+    <h1>hora Calendar</h1>
     <p class="subtitle">Native macOS client for Google Calendar</p>
     <p class="tagline">No Electron. No CalDAV. Just fast, native SwiftUI.</p>
-    <div class="hero-cta">
-        <a href="https://github.com/szamski/hora-calendar/releases" class="btn btn-lg">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download for macOS
+    <div class="hero-cta" id="download">
+        <a href="#" class="btn btn-lg btn-disabled">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Mac App Store &mdash; Coming Soon
         </a>
-        <a href="https://github.com/szamski/hora-calendar" class="btn btn-lg btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            Source Code
+        <a href="#" class="btn btn-lg btn-outline btn-disabled">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 10.33 9.33 11 8.5 11h-5C2.67 11 2 10.33 2 9.5S2.67 8 3.5 8h5c.83 0 1.5.67 1.5 1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+            TestFlight Beta &mdash; Coming Soon
         </a>
     </div>
     <div class="demo-frame">
-        <img src="assets/hora-demo.gif" alt="Hora Calendar demo showing week view, event creation, and calendar navigation" width="1080" height="701" loading="lazy">
+        <img src="assets/hora-demo.gif" alt="hora Calendar demo showing week view, event creation, and calendar navigation" loading="lazy">
     </div>
 </section>
 
@@ -366,7 +392,7 @@
         <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
             <h3>Keyboard Shortcuts</h3>
-            <p>Cmd+N, Cmd+1/2/3 for views, arrow keys to navigate, Cmd+F to search.</p>
+            <p>Google Calendar-style: D/W/M for views, C to create, / to search, J/K to navigate, T for today.</p>
         </div>
         <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -376,7 +402,16 @@
     </div>
 </section>
 
-<!-- Privacy Policy -->
+<!-- Star CTA -->
+<section class="star-section">
+    <div class="star-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <p>Star the project on <a href="https://github.com/szamski/hora-web">GitHub</a> to stay up to date with new releases.</p>
+    </div>
+</section>
+
+<!-- Privacy Policy & Terms of Service -->
+<div class="legal-grid">
 <section class="legal" id="privacy">
     <h2>Privacy Policy</h2>
     <p class="updated">Last updated: March 25, 2026</p>
@@ -417,10 +452,9 @@
     </ul>
 
     <h3>Contact</h3>
-    <p>For privacy-related inquiries: <a href="mailto:maciek@grynaserio.pl">maciek@grynaserio.pl</a></p>
+    <p>For privacy-related inquiries: <a href="mailto:maciek.szamowski@gmail.com">maciek.szamowski@gmail.com</a></p>
 </section>
 
-<!-- Terms of Service -->
 <section class="legal" id="terms">
     <h2>Terms of Service</h2>
     <p class="updated">Last updated: March 25, 2026</p>
@@ -450,18 +484,19 @@
     <p>We may update these terms from time to time. Continued use of the App constitutes acceptance of the updated terms.</p>
 
     <h3>Contact</h3>
-    <p>Questions about these terms: <a href="mailto:maciek@grynaserio.pl">maciek@grynaserio.pl</a></p>
+    <p>Questions about these terms: <a href="mailto:maciek.szamowski@gmail.com">maciek.szamowski@gmail.com</a></p>
 </section>
+</div>
 
 <!-- Footer -->
 <footer>
     <div class="footer-inner">
-        <p>&copy; 2026 Hora Calendar. Built with SwiftUI.</p>
+        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: none;">szamowski.dev</a></p>
         <div class="footer-links">
-            <a href="mailto:maciek@grynaserio.pl" aria-label="Email">
+            <a href="mailto:maciek.szamowski@gmail.com" aria-label="Email">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </a>
-            <a href="https://github.com/szamski/hora-calendar" aria-label="GitHub">
+            <a href="https://github.com/szamski" aria-label="GitHub">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
             </a>
         </div>
