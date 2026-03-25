@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hora Calendar — Native macOS Google Calendar Client</title>
+    <meta name="description" content="Hora Calendar is a native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
+    <link rel="icon" href="assets/hora-icon.png" type="image/png">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <style>
+        @font-face {
+            font-family: 'Bumbbled';
+            src: url('assets/Bumbbled.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0A0A0A;
+            --surface: #141414;
+            --border: #222;
+            --text: #FAFAFA;
+            --text-muted: #888;
+            --accent: #A855F7;
+            --accent-hover: #9333EA;
+            --max-w: 960px;
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Nav */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'Bumbbled', 'Geist', sans-serif;
+            font-weight: 400;
+            font-size: 17px;
+        }
+        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.15s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn:hover { background: var(--accent-hover); }
+        .btn-lg { padding: 12px 28px; font-size: 15px; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { background: var(--surface); border-color: #333; }
+
+        /* Hero */
+        .hero {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+        .hero-icon {
+            width: 96px;
+            height: 96px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-family: 'Bumbbled', 'Geist', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            margin-bottom: 12px;
+        }
+        .hero .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .hero .tagline {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 32px;
+        }
+        .hero-cta { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; }
+
+        .demo-frame {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .demo-frame img { width: 100%; display: block; }
+
+        /* Features */
+        .features {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+        .features h2 {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+        .feature-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Legal sections */
+        .legal {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+            border-top: 1px solid var(--border);
+        }
+        .legal h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+        .legal h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+        .legal p, .legal li {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .legal ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .legal ul li::before {
+            content: "\2022";
+            color: #444;
+            margin-right: 8px;
+        }
+        .legal ul li { margin-bottom: 4px; }
+        .legal a { color: var(--accent); text-decoration: none; }
+        .legal a:hover { text-decoration: underline; }
+        .legal .updated {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .footer-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        footer p {
+            font-size: 13px;
+            color: #555;
+        }
+        .footer-links { display: flex; gap: 16px; }
+        .footer-links a {
+            color: var(--text-muted);
+            transition: color 0.15s;
+        }
+        .footer-links a:hover { color: var(--text); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .hero .subtitle { font-size: 16px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .nav-links a.hide-mobile { display: none; }
+            .footer-inner { flex-direction: column; gap: 12px; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 48px 16px 40px; }
+            .hero-icon { width: 72px; height: 72px; }
+            .hero-cta { flex-direction: column; align-items: center; }
+            .features, .legal { padding: 40px 16px 60px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="nav-brand">
+            <img src="assets/hora-icon.png" alt="" width="28" height="28">
+            Hora Calendar
+        </a>
+        <div class="nav-links">
+            <a href="#features" class="hide-mobile">Features</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#terms">Terms</a>
+            <a href="https://github.com/szamski/hora-calendar/releases" class="btn">Download</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <img src="assets/hora-icon.png" alt="Hora Calendar icon" class="hero-icon" width="96" height="96">
+    <h1>Hora Calendar</h1>
+    <p class="subtitle">Native macOS client for Google Calendar</p>
+    <p class="tagline">No Electron. No CalDAV. Just fast, native SwiftUI.</p>
+    <div class="hero-cta">
+        <a href="https://github.com/szamski/hora-calendar/releases" class="btn btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for macOS
+        </a>
+        <a href="https://github.com/szamski/hora-calendar" class="btn btn-lg btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            Source Code
+        </a>
+    </div>
+    <div class="demo-frame">
+        <img src="assets/hora-demo.gif" alt="Hora Calendar demo showing week view, event creation, and calendar navigation" width="1080" height="701" loading="lazy">
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <h3>3 Calendar Views</h3>
+            <p>Day, Week, and Month views styled after Apple Calendar. Smooth transitions between views.</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <h3>Full CRUD</h3>
+            <p>Create, edit, delete events with drag and drop. Resize events by dragging edges.</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <h3>Google Meet</h3>
+            <p>Add conference links directly when creating events. One click to join meetings.</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <h3>Menu Bar Widget</h3>
+            <p>See today's events and current meeting at a glance from the macOS menu bar.</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+            <h3>Keyboard Shortcuts</h3>
+            <p>Cmd+N, Cmd+1/2/3 for views, arrow keys to navigate, Cmd+F to search.</p>
+        </div>
+        <div class="feature-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <h3>Smart Sync</h3>
+            <p>Incremental sync with configurable intervals. Native macOS notifications for upcoming events.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Privacy Policy -->
+<section class="legal" id="privacy">
+    <h2>Privacy Policy</h2>
+    <p class="updated">Last updated: March 25, 2026</p>
+
+    <p>Hora Calendar is a native macOS application that connects to Google Calendar. Your privacy matters&nbsp;&mdash; here is exactly what we access and how we use it.</p>
+
+    <h3>Data We Access</h3>
+    <ul>
+        <li>Google Calendar: events and calendars (read &amp; write)</li>
+        <li>Google Other Contacts: names and emails (read only, auto-suggested contacts for guest autocomplete)</li>
+        <li>Google account email address</li>
+    </ul>
+
+    <h3>How We Use It</h3>
+    <ul>
+        <li>Display and manage your calendar events</li>
+        <li>Provide autocomplete suggestions when adding guests to events</li>
+        <li>Synchronize changes with Google Calendar</li>
+    </ul>
+
+    <h3>Data Storage</h3>
+    <ul>
+        <li>All data is stored locally on your Mac using SwiftData</li>
+        <li>No data is sent to any server other than Google APIs</li>
+        <li>No analytics, no tracking, no third-party services</li>
+    </ul>
+
+    <h3>Data Sharing</h3>
+    <ul>
+        <li>We do not share your data with anyone</li>
+        <li>We do not sell your data</li>
+    </ul>
+
+    <h3>Data Deletion</h3>
+    <ul>
+        <li>Sign out in Hora Settings to remove all local data</li>
+        <li>Revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a></li>
+    </ul>
+
+    <h3>Contact</h3>
+    <p>For privacy-related inquiries: <a href="mailto:maciek@grynaserio.pl">maciek@grynaserio.pl</a></p>
+</section>
+
+<!-- Terms of Service -->
+<section class="legal" id="terms">
+    <h2>Terms of Service</h2>
+    <p class="updated">Last updated: March 25, 2026</p>
+
+    <p>By downloading or using Hora Calendar ("the App"), you agree to these terms.</p>
+
+    <h3>Description of Service</h3>
+    <p>Hora Calendar is a free, native macOS application that provides a client interface for Google Calendar. The App communicates directly with Google APIs on your behalf.</p>
+
+    <h3>Google Account</h3>
+    <p>The App requires a Google account to function. Your use of Google services through the App is subject to <a href="https://policies.google.com/terms">Google's Terms of Service</a>. You are responsible for maintaining the security of your Google account credentials.</p>
+
+    <h3>Acceptable Use</h3>
+    <ul>
+        <li>Use the App only for its intended purpose of managing your Google Calendar</li>
+        <li>Do not attempt to reverse engineer, decompile, or modify the App</li>
+        <li>Do not use the App to violate any applicable laws or regulations</li>
+    </ul>
+
+    <h3>Disclaimer</h3>
+    <p>The App is provided "as is" without warranty of any kind, express or implied. We do not guarantee uninterrupted or error-free operation. We are not responsible for any data loss resulting from the use of the App.</p>
+
+    <h3>Limitation of Liability</h3>
+    <p>To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the App.</p>
+
+    <h3>Changes to Terms</h3>
+    <p>We may update these terms from time to time. Continued use of the App constitutes acceptance of the updated terms.</p>
+
+    <h3>Contact</h3>
+    <p>Questions about these terms: <a href="mailto:maciek@grynaserio.pl">maciek@grynaserio.pl</a></p>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-inner">
+        <p>&copy; 2026 Hora Calendar. Built with SwiftUI.</p>
+        <div class="footer-links">
+            <a href="mailto:maciek@grynaserio.pl" aria-label="Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+            <a href="https://github.com/szamski/hora-calendar" aria-label="GitHub">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
