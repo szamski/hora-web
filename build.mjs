@@ -4,6 +4,11 @@ import { marked } from 'marked';
 
 const ROOT = import.meta.dirname;
 const DIST = join(ROOT, 'dist');
+
+const MOBILE_NAV_JS = `<script>
+function toggleMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger'),o=m.classList.toggle('open');b.setAttribute('aria-expanded',o);b.innerHTML=o?'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';document.body.style.overflow=o?'hidden':'';}
+function closeMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger');m.classList.remove('open');b.setAttribute('aria-expanded','false');b.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';document.body.style.overflow='';}
+</script>`;
 const POSTS_DIR = join(ROOT, 'posts');
 
 // --- Clean & copy static files to dist ---
@@ -127,6 +132,13 @@ function blogTemplate(title, date, content, description, tags) {
         .nav-links a.btn:hover { color: #fff; }
         .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.9; }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
+        .nav-hamburger svg { display: block; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile.open { display: flex; }
+        .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+        .nav-mobile a:hover { color: var(--text); }
+        .nav-mobile a.btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; font-weight: 600; border: none; border-radius: 999px; padding: 12px 24px; margin-top: 8px; font-size: 15px; }
 
         article { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 80px; }
         article .meta { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
@@ -157,6 +169,9 @@ function blogTemplate(title, date, content, description, tags) {
         @media (max-width: 768px) {
             article { padding: 40px 16px 60px; }
             article h1 { font-size: 28px; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
+            .nav-inner { padding: 0 16px; }
         }
     </style>
     <!-- Google Analytics 4 -->
@@ -181,8 +196,17 @@ function blogTemplate(title, date, content, description, tags) {
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
     </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a href="/#features">Features</a>
+    <a href="/#roadmap">Roadmap</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#download" class="btn">Get the App</a>
+</div>
 <main>
 <article>
     <a href="/blog/" class="back-link">&larr; All posts</a>
@@ -205,6 +229,7 @@ ${ctaBlock}
         </div>
     </div>
 </footer>
+${MOBILE_NAV_JS}
 </body>
 </html>`;
 }
@@ -262,6 +287,13 @@ function blogIndexTemplate(posts) {
         .nav-links a.btn:hover { color: #fff; }
         .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.9; }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
+        .nav-hamburger svg { display: block; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile.open { display: flex; }
+        .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+        .nav-mobile a:hover { color: var(--text); }
+        .nav-mobile a.btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; font-weight: 600; border: none; border-radius: 999px; padding: 12px 24px; margin-top: 8px; font-size: 15px; }
 
         .blog-header { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 40px; }
         .blog-header h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -285,6 +317,9 @@ function blogIndexTemplate(posts) {
             .blog-header { padding: 40px 16px 32px; }
             .blog-header h1 { font-size: 28px; }
             .posts { padding: 0 16px 60px; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
+            .nav-inner { padding: 0 16px; }
         }
     </style>
     <!-- Google Analytics 4 -->
@@ -309,8 +344,17 @@ function blogIndexTemplate(posts) {
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
     </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a href="/#features">Features</a>
+    <a href="/#roadmap">Roadmap</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#download" class="btn">Get the App</a>
+</div>
 <main>
 <div class="blog-header">
     <h1 class="branded">hora <span class="gradient-text">Blog</span></h1>
@@ -333,6 +377,7 @@ ${ctaBlock}
         </div>
     </div>
 </footer>
+${MOBILE_NAV_JS}
 </body>
 </html>`;
 }
@@ -430,6 +475,13 @@ function legalPageTemplate(title, lastUpdated, content) {
         .nav-links a.btn:hover { color: #fff; }
         .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.9; }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
+        .nav-hamburger svg { display: block; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile.open { display: flex; }
+        .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+        .nav-mobile a:hover { color: var(--text); }
+        .nav-mobile a.btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; font-weight: 600; border: none; border-radius: 999px; padding: 12px 24px; margin-top: 8px; font-size: 15px; }
 
         .legal { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
         .legal h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -447,6 +499,9 @@ function legalPageTemplate(title, lastUpdated, content) {
         @media (max-width: 768px) {
             .legal { padding: 40px 16px 60px; }
             .legal h1 { font-size: 28px; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
+            .nav-inner { padding: 0 16px; }
         }
     </style>
 </head>
@@ -463,8 +518,17 @@ function legalPageTemplate(title, lastUpdated, content) {
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
     </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a href="/#features">Features</a>
+    <a href="/#roadmap">Roadmap</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#download" class="btn">Get the App</a>
+</div>
 <main>
 <section class="legal">
     <h1>${title}</h1>
@@ -481,6 +545,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         </div>
     </div>
 </footer>
+${MOBILE_NAV_JS}
 </body>
 </html>`;
 }

@@ -198,6 +198,60 @@
         .nav-links a.btn { color: #fff; font-weight: 600; }
         .nav-links a.btn:hover { color: #fff; }
 
+        /* Hamburger */
+        .nav-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text);
+        }
+        .nav-hamburger svg { display: block; }
+
+        /* Mobile menu overlay */
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 49;
+            padding: 24px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .nav-mobile.open { display: flex; }
+        .nav-mobile a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s;
+        }
+        .nav-mobile a:hover { color: var(--text); }
+        .nav-mobile a.btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 24px;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        .nav-mobile a.btn:hover { color: #fff; }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -616,11 +670,9 @@
             .section-heading h2 { font-size: 26px; }
             .features-grid { grid-template-columns: 1fr; }
             .legal-grid { grid-template-columns: 1fr; gap: 0; padding: 40px 16px 60px; }
-            .nav-links a.hide-mobile { display: none; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
             .nav-inner { padding: 0 16px; }
-            .nav-links { gap: 16px; }
-            .nav-links a { font-size: 13px; }
-            .nav-links a.btn { padding: 6px 14px; font-size: 12px; }
             .footer-inner { flex-direction: column; gap: 12px; }
             .follow-card { padding: 24px 32px; }
         }
@@ -631,12 +683,12 @@
             .features, .roadmap { padding: 48px 16px; }
             .legal { padding: 40px 16px 60px; }
             .follow-card { padding: 24px 20px; width: 100%; }
+            .cta-section { padding: 0 16px 64px; }
+            .cta-card { padding: 32px 20px; }
+            .cta-form input { min-width: 0; }
             .nav-inner { padding: 0 12px; }
             .nav-brand { font-size: 15px; gap: 6px; }
             .nav-brand img { width: 24px; height: 24px; }
-            .nav-links { gap: 12px; }
-            .nav-links a { font-size: 12px; }
-            .nav-links a.btn { padding: 6px 12px; font-size: 11px; white-space: nowrap; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -726,13 +778,26 @@
             Calendar
         </a>
         <div class="nav-links">
-            <a href="#features" class="hide-mobile">Features</a>
-            <a href="#roadmap" class="hide-mobile">Roadmap</a>
-            <a href="/blog/" class="hide-mobile">Blog</a>
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="/blog/">Blog</a>
             <a href="#download" class="btn">Get the App</a>
         </div>
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
     </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a href="#features" onclick="closeMobileNav()">Features</a>
+    <a href="#roadmap" onclick="closeMobileNav()">Roadmap</a>
+    <a href="/blog/">Blog</a>
+    <a href="#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+</div>
 
 <!-- Hero -->
 <section class="hero">
@@ -1039,6 +1104,27 @@
         banner.classList.remove('visible');
     });
 })();
+</script>
+
+<script>
+function toggleMobileNav() {
+    var menu = document.getElementById('nav-mobile');
+    var btn = document.querySelector('.nav-hamburger');
+    var isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+    btn.innerHTML = isOpen
+        ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>'
+        : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+function closeMobileNav() {
+    var menu = document.getElementById('nav-mobile');
+    var btn = document.querySelector('.nav-hamburger');
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    document.body.style.overflow = '';
+}
 </script>
 
 </body>
