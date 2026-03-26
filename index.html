@@ -7,6 +7,16 @@
     <meta name="description" content="hora Calendar is a native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
     <link rel="icon" href="assets/hora-icon.png" type="image/png">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-WQZ32S81FX');
+    </script>
     <style>
         @font-face {
             font-family: 'Bumbbled';
@@ -758,6 +768,106 @@
         </div>
     </div>
 </footer>
+
+<script>
+(function() {
+    function track(eventName, params) {
+        if (typeof gtag === 'function') gtag('event', eventName, params);
+    }
+
+    // --- CTA Buttons ---
+    document.querySelectorAll('.hero-cta .btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var label = btn.textContent.trim().replace(/\s+/g, ' ');
+            track('cta_click', { cta_name: label, cta_location: 'hero' });
+        });
+    });
+
+    // --- Nav Links ---
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var label = link.textContent.trim() || link.getAttribute('aria-label');
+            track('nav_click', { link_text: label, link_url: link.href });
+        });
+    });
+
+    // --- Follow on X ---
+    var followBtn = document.querySelector('.follow-card .btn');
+    if (followBtn) {
+        followBtn.addEventListener('click', function() {
+            track('social_click', { platform: 'x_twitter', action: 'follow' });
+        });
+    }
+
+    // --- GitHub Star ---
+    var starLink = document.querySelector('.star-inner a');
+    if (starLink) {
+        starLink.addEventListener('click', function() {
+            track('social_click', { platform: 'github', action: 'star_repo' });
+        });
+    }
+
+    // --- Footer Links ---
+    document.querySelectorAll('.footer-links a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var label = link.getAttribute('aria-label') || 'unknown';
+            track('footer_click', { link_label: label });
+        });
+    });
+
+    // --- Section Scroll Visibility ---
+    var observedSections = document.querySelectorAll('section[id]');
+    var sectionSeen = {};
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !sectionSeen[entry.target.id]) {
+                    sectionSeen[entry.target.id] = true;
+                    track('section_view', { section_id: entry.target.id });
+                }
+            });
+        }, { threshold: 0.3 });
+        observedSections.forEach(function(sec) { observer.observe(sec); });
+    }
+
+    // --- Demo GIF Visibility ---
+    var demoImg = document.querySelector('.demo-frame img');
+    if (demoImg && 'IntersectionObserver' in window) {
+        var demoSeen = false;
+        var demoObs = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting && !demoSeen) {
+                demoSeen = true;
+                track('demo_viewed', { asset: 'hero_gif' });
+                demoObs.disconnect();
+            }
+        }, { threshold: 0.5 });
+        demoObs.observe(demoImg);
+    }
+
+    // --- Outbound Link Clicks (email, external) ---
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+            track('contact_click', { method: 'email', address: link.href.replace('mailto:', '') });
+        });
+    });
+
+    // --- Legal Section Scroll ---
+    document.querySelectorAll('.legal').forEach(function(sec) {
+        var id = sec.id;
+        if (id && 'IntersectionObserver' in window) {
+            var seen = false;
+            var obs = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting && !seen) {
+                    seen = true;
+                    track('legal_viewed', { section: id });
+                    obs.disconnect();
+                }
+            }, { threshold: 0.2 });
+            obs.observe(sec);
+        }
+    });
+})();
+</script>
 
 </body>
 </html>
