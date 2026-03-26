@@ -61,13 +61,25 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
+    <!-- Google Analytics 4 (loaded after cookie consent) -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-WQZ32S81FX');
+
+        function loadGA() {
+            if (document.getElementById('ga-script')) return;
+            var s = document.createElement('script');
+            s.id = 'ga-script';
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX';
+            document.head.appendChild(s);
+            gtag('js', new Date());
+            gtag('config', 'G-WQZ32S81FX');
+        }
+
+        if (localStorage.getItem('cookie-consent') === 'accepted') {
+            loadGA();
+        }
     </script>
     <style>
         @font-face {
@@ -632,6 +644,76 @@
             .hero-icon { animation: none; }
             .hero-icon-wrapper::before, .hero-icon-wrapper::after { animation: none; }
         }
+
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 16px 24px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .cookie-banner.visible {
+            transform: translateY(0);
+        }
+        .cookie-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .cookie-inner p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .cookie-inner a {
+            color: var(--text);
+            text-decoration: underline;
+        }
+        .cookie-btns {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .cookie-btns button {
+            font-family: inherit;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .cookie-accept {
+            background: var(--accent);
+            color: #fff;
+        }
+        .cookie-accept:hover {
+            background: var(--accent-hover);
+        }
+        .cookie-decline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border) !important;
+        }
+        .cookie-decline:hover {
+            color: var(--text);
+            border-color: #444 !important;
+        }
+        @media (max-width: 600px) {
+            .cookie-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -647,8 +729,6 @@
             <a href="#features" class="hide-mobile">Features</a>
             <a href="#roadmap" class="hide-mobile">Roadmap</a>
             <a href="/blog/" class="hide-mobile">Blog</a>
-            <a href="#privacy">Privacy</a>
-            <a href="#terms">Terms</a>
             <a href="#download" class="btn">Get the App</a>
         </div>
     </div>
@@ -864,6 +944,8 @@
     <div class="footer-inner">
         <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: none;">szamowski.dev</a></p>
         <div class="footer-links">
+            <a href="#privacy" style="font-size: 13px;">Privacy</a>
+            <a href="#terms" style="font-size: 13px;">Terms</a>
             <a href="mailto:hello@horacal.app" aria-label="Email">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </a>
@@ -1002,6 +1084,37 @@
             });
         });
     }
+})();
+</script>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner">
+    <div class="cookie-inner">
+        <p>We use cookies for analytics to understand how you use this site. <a href="#privacy">Privacy Policy</a></p>
+        <div class="cookie-btns">
+            <button class="cookie-decline" id="cookie-decline">Decline</button>
+            <button class="cookie-accept" id="cookie-accept">Accept</button>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    var consent = localStorage.getItem('cookie-consent');
+    if (consent) return;
+
+    var banner = document.getElementById('cookie-banner');
+    setTimeout(function() { banner.classList.add('visible'); }, 800);
+
+    document.getElementById('cookie-accept').addEventListener('click', function() {
+        localStorage.setItem('cookie-consent', 'accepted');
+        banner.classList.remove('visible');
+        loadGA();
+    });
+
+    document.getElementById('cookie-decline').addEventListener('click', function() {
+        localStorage.setItem('cookie-consent', 'declined');
+        banner.classList.remove('visible');
+    });
 })();
 </script>
 

@@ -20,6 +20,68 @@ for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'assets']) {
     }
 }
 
+// --- Shared CTA block ---
+const ctaBlock = `
+<section style="max-width: 560px; margin: 0 auto; padding: 48px 24px 64px;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; text-align: center;">
+        <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em;">Stay in the loop</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Get notified when hora launches. No spam.</p>
+        <form id="newsletter-form" style="display: flex; gap: 8px; margin-bottom: 24px;">
+            <input type="email" name="email" required placeholder="you@email.com" style="flex: 1; padding: 11px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; outline: none;">
+            <button type="submit" style="background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+        </form>
+        <p id="newsletter-msg" style="display: none; font-size: 13px; margin-bottom: 24px;"></p>
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <span style="flex: 1; height: 1px; background: var(--border);"></span>
+            <span style="font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">or follow along</span>
+            <span style="flex: 1; height: 1px; background: var(--border);"></span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+            <a href="https://x.com/moto_szama" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 13px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                @moto_szama
+            </a>
+            <a href="https://github.com/szamski/hora-web" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 13px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Star on GitHub
+            </a>
+        </div>
+    </div>
+</section>
+<script>
+(function() {
+    var form = document.getElementById('newsletter-form');
+    var msg = document.getElementById('newsletter-msg');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = form.email.value;
+            var btn = form.querySelector('button');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            fetch('https://hora-newsletter.na-serio-maciej-szamowski.workers.dev/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            }).then(function(res) {
+                if (res.ok) {
+                    msg.textContent = "You're in! We'll let you know when hora launches.";
+                    msg.style.color = '#4ade80';
+                    msg.style.display = 'block';
+                    form.style.display = 'none';
+                } else { throw new Error(); }
+            }).catch(function() {
+                msg.textContent = 'Something went wrong. Try again or email hello@horacal.app.';
+                msg.style.color = '#FF383C';
+                msg.style.display = 'block';
+                btn.textContent = 'Subscribe';
+                btn.disabled = false;
+            });
+        });
+    }
+})();
+</script>`;
+
 // --- Blog template (matches site design) ---
 function blogTemplate(title, date, content, description, tags) {
     const tagsHtml = tags.length
@@ -48,18 +110,20 @@ function blogTemplate(title, date, content, description, tags) {
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --max-w: 720px; }
+        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
 
         nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
-        .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-        .nav-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 16px; }
+        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
         .nav-brand img { border-radius: 6px; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
+        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
+        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
 
         article { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 80px; }
         article .meta { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
@@ -111,7 +175,7 @@ function blogTemplate(title, date, content, description, tags) {
         <div class="nav-links">
             <a href="/blog/">Blog</a>
             <a href="/#features">Features</a>
-            <a href="/#download">Get the App</a>
+            <a href="/#download" class="btn">Get the App</a>
         </div>
     </div>
 </nav>
@@ -122,8 +186,15 @@ function blogTemplate(title, date, content, description, tags) {
     ${tagsHtml}
     ${content}
 </article>
+${ctaBlock}
 <footer>
-    <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+    <div class="footer-inner" style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <div style="display: flex; gap: 16px;">
+            <a href="/#privacy" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
+            <a href="/#terms" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </div>
 </footer>
 </body>
 </html>`;
@@ -164,18 +235,20 @@ function blogIndexTemplate(posts) {
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --max-w: 720px; }
+        :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
         .gradient-text { background: linear-gradient(135deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
-        .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-        .nav-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 16px; }
+        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
         .nav-brand img { border-radius: 6px; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
+        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
+        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
 
         .blog-header { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 40px; }
         .blog-header h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -220,7 +293,7 @@ function blogIndexTemplate(posts) {
         <div class="nav-links">
             <a href="/blog/">Blog</a>
             <a href="/#features">Features</a>
-            <a href="/#download">Get the App</a>
+            <a href="/#download" class="btn">Get the App</a>
         </div>
     </div>
 </nav>
@@ -231,8 +304,15 @@ function blogIndexTemplate(posts) {
 <div class="posts">
     ${postList || '<p class="empty">No posts yet. Stay tuned!</p>'}
 </div>
+${ctaBlock}
 <footer>
-    <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+    <div class="footer-inner" style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <div style="display: flex; gap: 16px;">
+            <a href="/#privacy" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
+            <a href="/#terms" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </div>
 </footer>
 </body>
 </html>`;
