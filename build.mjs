@@ -22,7 +22,7 @@ for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'assets']) {
 
 // --- Shared CTA block ---
 const ctaBlock = `
-<section style="max-width: 960px; margin: 0 auto; padding: 48px 24px 64px;">
+<section style="max-width: 720px; margin: 0 auto; padding: 48px 24px 64px;">
     <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; text-align: center;">
         <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em;">Stay in the loop</h3>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Get notified when hora launches. No spam.</p>
