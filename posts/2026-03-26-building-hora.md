@@ -1,0 +1,32 @@
+---
+title: Why I'm Building hora Calendar
+date: 2026-03-26
+description: The story behind hora — a native macOS Google Calendar client built with SwiftUI, without Electron or CalDAV.
+tags: swiftui, macos, google-calendar, electron, caldav, swift, native-app
+---
+
+Every macOS user who relies on Google Calendar knows the pain. You either use the web app, deal with CalDAV sync issues in Apple Calendar, or install an Electron-based app that eats your RAM for breakfast.
+
+I wanted something different — a **native, fast, beautiful** Google Calendar client that feels like it belongs on macOS.
+
+## The Problem with Existing Solutions
+
+**Apple Calendar + CalDAV** works, but the sync is unreliable. Events appear late, recurring events break, and you lose Google-specific features like Google Meet integration and guest permissions.
+
+**Electron apps** (Fantastical, Notion Calendar) are functional but heavy. They're essentially Chrome tabs pretending to be native apps. On a MacBook Air, you notice.
+
+**The web app** is… fine. But it doesn't integrate with macOS notifications, keyboard shortcuts, or the menu bar. And switching between browser tabs to check your schedule gets old.
+
+## The hora Approach
+
+hora talks directly to the **Google Calendar REST API** — no CalDAV middleware, no translation layer. What you see is exactly what's on Google's servers.
+
+It's built with:
+- **Swift 6 + SwiftUI** — truly native, truly fast
+- **SwiftData** for local caching — your calendar works offline
+- **Incremental sync** — only fetches what changed since last sync
+- **Optimistic UI** — changes feel instant, syncs in the background
+
+## What's Next
+
+I'm working toward an initial release on the Mac App Store and TestFlight. Follow the progress on [X](https://x.com/moto_szama) or star the project on [GitHub](https://github.com/szamski/hora-web).

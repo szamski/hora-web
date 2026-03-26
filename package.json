@@ -1,0 +1,10 @@
+{
+  "name": "hora-web",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "marked": "^15.0.0"
+  }
+}

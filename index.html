@@ -5,7 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hora Calendar — Native macOS Google Calendar Client</title>
     <meta name="description" content="hora Calendar is a native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
+    <link rel="canonical" href="https://horacal.app/">
     <link rel="icon" href="assets/hora-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/hora-icon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://horacal.app/">
+    <meta property="og:title" content="hora Calendar — Native macOS Google Calendar Client">
+    <meta property="og:description" content="The Google Calendar client that macOS deserves. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
+    <meta property="og:image" content="https://horacal.app/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="hora Calendar">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@moto_szama">
+    <meta name="twitter:creator" content="@moto_szama">
+    <meta name="twitter:title" content="hora Calendar — Native macOS Google Calendar Client">
+    <meta name="twitter:description" content="The Google Calendar client that macOS deserves. Built with SwiftUI. No Electron. No CalDAV. Just fast.">
+    <meta name="twitter:image" content="https://horacal.app/assets/og-image.png">
+
+    <!-- Additional SEO -->
+    <meta name="author" content="Maciej Szamowski">
+    <meta name="theme-color" content="#0A0A0A">
+    <meta name="application-name" content="hora Calendar">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "hora Calendar",
+        "description": "Native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.",
+        "url": "https://horacal.app",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "macOS",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Maciej Szamowski",
+            "url": "https://szamowski.dev"
+        },
+        "image": "https://horacal.app/assets/hora-icon.png",
+        "screenshot": "https://horacal.app/assets/hora-demo.gif"
+    }
+    </script>
+
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
@@ -257,7 +309,7 @@
             box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
             overflow: hidden;
         }
-        .demo-frame img { width: 100%; height: auto; display: block; }
+        .demo-frame img, .demo-frame video { width: 100%; height: auto; display: block; }
 
         /* Section headings */
         .section-heading {
@@ -382,51 +434,99 @@
             line-height: 1.5;
         }
 
-        /* Follow CTA */
-        .follow-section {
-            max-width: var(--max-w);
+        /* Unified CTA */
+        .cta-section {
+            max-width: 560px;
             margin: 0 auto;
-            padding: 0 24px 48px;
-            text-align: center;
+            padding: 0 24px 64px;
         }
-        .follow-card {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            background: var(--accent-subtle);
-            border: 1px solid var(--accent-subtle-border);
-            border-radius: 16px;
-            padding: 32px 48px;
-        }
-        .follow-card p {
-            font-size: 15px;
-            color: var(--text-muted);
-        }
-        .follow-card .btn {
-            font-size: 15px;
-            padding: 10px 24px;
-        }
-
-        /* Star CTA */
-        .star-section {
-            max-width: var(--max-w);
-            margin: 0 auto;
-            padding: 0 24px 48px;
-            text-align: center;
-        }
-        .star-inner {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        .cta-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 12px 24px;
+            border-radius: 20px;
+            padding: 40px 36px;
+            text-align: center;
         }
-        .star-inner p { font-size: 14px; color: var(--text-muted); }
-        .star-inner a { color: var(--accent); text-decoration: none; font-weight: 500; }
-        .star-inner a:hover { text-decoration: underline; }
+        .cta-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .cta-card .cta-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .cta-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .cta-form input {
+            flex: 1;
+            padding: 11px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .cta-form input:focus {
+            border-color: var(--accent);
+        }
+        .cta-form .btn {
+            white-space: nowrap;
+            border-radius: 10px;
+        }
+        .cta-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .cta-divider::before, .cta-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .cta-divider span {
+            font-size: 12px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .cta-socials {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .cta-socials a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .cta-socials a:hover {
+            color: var(--text);
+            border-color: #444;
+            background: rgba(255,255,255,0.03);
+        }
+        #newsletter-msg {
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
 
         /* Legal sections */
         .legal-grid {
@@ -546,6 +646,7 @@
         <div class="nav-links">
             <a href="#features" class="hide-mobile">Features</a>
             <a href="#roadmap" class="hide-mobile">Roadmap</a>
+            <a href="/blog/" class="hide-mobile">Blog</a>
             <a href="#privacy">Privacy</a>
             <a href="#terms">Terms</a>
             <a href="#download" class="btn">Get the App</a>
@@ -572,7 +673,9 @@
         </a>
     </div>
     <div class="demo-frame">
-        <img src="assets/hora-demo.gif" alt="hora Calendar demo showing week view, event creation, and calendar navigation" loading="lazy">
+        <video autoplay loop muted playsinline preload="metadata" poster="assets/hora-icon.png" aria-label="hora Calendar demo showing week view, event creation, and calendar navigation">
+            <source src="assets/hora-demo.mp4" type="video/mp4">
+        </video>
     </div>
 </section>
 
@@ -616,14 +719,6 @@
     </div>
 </section>
 
-<!-- Star CTA -->
-<section class="star-section">
-    <div class="star-inner">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <p>Star the project on <a href="https://github.com/szamski/hora-web">GitHub</a> to stay up to date with new releases.</p>
-    </div>
-</section>
-
 <!-- Roadmap -->
 <section class="roadmap" id="roadmap">
     <div class="section-heading">
@@ -662,14 +757,27 @@
     </div>
 </section>
 
-<!-- Follow -->
-<section class="follow-section">
-    <div class="follow-card">
-        <p>Follow the build process and be first to know when it drops.</p>
-        <a href="https://x.com/moto_szama" target="_blank" rel="noopener" class="btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            Follow @moto_szama on X
-        </a>
+<!-- Stay in the loop -->
+<section class="cta-section" id="newsletter">
+    <div class="cta-card">
+        <h3>Stay in the loop</h3>
+        <p class="cta-sub">Get notified when hora launches. No spam.</p>
+        <form id="newsletter-form" class="cta-form">
+            <input type="email" name="email" required placeholder="you@email.com">
+            <button type="submit" class="btn">Subscribe</button>
+        </form>
+        <p id="newsletter-msg" style="display: none;"></p>
+        <div class="cta-divider"><span>or follow along</span></div>
+        <div class="cta-socials">
+            <a href="https://x.com/moto_szama" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                @moto_szama
+            </a>
+            <a href="https://github.com/szamski/hora-web" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Star on GitHub
+            </a>
+        </div>
     </div>
 </section>
 
@@ -791,21 +899,13 @@
         });
     });
 
-    // --- Follow on X ---
-    var followBtn = document.querySelector('.follow-card .btn');
-    if (followBtn) {
-        followBtn.addEventListener('click', function() {
-            track('social_click', { platform: 'x_twitter', action: 'follow' });
+    // --- Social Links in CTA ---
+    document.querySelectorAll('.cta-socials a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var platform = link.href.includes('github') ? 'github' : 'x_twitter';
+            track('social_click', { platform: platform, action: 'cta_click' });
         });
-    }
-
-    // --- GitHub Star ---
-    var starLink = document.querySelector('.star-inner a');
-    if (starLink) {
-        starLink.addEventListener('click', function() {
-            track('social_click', { platform: 'github', action: 'star_repo' });
-        });
-    }
+    });
 
     // --- Footer Links ---
     document.querySelectorAll('.footer-links a').forEach(function(link) {
@@ -831,7 +931,7 @@
     }
 
     // --- Demo GIF Visibility ---
-    var demoImg = document.querySelector('.demo-frame img');
+    var demoImg = document.querySelector('.demo-frame video') || document.querySelector('.demo-frame img');
     if (demoImg && 'IntersectionObserver' in window) {
         var demoSeen = false;
         var demoObs = new IntersectionObserver(function(entries) {
@@ -866,6 +966,42 @@
             obs.observe(sec);
         }
     });
+    // --- Newsletter Form ---
+    var form = document.getElementById('newsletter-form');
+    var msg = document.getElementById('newsletter-msg');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = form.email.value;
+            var btn = form.querySelector('button');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            fetch('https://hora-newsletter.na-serio-maciej-szamowski.workers.dev/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+            .then(function(res) {
+                if (res.ok) {
+                    msg.textContent = 'You\'re in! We\'ll let you know when hora launches.';
+                    msg.style.color = '#4ade80';
+                    msg.style.display = 'block';
+                    form.style.display = 'none';
+                    track('newsletter_signup', { method: 'email' });
+                } else {
+                    throw new Error('Failed');
+                }
+            })
+            .catch(function() {
+                msg.textContent = 'Something went wrong. Try again or email hello@horacal.app.';
+                msg.style.color = '#FF383C';
+                msg.style.display = 'block';
+                btn.textContent = 'Subscribe';
+                btn.disabled = false;
+            });
+        });
+    }
 })();
 </script>
 
