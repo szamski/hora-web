@@ -22,7 +22,7 @@ for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'assets']) {
 
 // --- Shared CTA block ---
 const ctaBlock = `
-<section style="max-width: 560px; margin: 0 auto; padding: 48px 24px 64px;">
+<section style="max-width: 720px; margin: 0 auto; padding: 48px 24px 64px;">
     <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; text-align: center;">
         <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em;">Stay in the loop</h3>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Get notified when hora launches. No spam.</p>
@@ -187,12 +187,15 @@ function blogTemplate(title, date, content, description, tags) {
     ${content}
 </article>
 ${ctaBlock}
-<footer>
-    <div class="footer-inner" style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+<footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
+    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
-        <div style="display: flex; gap: 16px;">
-            <a href="/#privacy" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
-            <a href="/#terms" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
+            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
+            <a href="mailto:hello@horacal.app" aria-label="Email" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="https://github.com/szamski" aria-label="GitHub" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
+            <a href="https://x.com/moto_szama" aria-label="X / Twitter" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
         </div>
     </div>
 </footer>
@@ -305,12 +308,15 @@ function blogIndexTemplate(posts) {
     ${postList || '<p class="empty">No posts yet. Stay tuned!</p>'}
 </div>
 ${ctaBlock}
-<footer>
-    <div class="footer-inner" style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+<footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
+    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
-        <div style="display: flex; gap: 16px;">
-            <a href="/#privacy" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
-            <a href="/#terms" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
+            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
+            <a href="mailto:hello@horacal.app" aria-label="Email" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="https://github.com/szamski" aria-label="GitHub" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
+            <a href="https://x.com/moto_szama" aria-label="X / Twitter" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
         </div>
     </div>
 </footer>
@@ -378,4 +384,180 @@ const blogIndexUrl = `  <url>
 sitemap = sitemap.replace('</urlset>', `${blogIndexUrl}\n${blogUrls}\n</urlset>`);
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
 
+// --- Build legal pages ---
+function legalPageTemplate(title, lastUpdated, content) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} — hora Calendar</title>
+    <meta name="description" content="${title} for hora Calendar, a native macOS Google Calendar client.">
+    <link rel="canonical" href="https://horacal.app/${title.toLowerCase().replace(/\s+/g, '-')}/">
+    <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    <style>
+        @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; }
+        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+        nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
+        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
+        .nav-brand img { border-radius: 6px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
+        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
+
+        .legal { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
+        .legal h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .legal .updated { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+        .legal h3 { font-size: 16px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
+        .legal p { color: var(--text-muted); font-size: 15px; margin-bottom: 16px; line-height: 1.7; }
+        .legal a { color: var(--accent); text-decoration: none; }
+        .legal a:hover { text-decoration: underline; }
+        .legal ul { color: var(--text-muted); font-size: 15px; margin-bottom: 16px; padding-left: 24px; list-style: none; }
+        .legal li { position: relative; padding-left: 16px; margin-bottom: 8px; }
+        .legal li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
+
+        footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; }
+
+        @media (max-width: 768px) {
+            .legal { padding: 40px 16px 60px; }
+            .legal h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-brand">
+            <img src="/assets/hora-icon.png" alt="" width="28" height="28">
+            Calendar
+        </a>
+        <div class="nav-links">
+            <a href="/blog/">Blog</a>
+            <a href="/#features">Features</a>
+            <a href="/#download" class="btn">Get the App</a>
+        </div>
+    </div>
+</nav>
+<section class="legal">
+    <h1>${title}</h1>
+    <p class="updated">Last updated: ${lastUpdated}</p>
+    ${content}
+</section>
+<footer>
+    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <div style="display: flex; gap: 16px;">
+            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
+            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>`;
+}
+
+const privacyContent = `
+    <p>Hora Calendar is a native macOS application that connects to Google Calendar. Your privacy matters&nbsp;&mdash; here is exactly what we access and how we use it.</p>
+
+    <h3>Data We Access</h3>
+    <ul>
+        <li>Google Calendar: events and calendars (read &amp; write)</li>
+        <li>Google Other Contacts: names and emails (read only, auto-suggested contacts for guest autocomplete)</li>
+        <li>Google account email address</li>
+    </ul>
+
+    <h3>How We Use It</h3>
+    <ul>
+        <li>Display and manage your calendar events</li>
+        <li>Provide autocomplete suggestions when adding guests to events</li>
+        <li>Synchronize changes with Google Calendar</li>
+    </ul>
+
+    <h3>Data Storage</h3>
+    <ul>
+        <li>All data is stored locally on your Mac using SwiftData</li>
+        <li>No data is sent to any server other than Google APIs</li>
+        <li>This website uses Google Analytics to understand visitor behavior (with cookie consent)</li>
+    </ul>
+
+    <h3>Data Sharing</h3>
+    <ul>
+        <li>We do not share your data with anyone</li>
+        <li>We do not sell your data</li>
+    </ul>
+
+    <h3>Data Deletion</h3>
+    <ul>
+        <li>Sign out in Hora Settings to remove all local data</li>
+        <li>Revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a></li>
+    </ul>
+
+    <h3>Contact</h3>
+    <p>For privacy-related inquiries: <a href="mailto:hello@horacal.app">hello@horacal.app</a></p>
+`;
+
+const termsContent = `
+    <p>By downloading or using Hora Calendar ("the App"), you agree to these terms.</p>
+
+    <h3>Description of Service</h3>
+    <p>Hora Calendar is a free, native macOS application that provides a client interface for Google Calendar. The App communicates directly with Google APIs on your behalf.</p>
+
+    <h3>Google Account</h3>
+    <p>The App requires a Google account to function. Your use of Google services through the App is subject to <a href="https://policies.google.com/terms">Google's Terms of Service</a>. You are responsible for maintaining the security of your Google account credentials.</p>
+
+    <h3>Acceptable Use</h3>
+    <ul>
+        <li>Use the App only for its intended purpose of managing your Google Calendar</li>
+        <li>Do not attempt to reverse engineer, decompile, or modify the App</li>
+        <li>Do not use the App to violate any applicable laws or regulations</li>
+    </ul>
+
+    <h3>Disclaimer</h3>
+    <p>The App is provided "as is" without warranty of any kind, express or implied. We do not guarantee uninterrupted or error-free operation. We are not responsible for any data loss resulting from the use of the App.</p>
+
+    <h3>Limitation of Liability</h3>
+    <p>To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the App.</p>
+
+    <h3>Changes to Terms</h3>
+    <p>We may update these terms from time to time. Continued use of the App constitutes acceptance of the updated terms.</p>
+
+    <h3>Contact</h3>
+    <p>Questions about these terms: <a href="mailto:hello@horacal.app">hello@horacal.app</a></p>
+`;
+
+const privacyDir = join(DIST, 'privacy');
+mkdirSync(privacyDir, { recursive: true });
+writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'March 25, 2026', privacyContent));
+
+const termsDir = join(DIST, 'terms');
+mkdirSync(termsDir, { recursive: true });
+writeFileSync(join(termsDir, 'index.html'), legalPageTemplate('Terms of Service', 'March 25, 2026', termsContent));
+
+// --- Update sitemap with legal pages ---
+sitemap = sitemap.replace('</urlset>', `  <url>
+    <loc>https://horacal.app/privacy/</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://horacal.app/terms/</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>`);
+writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+
 console.log(`Built ${posts.length} blog post(s) → dist/blog/`);
+console.log('Built legal pages → dist/privacy/, dist/terms/');
