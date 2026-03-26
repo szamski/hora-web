@@ -111,7 +111,7 @@ function blogTemplate(title, date, content, description, tags) {
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-y: scroll; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
         main { flex: 1; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
@@ -245,6 +245,7 @@ function blogIndexTemplate(posts) {
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
+        html { overflow-y: scroll; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
         main { flex: 1; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
