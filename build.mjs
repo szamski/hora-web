@@ -125,8 +125,8 @@ function blogTemplate(title, date, content, description, tags) {
         .nav-links a:hover { color: var(--text); }
         .nav-links a.btn { color: #fff; font-weight: 600; }
         .nav-links a.btn:hover { color: #fff; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-        .btn:hover { background: var(--accent-hover); }
+        .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
 
         article { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 80px; }
         article .meta { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
@@ -259,8 +259,8 @@ function blogIndexTemplate(posts) {
         .nav-links a:hover { color: var(--text); }
         .nav-links a.btn { color: #fff; font-weight: 600; }
         .nav-links a.btn:hover { color: #fff; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-        .btn:hover { background: var(--accent-hover); }
+        .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
 
         .blog-header { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 40px; }
         .blog-header h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -427,8 +427,8 @@ function legalPageTemplate(title, lastUpdated, content) {
         .nav-links a:hover { color: var(--text); }
         .nav-links a.btn { color: #fff; font-weight: 600; }
         .nav-links a.btn:hover { color: #fff; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-        .btn:hover { background: var(--accent-hover); }
+        .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
 
         .legal { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
         .legal h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
