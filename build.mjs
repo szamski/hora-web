@@ -112,18 +112,21 @@ function blogTemplate(title, date, content, description, tags) {
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
 
-        nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
-        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
-        .nav-brand img { border-radius: 6px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
-        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
-        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
+        .nav-links a.btn { color: #fff; font-weight: 600; }
+        .nav-links a.btn:hover { color: #fff; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn:hover { background: var(--accent-hover); }
 
         article { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 80px; }
         article .meta { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
@@ -180,6 +183,7 @@ function blogTemplate(title, date, content, description, tags) {
         </div>
     </div>
 </nav>
+<main>
 <article>
     <a href="/blog/" class="back-link">&larr; All posts</a>
     <p class="meta">${date}</p>
@@ -188,6 +192,7 @@ function blogTemplate(title, date, content, description, tags) {
     ${content}
 </article>
 ${ctaBlock}
+</main>
 <footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
@@ -240,19 +245,22 @@ function blogIndexTemplate(posts) {
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
-        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; }
         .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
         .gradient-text { background: linear-gradient(135deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
-        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
-        .nav-brand img { border-radius: 6px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
-        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
-        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
+        .nav-links a.btn { color: #fff; font-weight: 600; }
+        .nav-links a.btn:hover { color: #fff; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn:hover { background: var(--accent-hover); }
 
         .blog-header { max-width: var(--max-w); margin: 0 auto; padding: 64px 24px 40px; }
         .blog-header h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -302,6 +310,7 @@ function blogIndexTemplate(posts) {
         </div>
     </div>
 </nav>
+<main>
 <div class="blog-header">
     <h1 class="branded">hora <span class="gradient-text">Blog</span></h1>
     <p>Updates, dev logs, and announcements.</p>
@@ -310,6 +319,7 @@ function blogIndexTemplate(posts) {
     ${postList || '<p class="empty">No posts yet. Stay tuned!</p>'}
 </div>
 ${ctaBlock}
+</main>
 <footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
@@ -405,17 +415,20 @@ function legalPageTemplate(title, lastUpdated, content) {
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; }
-        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; }
 
-        nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; }
-        .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
-        .nav-brand img { border-radius: 6px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
-        .nav-links a.btn { background: var(--accent); color: #fff; font-weight: 600; padding: 8px 18px; border-radius: 999px; font-size: 13px; }
-        .nav-links a.btn:hover { background: var(--accent-hover); color: #fff; }
+        .nav-links a.btn { color: #fff; font-weight: 600; }
+        .nav-links a.btn:hover { color: #fff; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn:hover { background: var(--accent-hover); }
 
         .legal { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
         .legal h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -451,11 +464,13 @@ function legalPageTemplate(title, lastUpdated, content) {
         </div>
     </div>
 </nav>
+<main>
 <section class="legal">
     <h1>${title}</h1>
     <p class="updated">Last updated: ${lastUpdated}</p>
     ${content}
 </section>
+</main>
 <footer>
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
