@@ -21,9 +21,9 @@
 </p>
 
 <p align="center">
-  <a href="https://szamski.github.io/hora-web/"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
-  <a href="https://szamski.github.io/hora-web/#privacy">Privacy</a> &nbsp;&middot;&nbsp;
-  <a href="https://szamski.github.io/hora-web/#terms">Terms</a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/#privacy">Privacy</a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/#terms">Terms</a> &nbsp;&middot;&nbsp;
   <a href="https://x.com/moto_szama">Follow @moto_szama</a>
 </p>
 
@@ -70,7 +70,7 @@ assets/                 App icon, demo GIF, Bumbbled font
 
 | | |
 |---|---|
-| Website | [szamski.github.io/hora-web](https://szamski.github.io/hora-web/) |
+| Website | [horacal.app](https://horacal.app) |
 | X / Twitter | [@moto_szama](https://x.com/moto_szama) |
 | Developer | [szamowski.dev](https://szamowski.dev) |
 
