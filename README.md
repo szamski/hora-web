@@ -22,8 +22,8 @@
 
 <p align="center">
   <a href="https://horacal.app/"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
-  <a href="https://horacal.app/#privacy">Privacy</a> &nbsp;&middot;&nbsp;
-  <a href="https://horacal.app/#terms">Terms</a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/privacy">Privacy</a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/terms">Terms</a> &nbsp;&middot;&nbsp;
   <a href="https://x.com/moto_szama">Follow @moto_szama</a>
 </p>
 
