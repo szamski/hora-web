@@ -33,7 +33,7 @@ function blogTemplate(title, date, content, description, tags) {
     <title>${title} — hora Calendar Blog</title>
     <meta name="description" content="${description}">
     <link rel="canonical" href="https://horacal.app/blog/${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}/">
-    <link rel="icon" href="../assets/hora-icon.png" type="image/png">
+    <link rel="icon" href="/assets/hora-icon.png" type="image/png">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
@@ -42,7 +42,7 @@ function blogTemplate(title, date, content, description, tags) {
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@moto_szama">
     <style>
-        @font-face { font-family: 'Bumbbled'; src: url('../assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
@@ -105,7 +105,7 @@ function blogTemplate(title, date, content, description, tags) {
 <nav>
     <div class="nav-inner">
         <a href="/" class="nav-brand">
-            <img src="../assets/hora-icon.png" alt="" width="28" height="28">
+            <img src="/assets/hora-icon.png" alt="" width="28" height="28">
             Calendar
         </a>
         <div class="nav-links">
@@ -151,7 +151,7 @@ function blogIndexTemplate(posts) {
     <title>Blog — hora Calendar</title>
     <meta name="description" content="Updates, dev logs, and announcements from the hora Calendar team.">
     <link rel="canonical" href="https://horacal.app/blog/">
-    <link rel="icon" href="../assets/hora-icon.png" type="image/png">
+    <link rel="icon" href="/assets/hora-icon.png" type="image/png">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Blog — hora Calendar">
     <meta property="og:description" content="Updates, dev logs, and announcements from the hora Calendar team.">
@@ -159,7 +159,7 @@ function blogIndexTemplate(posts) {
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@moto_szama">
     <style>
-        @font-face { font-family: 'Bumbbled'; src: url('../assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
@@ -214,7 +214,7 @@ function blogIndexTemplate(posts) {
 <nav>
     <div class="nav-inner">
         <a href="/" class="nav-brand">
-            <img src="../assets/hora-icon.png" alt="" width="28" height="28">
+            <img src="/assets/hora-icon.png" alt="" width="28" height="28">
             Calendar
         </a>
         <div class="nav-links">
