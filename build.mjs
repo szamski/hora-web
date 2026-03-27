@@ -173,6 +173,11 @@ function blogTemplate(title, date, content, description, tags) {
             .nav-hamburger { display: block; }
             .nav-inner { padding: 0 16px; }
         }
+        @media (max-width: 480px) {
+            .nav-inner { padding: 0 12px; }
+            .nav-brand { font-size: 15px; gap: 6px; }
+            .nav-brand img { width: 24px; height: 24px; }
+        }
     </style>
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
@@ -320,6 +325,11 @@ function blogIndexTemplate(posts) {
             .nav-links { display: none; }
             .nav-hamburger { display: block; }
             .nav-inner { padding: 0 16px; }
+        }
+        @media (max-width: 480px) {
+            .nav-inner { padding: 0 12px; }
+            .nav-brand { font-size: 15px; gap: 6px; }
+            .nav-brand img { width: 24px; height: 24px; }
         }
     </style>
     <!-- Google Analytics 4 -->
@@ -502,6 +512,11 @@ function legalPageTemplate(title, lastUpdated, content) {
             .nav-links { display: none; }
             .nav-hamburger { display: block; }
             .nav-inner { padding: 0 16px; }
+        }
+        @media (max-width: 480px) {
+            .nav-inner { padding: 0 12px; }
+            .nav-brand { font-size: 15px; gap: 6px; }
+            .nav-brand img { width: 24px; height: 24px; }
         }
     </style>
 </head>
