@@ -51,13 +51,14 @@ jobs:
           POST_FILE: ${{ steps.detect.outputs.file }}
         run: python3 .github/scripts/generate-social-copy.py
 
-      - name: Create GitHub Issue
+      - name: Create GitHub Issue (private repo)
         if: steps.detect.outputs.found == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.HORA_PAT }}
         run: |
           TITLE=$(cat /tmp/issue-title.txt)
           gh issue create \
+            --repo szamski/hora-calendar \
             --title "$TITLE" \
             --body-file /tmp/issue-body.md \
             --label "social-media"
