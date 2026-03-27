@@ -151,7 +151,7 @@ Number of screenshots in post: {img_count}
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.9,
-            "maxOutputTokens": 4000
+            "maxOutputTokens": 8192
         }
     })
 
