@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths:
       - 'posts/**.md'
+  workflow_dispatch:
+    inputs:
+      post_file:
+        description: 'Post file path (e.g. posts/2026-03-27-two-days-of-shipping.md)'
+        required: true
 
 permissions:
   contents: read
@@ -21,6 +26,20 @@ jobs:
       - name: Detect new blog posts
         id: detect
         run: |
+          # Manual trigger: use input file
+          if [ -n "${{ github.event.inputs.post_file }}" ]; then
+            POST_FILE="${{ github.event.inputs.post_file }}"
+            if [ ! -f "$POST_FILE" ]; then
+              echo "::error::File not found: $POST_FILE"
+              exit 1
+            fi
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "file=$POST_FILE" >> "$GITHUB_OUTPUT"
+            echo "Manual trigger: $POST_FILE"
+            exit 0
+          fi
+
+          # Push trigger: detect new .md files
           NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'posts/*.md' || true)
           if [ -z "$NEW_POSTS" ]; then
             echo "No new posts found"
