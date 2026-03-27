@@ -8,6 +8,7 @@
     <link rel="canonical" href="https://horacal.app/">
     <link rel="icon" href="assets/hora-icon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/hora-icon.png">
+    <link rel="alternate" type="application/rss+xml" title="hora Calendar Blog" href="/blog/feed.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -127,7 +128,7 @@
             --border: #222;
             --border-light: #2a2a2a;
             --text: #FAFAFA;
-            --text-muted: #888;
+            --text-muted: #9CA3AF;
             --accent: #FF383C;
             --accent-glow: #FF736E;
             --accent-hover: #E6322F;
@@ -799,6 +800,7 @@
     <a href="#download" class="btn" onclick="closeMobileNav()">Get the App</a>
 </div>
 
+<main>
 <!-- Hero -->
 <section class="hero">
     <div class="hero-icon-wrapper">
@@ -820,6 +822,7 @@
     <div class="demo-frame">
         <video autoplay loop muted playsinline preload="metadata" poster="assets/hora-icon.png" aria-label="hora Calendar demo showing week view, event creation, and calendar navigation">
             <source src="assets/hora-demo.mp4" type="video/mp4">
+            <track kind="captions" src="assets/hora-demo.vtt" srclang="en" label="English" default>
         </video>
     </div>
 </section>
@@ -927,10 +930,11 @@
 </section>
 
 
+</main>
 <!-- Footer -->
 <footer>
     <div class="footer-inner">
-        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: none;">szamowski.dev</a></p>
+        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: underline;">szamowski.dev</a></p>
         <div class="footer-links">
             <a href="/privacy/" style="font-size: 13px;">Privacy</a>
             <a href="/terms/" style="font-size: 13px;">Terms</a>

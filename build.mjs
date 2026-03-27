@@ -101,6 +101,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
     <meta name="description" content="${description}">
     <link rel="canonical" href="https://horacal.app/blog/${slug}/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="hora Calendar Blog" href="/blog/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
@@ -120,6 +121,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
       "headline": "${title}",
       "description": "${description}",
       "datePublished": "${date}",
+      "dateModified": "${date}",
       "author": { "@type": "Person", "name": "Maciej Szamowski", "url": "https://szamowski.dev" },
       "publisher": { "@type": "Organization", "name": "hora Calendar", "url": "https://horacal.app" },
       "url": "https://horacal.app/blog/${slug}/",
@@ -134,7 +136,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
+        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #9CA3AF; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
         html { scroll-behavior: smooth; overflow-y: scroll; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
         main { flex: 1; }
@@ -168,7 +170,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
         article h2 { font-size: 24px; font-weight: 600; margin-top: 48px; margin-bottom: 16px; letter-spacing: -0.01em; }
         article h3 { font-size: 18px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
         article p { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; }
-        article a { color: var(--accent); text-decoration: none; }
+        article a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
         article a:hover { text-decoration: underline; }
         article ul, article ol { color: var(--text-muted); margin-bottom: 20px; padding-left: 24px; font-size: 16px; }
         article li { margin-bottom: 8px; }
@@ -243,7 +245,7 @@ ${ctaBlock}
 </main>
 <footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
         <div style="display: flex; gap: 16px; align-items: center;">
             <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
             <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
@@ -281,6 +283,7 @@ function blogIndexTemplate(posts) {
     <meta name="description" content="Updates, dev logs, and announcements from the hora Calendar team.">
     <link rel="canonical" href="https://horacal.app/blog/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="hora Calendar Blog" href="/blog/feed.xml">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Blog — hora Calendar">
     <meta property="og:description" content="Updates, dev logs, and announcements from the hora Calendar team.">
@@ -293,7 +296,7 @@ function blogIndexTemplate(posts) {
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
+        :root { --bg: #0A0A0A; --surface: #141414; --surface-hover: #1a1a1a; --border: #222; --text: #FAFAFA; --text-muted: #9CA3AF; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; --max-w: 720px; }
         html { overflow-y: scroll; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
         main { flex: 1; }
@@ -396,7 +399,7 @@ ${ctaBlock}
 </main>
 <footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
         <div style="display: flex; gap: 16px; align-items: center;">
             <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
             <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
@@ -468,8 +471,39 @@ const blogIndexUrl = `  <url>
     <priority>0.8</priority>
   </url>`;
 
+// Add image sitemap namespace
+sitemap = sitemap.replace(
+    'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+);
+
 sitemap = sitemap.replace('</urlset>', `${blogIndexUrl}\n${blogUrls}\n</urlset>`);
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+
+// --- Generate RSS feed ---
+const rssItems = posts.map(p => `    <item>
+      <title><![CDATA[${p.title}]]></title>
+      <link>https://horacal.app/blog/${p.slug}/</link>
+      <guid isPermaLink="true">https://horacal.app/blog/${p.slug}/</guid>
+      <pubDate>${new Date(p.date).toUTCString()}</pubDate>
+      <description><![CDATA[${p.description}]]></description>
+    </item>`).join('\n');
+
+const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hora Calendar Blog</title>
+    <link>https://horacal.app/blog/</link>
+    <description>Dev logs, updates, and announcements from hora Calendar — a native macOS Google Calendar client.</description>
+    <language>en</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="https://horacal.app/blog/feed.xml" rel="self" type="application/rss+xml"/>
+${rssItems}
+  </channel>
+</rss>`;
+
+writeFileSync(join(blogDir, 'feed.xml'), rssFeed);
+console.log(`Built RSS feed → dist/blog/feed.xml`);
 
 // --- Build legal pages ---
 function legalPageTemplate(title, lastUpdated, content) {
@@ -489,7 +523,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #888; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; }
+        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --text: #FAFAFA; --text-muted: #9CA3AF; --accent: #FF383C; --accent-glow: #FF736E; --accent-hover: #E6322F; }
         body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
         main { flex: 1; }
 
@@ -572,7 +606,7 @@ function legalPageTemplate(title, lastUpdated, content) {
 </main>
 <footer>
     <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #555;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #555; text-decoration: none;">szamowski.dev</a></p>
+        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
         <div style="display: flex; gap: 16px;">
             <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Privacy</a>
             <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none;">Terms</a>
