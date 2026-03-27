@@ -1,0 +1,205 @@
+name: Generate Social Media Copy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**.md'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  generate-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect new blog posts
+        id: detect
+        run: |
+          # Find .md files added in this commit
+          NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'posts/*.md' || true)
+          if [ -z "$NEW_POSTS" ]; then
+            echo "No new posts found"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          # Use first new post
+          POST_FILE=$(echo "$NEW_POSTS" | head -1)
+          echo "file=$POST_FILE" >> "$GITHUB_OUTPUT"
+          echo "Found new post: $POST_FILE"
+
+      - name: Parse post and generate copy
+        if: steps.detect.outputs.found == 'true'
+        id: generate
+        run: |
+          POST_FILE="${{ steps.detect.outputs.file }}"
+
+          # Parse frontmatter
+          TITLE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^title:' | sed 's/^title: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
+          DESCRIPTION=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^description:' | sed 's/^description: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
+          DATE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^date:' | sed 's/^date: *//')
+          TAGS=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^tags:' | sed 's/^tags: *//')
+
+          # Extract slug for blog URL
+          SLUG=$(basename "$POST_FILE" .md)
+          BLOG_URL="https://horacal.app/blog/${SLUG}/"
+
+          # Extract H2 headings as key topics
+          TOPICS=$(grep '^## ' "$POST_FILE" | sed 's/^## //' | head -5)
+
+          # Count images
+          IMG_COUNT=$(grep -c '!\[' "$POST_FILE" || true)
+
+          # Extract key bullet points (bold items)
+          KEY_POINTS=$(grep '\*\*.*\*\*' "$POST_FILE" | sed 's/.*\*\*\(.*\)\*\*.*/\1/' | head -8)
+
+          # Build hashtags from tags
+          HASHTAGS=$(echo "$TAGS" | tr ',' '\n' | sed 's/^ *//' | sed 's/ *$//' | sed 's/^/#/' | sed 's/-//g' | tr '\n' ' ')
+
+          # Generate issue body
+          cat > /tmp/issue-body.md << 'ISSUE_EOF'
+          ## New Blog Post Published
+
+          **Title:** PLACEHOLDER_TITLE
+          **URL:** PLACEHOLDER_URL
+          **Date:** PLACEHOLDER_DATE
+
+          ---
+
+          ## X / Twitter
+
+          ### Option 1: Thread (5 posts)
+
+          **Post 1 (hook):**
+          ```
+          New devlog dropped.
+
+          PLACEHOLDER_TITLE
+
+          What's inside:
+          PLACEHOLDER_TOPICS_BULLETS
+
+          Full post + screenshots below
+          ```
+
+          **Post 2-4:** Pull 2-3 most interesting sections from the blog post. Focus on:
+          - Technical decisions (what you built and why)
+          - Surprising learnings
+          - Before/after comparisons
+
+          **Post 5 (CTA):**
+          ```
+          hora Calendar — native macOS Google Calendar client.
+
+          No Electron. No CalDAV. Direct Google REST API.
+          Swift 6 + SwiftUI + SwiftData.
+
+          Still a long road ahead. Following along?
+
+          horacal.app
+
+          Full devlog: PLACEHOLDER_URL
+          ```
+
+          ### Option 2: Standalone post
+          ```
+          PLACEHOLDER_TITLE
+
+          PLACEHOLDER_DESCRIPTION
+
+          PLACEHOLDER_KEY_POINTS_EMOJI
+
+          Full devlog: PLACEHOLDER_URL
+          ```
+
+          ### Timing & tips
+          - Post **Tue-Thu, 14:00-16:00 CET** (US East morning)
+          - Self-reply within 2 min to boost thread
+          - Hashtags in reply, not main post: PLACEHOLDER_HASHTAGS
+          - Pin thread for 48h
+          - First comment: "Building in public. AMA about native macOS dev with SwiftUI."
+
+          ---
+
+          ## LinkedIn
+
+          ### Post (storytelling)
+          ```
+          PLACEHOLDER_TITLE
+
+          PLACEHOLDER_DESCRIPTION
+
+          I'm building hora Calendar — a native macOS Google Calendar client. No Electron, no CalDAV. Pure Swift 6 + SwiftUI talking directly to Google's REST API.
+
+          Here's what shipped:
+
+          PLACEHOLDER_KEY_POINTS_NUMBERED
+
+          The lesson: scope cuts unlock speed. Every feature you don't build is a feature you don't have to test, document, and maintain.
+
+          Long road ahead — but every session moves the needle.
+
+          ---
+
+          What's the hardest scope cut you've made on a project?
+          ```
+
+          ### Tips
+          - **No links in the post** — put blog URL in FIRST COMMENT
+          - First comment: "Full devlog: PLACEHOLDER_URL — building in public, AMA about native macOS dev."
+          - Post **Tue-Thu, 8:00-10:00 CET** (EU peak) or **15:00 CET** (US morning)
+          - Respond to EVERY comment in first 2h
+          - Don't edit for 24h
+          - Hashtags at end: #IndieHacker #SwiftUI #macOS #BuildInPublic (max 5)
+          - Consider **carousel** (1080x1350px) for 2-3x more impressions
+
+          ---
+
+          ## Media suggestions
+
+          This post has **PLACEHOLDER_IMG_COUNT screenshots** — use them for:
+          - X thread: 1 image per post (login, day view, widget, month view)
+          - X standalone: 4-image grid
+          - LinkedIn: carousel (5 slides, 1080x1350px portrait)
+          - LinkedIn single: hero screenshot (week/day view with events)
+
+          ISSUE_EOF
+
+          # Replace placeholders
+          sed -i "s|PLACEHOLDER_TITLE|${TITLE}|g" /tmp/issue-body.md
+          sed -i "s|PLACEHOLDER_URL|${BLOG_URL}|g" /tmp/issue-body.md
+          sed -i "s|PLACEHOLDER_DATE|${DATE}|g" /tmp/issue-body.md
+          sed -i "s|PLACEHOLDER_DESCRIPTION|${DESCRIPTION}|g" /tmp/issue-body.md
+          sed -i "s|PLACEHOLDER_HASHTAGS|${HASHTAGS}|g" /tmp/issue-body.md
+          sed -i "s|PLACEHOLDER_IMG_COUNT|${IMG_COUNT}|g" /tmp/issue-body.md
+
+          # Build topic bullets
+          TOPIC_BULLETS=$(echo "$TOPICS" | while read -r t; do [ -n "$t" ] && echo "- $t"; done)
+          awk -v r="$TOPIC_BULLETS" '{gsub(/PLACEHOLDER_TOPICS_BULLETS/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+
+          # Build key points with emoji
+          KP_EMOJI=$(echo "$KEY_POINTS" | while read -r p; do [ -n "$p" ] && echo "-> $p"; done)
+          awk -v r="$KP_EMOJI" '{gsub(/PLACEHOLDER_KEY_POINTS_EMOJI/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+
+          # Build numbered key points
+          KP_NUM=$(echo "$KEY_POINTS" | awk 'NF{printf "%d. %s\n", NR, $0}')
+          awk -v r="$KP_NUM" '{gsub(/PLACEHOLDER_KEY_POINTS_NUMBERED/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+
+      - name: Create GitHub Issue
+        if: steps.detect.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          POST_FILE="${{ steps.detect.outputs.file }}"
+          TITLE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^title:' | sed 's/^title: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
+
+          gh issue create \
+            --title "Social copy: ${TITLE}" \
+            --body-file /tmp/issue-body.md \
+            --label "social-media"
