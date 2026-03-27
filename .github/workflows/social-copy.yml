@@ -26,239 +26,38 @@ jobs:
       - name: Detect new blog posts
         id: detect
         run: |
-          # Manual trigger: use input file
           if [ -n "${{ github.event.inputs.post_file }}" ]; then
             POST_FILE="${{ github.event.inputs.post_file }}"
             if [ ! -f "$POST_FILE" ]; then
               echo "::error::File not found: $POST_FILE"
               exit 1
             fi
-            echo "found=true" >> "$GITHUB_OUTPUT"
-            echo "file=$POST_FILE" >> "$GITHUB_OUTPUT"
-            echo "Manual trigger: $POST_FILE"
-            exit 0
-          fi
-
-          # Push trigger: detect new .md files
-          NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'posts/*.md' || true)
-          if [ -z "$NEW_POSTS" ]; then
-            echo "No new posts found"
-            echo "found=false" >> "$GITHUB_OUTPUT"
-            exit 0
+          else
+            POST_FILE=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'posts/*.md' | head -1)
+            if [ -z "$POST_FILE" ]; then
+              echo "No new posts found"
+              echo "found=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
           fi
           echo "found=true" >> "$GITHUB_OUTPUT"
-          POST_FILE=$(echo "$NEW_POSTS" | head -1)
           echo "file=$POST_FILE" >> "$GITHUB_OUTPUT"
-          echo "Found new post: $POST_FILE"
+          echo "Processing: $POST_FILE"
 
       - name: Generate social copy with Gemini
         if: steps.detect.outputs.found == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          POST_FILE="${{ steps.detect.outputs.file }}"
-          SLUG=$(basename "$POST_FILE" .md)
-          BLOG_URL="https://horacal.app/blog/${SLUG}/"
-          IMG_COUNT=$(grep -c '!\[' "$POST_FILE" || true)
-          POST_CONTENT=$(cat "$POST_FILE")
-
-          # Build the prompt
-          cat > /tmp/prompt.json << 'PROMPT_EOF'
-          {
-            "contents": [{
-              "parts": [{
-                "text": "SYSTEM_PROMPT_PLACEHOLDER"
-              }]
-            }],
-            "generationConfig": {
-              "temperature": 0.9,
-              "maxOutputTokens": 4000
-            }
-          }
-          PROMPT_EOF
-
-          # Create the full prompt with social engineering tricks baked in
-          SYSTEM_PROMPT=$(cat << 'SP_EOF'
-          You are a social media copywriter for an indie developer building "hora Calendar" — a native macOS Google Calendar client (Swift 6 + SwiftUI, no Electron, no CalDAV, direct Google REST API).
-
-          The developer's handle is @moto_szama on X and the website is horacal.app.
-
-          Given a blog post, generate ready-to-publish social media copy. The copy must use these algorithm-hacking techniques:
-
-          ## X / Twitter rules:
-          - Thread format: 5 posts. Each post MUST be under 280 characters.
-          - Post 1 (hook): Start with a bold claim, number, or contrarian take. Use whitespace aggressively (short lines). End with a thread indicator. NO hashtags in main posts.
-          - Posts 2-4: Each covers ONE specific thing from the blog. Be concrete and technical — devs respect specifics. Use line breaks between ideas. Each must stand alone if someone only sees that one tweet.
-          - Post 5 (CTA): Mention horacal.app, link to blog post, "long road ahead" vibe (NOT "coming soon" or "almost ready").
-          - Also generate a STANDALONE version (single tweet, under 280 chars) as alternative.
-          - Timing recommendation and first self-reply text (for hashtags + engagement bait).
-
-          ## LinkedIn rules:
-          - One long-form post (1500-2000 chars). Storytelling format.
-          - First line must be a HOOK — surprising stat, contrarian opinion, or bold statement. This is the only line visible before "see more".
-          - Use single-line paragraphs with whitespace between them (LinkedIn rewards scroll depth / dwell time).
-          - Include numbered list of what was shipped (scannable).
-          - End with an OPEN QUESTION relevant to the post topic (drives comments, which LinkedIn's algorithm rewards heavily).
-          - Do NOT put any links in the post body. Note that the link goes in the FIRST COMMENT.
-          - Max 3-5 hashtags at the very end.
-
-          ## General rules:
-          - Write in English.
-          - Tone: authentic indie dev, technical but accessible. Not corporate, not hype-bro.
-          - Never say "coming soon", "almost ready", "final polish". This is a journey — long road ahead.
-          - Never use generic filler ("excited to share", "I'm thrilled", "check it out").
-          - Be specific — mention actual features, actual technical decisions, actual numbers.
-
-          ## Output format:
-          Use this exact markdown structure:
-
-          ## X / Twitter
-
-          ### Thread
-
-          **Post 1:**
-          ```
-          [post text]
-          ```
-
-          **Post 2:**
-          ```
-          [post text]
-          ```
-
-          **Post 3:**
-          ```
-          [post text]
-          ```
-
-          **Post 4:**
-          ```
-          [post text]
-          ```
-
-          **Post 5:**
-          ```
-          [post text]
-          ```
-
-          ### Standalone
-          ```
-          [single tweet text]
-          ```
-
-          ### First self-reply
-          ```
-          [reply with hashtags and engagement prompt]
-          ```
-
-          ---
-
-          ## LinkedIn
-
-          ### Post
-          ```
-          [full linkedin post]
-          ```
-
-          ### First comment
-          ```
-          [comment with blog link]
-          ```
-
-          ---
-
-          ## Timing
-          - **X:** [recommended day and time]
-          - **LinkedIn:** [recommended day and time]
-
-          ## Media suggestions
-          [what screenshots/images to attach to each platform]
-
-          ---
-
-          Now generate copy for this blog post:
-
-          SP_EOF
-          )
-
-          # Combine prompt + post content
-          FULL_PROMPT="${SYSTEM_PROMPT}
-
-          Blog URL: ${BLOG_URL}
-          Number of screenshots in post: ${IMG_COUNT}
-
-          ---
-
-          ${POST_CONTENT}"
-
-          # Escape for JSON
-          ESCAPED_PROMPT=$(echo "$FULL_PROMPT" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))')
-
-          # Build request JSON
-          cat > /tmp/gemini-request.json << GEMEOF
-          {
-            "contents": [{
-              "parts": [{
-                "text": ${ESCAPED_PROMPT}
-              }]
-            }],
-            "generationConfig": {
-              "temperature": 0.9,
-              "maxOutputTokens": 4000
-            }
-          }
-          GEMEOF
-
-          # Call Gemini API
-          RESPONSE=$(curl -s -X POST \
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d @/tmp/gemini-request.json)
-
-          # Extract text from response
-          AI_COPY=$(echo "$RESPONSE" | python3 -c '
-          import sys, json
-          try:
-              data = json.load(sys.stdin)
-              text = data["candidates"][0]["content"]["parts"][0]["text"]
-              print(text)
-          except (KeyError, IndexError, json.JSONDecodeError) as e:
-              print(f"Error parsing Gemini response: {e}")
-              print("Raw response:")
-              print(json.dumps(data, indent=2) if "data" in dir() else "No data")
-              sys.exit(1)
-          ')
-
-          if [ $? -ne 0 ]; then
-            echo "::error::Gemini API call failed"
-            echo "$RESPONSE" | head -20
-            exit 1
-          fi
-
-          # Build issue body
-          cat > /tmp/issue-body.md << ISSEOF
-          ## Social Copy for New Blog Post
-
-          **Post:** [${SLUG}](${BLOG_URL})
-          **Generated by:** Gemini 2.0 Flash
-          **Screenshots available:** ${IMG_COUNT}
-
-          > Review and adjust before posting. Copy is AI-generated — check tone, facts, and character counts.
-
-          ---
-
-          ${AI_COPY}
-          ISSEOF
+          POST_FILE: ${{ steps.detect.outputs.file }}
+        run: python3 .github/scripts/generate-social-copy.py
 
       - name: Create GitHub Issue
         if: steps.detect.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          POST_FILE="${{ steps.detect.outputs.file }}"
-          TITLE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^title:' | sed 's/^title: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
-
+          TITLE=$(cat /tmp/issue-title.txt)
           gh issue create \
-            --title "Social copy: ${TITLE}" \
+            --title "$TITLE" \
             --body-file /tmp/issue-body.md \
             --label "social-media"
