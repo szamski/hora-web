@@ -21,7 +21,6 @@ jobs:
       - name: Detect new blog posts
         id: detect
         run: |
-          # Find .md files added in this commit
           NEW_POSTS=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'posts/*.md' || true)
           if [ -z "$NEW_POSTS" ]; then
             echo "No new posts found"
@@ -29,167 +28,208 @@ jobs:
             exit 0
           fi
           echo "found=true" >> "$GITHUB_OUTPUT"
-          # Use first new post
           POST_FILE=$(echo "$NEW_POSTS" | head -1)
           echo "file=$POST_FILE" >> "$GITHUB_OUTPUT"
           echo "Found new post: $POST_FILE"
 
-      - name: Parse post and generate copy
+      - name: Generate social copy with Gemini
         if: steps.detect.outputs.found == 'true'
-        id: generate
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           POST_FILE="${{ steps.detect.outputs.file }}"
-
-          # Parse frontmatter
-          TITLE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^title:' | sed 's/^title: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
-          DESCRIPTION=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^description:' | sed 's/^description: *//' | sed 's/^["'"'"']//;s/["'"'"']$//')
-          DATE=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^date:' | sed 's/^date: *//')
-          TAGS=$(sed -n '/^---$/,/^---$/p' "$POST_FILE" | grep '^tags:' | sed 's/^tags: *//')
-
-          # Extract slug for blog URL
           SLUG=$(basename "$POST_FILE" .md)
           BLOG_URL="https://horacal.app/blog/${SLUG}/"
-
-          # Extract H2 headings as key topics
-          TOPICS=$(grep '^## ' "$POST_FILE" | sed 's/^## //' | head -5)
-
-          # Count images
           IMG_COUNT=$(grep -c '!\[' "$POST_FILE" || true)
+          POST_CONTENT=$(cat "$POST_FILE")
 
-          # Extract key bullet points (bold items)
-          KEY_POINTS=$(grep '\*\*.*\*\*' "$POST_FILE" | sed 's/.*\*\*\(.*\)\*\*.*/\1/' | head -8)
+          # Build the prompt
+          cat > /tmp/prompt.json << 'PROMPT_EOF'
+          {
+            "contents": [{
+              "parts": [{
+                "text": "SYSTEM_PROMPT_PLACEHOLDER"
+              }]
+            }],
+            "generationConfig": {
+              "temperature": 0.9,
+              "maxOutputTokens": 4000
+            }
+          }
+          PROMPT_EOF
 
-          # Build hashtags from tags
-          HASHTAGS=$(echo "$TAGS" | tr ',' '\n' | sed 's/^ *//' | sed 's/ *$//' | sed 's/^/#/' | sed 's/-//g' | tr '\n' ' ')
+          # Create the full prompt with social engineering tricks baked in
+          SYSTEM_PROMPT=$(cat << 'SP_EOF'
+          You are a social media copywriter for an indie developer building "hora Calendar" — a native macOS Google Calendar client (Swift 6 + SwiftUI, no Electron, no CalDAV, direct Google REST API).
 
-          # Generate issue body
-          cat > /tmp/issue-body.md << 'ISSUE_EOF'
-          ## New Blog Post Published
+          The developer's handle is @moto_szama on X and the website is horacal.app.
 
-          **Title:** PLACEHOLDER_TITLE
-          **URL:** PLACEHOLDER_URL
-          **Date:** PLACEHOLDER_DATE
+          Given a blog post, generate ready-to-publish social media copy. The copy must use these algorithm-hacking techniques:
 
-          ---
+          ## X / Twitter rules:
+          - Thread format: 5 posts. Each post MUST be under 280 characters.
+          - Post 1 (hook): Start with a bold claim, number, or contrarian take. Use whitespace aggressively (short lines). End with a thread indicator. NO hashtags in main posts.
+          - Posts 2-4: Each covers ONE specific thing from the blog. Be concrete and technical — devs respect specifics. Use line breaks between ideas. Each must stand alone if someone only sees that one tweet.
+          - Post 5 (CTA): Mention horacal.app, link to blog post, "long road ahead" vibe (NOT "coming soon" or "almost ready").
+          - Also generate a STANDALONE version (single tweet, under 280 chars) as alternative.
+          - Timing recommendation and first self-reply text (for hashtags + engagement bait).
+
+          ## LinkedIn rules:
+          - One long-form post (1500-2000 chars). Storytelling format.
+          - First line must be a HOOK — surprising stat, contrarian opinion, or bold statement. This is the only line visible before "see more".
+          - Use single-line paragraphs with whitespace between them (LinkedIn rewards scroll depth / dwell time).
+          - Include numbered list of what was shipped (scannable).
+          - End with an OPEN QUESTION relevant to the post topic (drives comments, which LinkedIn's algorithm rewards heavily).
+          - Do NOT put any links in the post body. Note that the link goes in the FIRST COMMENT.
+          - Max 3-5 hashtags at the very end.
+
+          ## General rules:
+          - Write in English.
+          - Tone: authentic indie dev, technical but accessible. Not corporate, not hype-bro.
+          - Never say "coming soon", "almost ready", "final polish". This is a journey — long road ahead.
+          - Never use generic filler ("excited to share", "I'm thrilled", "check it out").
+          - Be specific — mention actual features, actual technical decisions, actual numbers.
+
+          ## Output format:
+          Use this exact markdown structure:
 
           ## X / Twitter
 
-          ### Option 1: Thread (5 posts)
+          ### Thread
 
-          **Post 1 (hook):**
+          **Post 1:**
           ```
-          New devlog dropped.
-
-          PLACEHOLDER_TITLE
-
-          What's inside:
-          PLACEHOLDER_TOPICS_BULLETS
-
-          Full post + screenshots below
+          [post text]
           ```
 
-          **Post 2-4:** Pull 2-3 most interesting sections from the blog post. Focus on:
-          - Technical decisions (what you built and why)
-          - Surprising learnings
-          - Before/after comparisons
-
-          **Post 5 (CTA):**
+          **Post 2:**
           ```
-          hora Calendar — native macOS Google Calendar client.
-
-          No Electron. No CalDAV. Direct Google REST API.
-          Swift 6 + SwiftUI + SwiftData.
-
-          Still a long road ahead. Following along?
-
-          horacal.app
-
-          Full devlog: PLACEHOLDER_URL
+          [post text]
           ```
 
-          ### Option 2: Standalone post
+          **Post 3:**
           ```
-          PLACEHOLDER_TITLE
-
-          PLACEHOLDER_DESCRIPTION
-
-          PLACEHOLDER_KEY_POINTS_EMOJI
-
-          Full devlog: PLACEHOLDER_URL
+          [post text]
           ```
 
-          ### Timing & tips
-          - Post **Tue-Thu, 14:00-16:00 CET** (US East morning)
-          - Self-reply within 2 min to boost thread
-          - Hashtags in reply, not main post: PLACEHOLDER_HASHTAGS
-          - Pin thread for 48h
-          - First comment: "Building in public. AMA about native macOS dev with SwiftUI."
+          **Post 4:**
+          ```
+          [post text]
+          ```
+
+          **Post 5:**
+          ```
+          [post text]
+          ```
+
+          ### Standalone
+          ```
+          [single tweet text]
+          ```
+
+          ### First self-reply
+          ```
+          [reply with hashtags and engagement prompt]
+          ```
 
           ---
 
           ## LinkedIn
 
-          ### Post (storytelling)
+          ### Post
           ```
-          PLACEHOLDER_TITLE
+          [full linkedin post]
+          ```
 
-          PLACEHOLDER_DESCRIPTION
-
-          I'm building hora Calendar — a native macOS Google Calendar client. No Electron, no CalDAV. Pure Swift 6 + SwiftUI talking directly to Google's REST API.
-
-          Here's what shipped:
-
-          PLACEHOLDER_KEY_POINTS_NUMBERED
-
-          The lesson: scope cuts unlock speed. Every feature you don't build is a feature you don't have to test, document, and maintain.
-
-          Long road ahead — but every session moves the needle.
+          ### First comment
+          ```
+          [comment with blog link]
+          ```
 
           ---
 
-          What's the hardest scope cut you've made on a project?
-          ```
-
-          ### Tips
-          - **No links in the post** — put blog URL in FIRST COMMENT
-          - First comment: "Full devlog: PLACEHOLDER_URL — building in public, AMA about native macOS dev."
-          - Post **Tue-Thu, 8:00-10:00 CET** (EU peak) or **15:00 CET** (US morning)
-          - Respond to EVERY comment in first 2h
-          - Don't edit for 24h
-          - Hashtags at end: #IndieHacker #SwiftUI #macOS #BuildInPublic (max 5)
-          - Consider **carousel** (1080x1350px) for 2-3x more impressions
-
-          ---
+          ## Timing
+          - **X:** [recommended day and time]
+          - **LinkedIn:** [recommended day and time]
 
           ## Media suggestions
+          [what screenshots/images to attach to each platform]
 
-          This post has **PLACEHOLDER_IMG_COUNT screenshots** — use them for:
-          - X thread: 1 image per post (login, day view, widget, month view)
-          - X standalone: 4-image grid
-          - LinkedIn: carousel (5 slides, 1080x1350px portrait)
-          - LinkedIn single: hero screenshot (week/day view with events)
+          ---
 
-          ISSUE_EOF
+          Now generate copy for this blog post:
 
-          # Replace placeholders
-          sed -i "s|PLACEHOLDER_TITLE|${TITLE}|g" /tmp/issue-body.md
-          sed -i "s|PLACEHOLDER_URL|${BLOG_URL}|g" /tmp/issue-body.md
-          sed -i "s|PLACEHOLDER_DATE|${DATE}|g" /tmp/issue-body.md
-          sed -i "s|PLACEHOLDER_DESCRIPTION|${DESCRIPTION}|g" /tmp/issue-body.md
-          sed -i "s|PLACEHOLDER_HASHTAGS|${HASHTAGS}|g" /tmp/issue-body.md
-          sed -i "s|PLACEHOLDER_IMG_COUNT|${IMG_COUNT}|g" /tmp/issue-body.md
+          SP_EOF
+          )
 
-          # Build topic bullets
-          TOPIC_BULLETS=$(echo "$TOPICS" | while read -r t; do [ -n "$t" ] && echo "- $t"; done)
-          awk -v r="$TOPIC_BULLETS" '{gsub(/PLACEHOLDER_TOPICS_BULLETS/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+          # Combine prompt + post content
+          FULL_PROMPT="${SYSTEM_PROMPT}
 
-          # Build key points with emoji
-          KP_EMOJI=$(echo "$KEY_POINTS" | while read -r p; do [ -n "$p" ] && echo "-> $p"; done)
-          awk -v r="$KP_EMOJI" '{gsub(/PLACEHOLDER_KEY_POINTS_EMOJI/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+          Blog URL: ${BLOG_URL}
+          Number of screenshots in post: ${IMG_COUNT}
 
-          # Build numbered key points
-          KP_NUM=$(echo "$KEY_POINTS" | awk 'NF{printf "%d. %s\n", NR, $0}')
-          awk -v r="$KP_NUM" '{gsub(/PLACEHOLDER_KEY_POINTS_NUMBERED/, r)}1' /tmp/issue-body.md > /tmp/issue-body2.md && mv /tmp/issue-body2.md /tmp/issue-body.md
+          ---
+
+          ${POST_CONTENT}"
+
+          # Escape for JSON
+          ESCAPED_PROMPT=$(echo "$FULL_PROMPT" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))')
+
+          # Build request JSON
+          cat > /tmp/gemini-request.json << GEMEOF
+          {
+            "contents": [{
+              "parts": [{
+                "text": ${ESCAPED_PROMPT}
+              }]
+            }],
+            "generationConfig": {
+              "temperature": 0.9,
+              "maxOutputTokens": 4000
+            }
+          }
+          GEMEOF
+
+          # Call Gemini API
+          RESPONSE=$(curl -s -X POST \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/gemini-request.json)
+
+          # Extract text from response
+          AI_COPY=$(echo "$RESPONSE" | python3 -c '
+          import sys, json
+          try:
+              data = json.load(sys.stdin)
+              text = data["candidates"][0]["content"]["parts"][0]["text"]
+              print(text)
+          except (KeyError, IndexError, json.JSONDecodeError) as e:
+              print(f"Error parsing Gemini response: {e}")
+              print("Raw response:")
+              print(json.dumps(data, indent=2) if "data" in dir() else "No data")
+              sys.exit(1)
+          ')
+
+          if [ $? -ne 0 ]; then
+            echo "::error::Gemini API call failed"
+            echo "$RESPONSE" | head -20
+            exit 1
+          fi
+
+          # Build issue body
+          cat > /tmp/issue-body.md << ISSEOF
+          ## Social Copy for New Blog Post
+
+          **Post:** [${SLUG}](${BLOG_URL})
+          **Generated by:** Gemini 2.0 Flash
+          **Screenshots available:** ${IMG_COUNT}
+
+          > Review and adjust before posting. Copy is AI-generated — check tone, facts, and character counts.
+
+          ---
+
+          ${AI_COPY}
+          ISSEOF
 
       - name: Create GitHub Issue
         if: steps.detect.outputs.found == 'true'
