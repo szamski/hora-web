@@ -88,7 +88,7 @@ const ctaBlock = `
 </script>`;
 
 // --- Blog template (matches site design) ---
-function blogTemplate(title, date, content, description, tags) {
+function blogTemplate(title, date, content, description, tags, slug) {
     const tagsHtml = tags.length
         ? `<div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>`
         : '';
@@ -99,15 +99,34 @@ function blogTemplate(title, date, content, description, tags) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} — hora Calendar Blog</title>
     <meta name="description" content="${description}">
-    <link rel="canonical" href="https://horacal.app/blog/${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}/">
+    <link rel="canonical" href="https://horacal.app/blog/${slug}/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
+    <meta property="og:url" content="https://horacal.app/blog/${slug}/">
     <meta property="og:image" content="https://horacal.app/assets/og-image.png">
     <meta property="og:site_name" content="hora Calendar">
+    <meta property="article:published_time" content="${date}">
+    <meta property="article:author" content="Maciej Szamowski">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@moto_szama">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${description}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "${title}",
+      "description": "${description}",
+      "datePublished": "${date}",
+      "author": { "@type": "Person", "name": "Maciej Szamowski", "url": "https://szamowski.dev" },
+      "publisher": { "@type": "Organization", "name": "hora Calendar", "url": "https://horacal.app" },
+      "url": "https://horacal.app/blog/${slug}/",
+      "image": "https://horacal.app/assets/og-image.png",
+      "mainEntityOfPage": "https://horacal.app/blog/${slug}/"
+    }
+    </script>
     <style>
         @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
@@ -399,7 +418,7 @@ function parseFrontmatter(content) {
     const meta = {};
     for (const line of match[1].split('\n')) {
         const [key, ...rest] = line.split(':');
-        if (key && rest.length) meta[key.trim()] = rest.join(':').trim();
+        if (key && rest.length) meta[key.trim()] = rest.join(':').trim().replace(/^["']|["']$/g, '');
     }
     return { meta, body: match[2] };
 }
@@ -425,7 +444,7 @@ if (existsSync(POSTS_DIR)) {
 
         const postDir = join(blogDir, slug);
         mkdirSync(postDir, { recursive: true });
-        writeFileSync(join(postDir, 'index.html'), blogTemplate(title, date, html, description, tags));
+        writeFileSync(join(postDir, 'index.html'), blogTemplate(title, date, html, description, tags, slug));
 
         posts.push({ slug, title, date, description, tags });
     }
