@@ -1,0 +1,70 @@
+---
+title: "Road to Launch: Where hora Calendar Stands Today"
+date: 2026-03-31
+description: "hora Calendar is almost ready. Here's where we are with App Store prep, Google Cloud verification, TestFlight, and what's coming next."
+tags: indie-dev, build-in-public, macos, google-calendar, swiftui, app-store, testflight
+---
+
+It's been five days since I [started building hora](/blog/2026-03-26-building-hora/), and the app has gone from prototype to something I genuinely use every day. Here's an honest update on where things stand.
+
+## The App Is Real
+
+hora Calendar is now a fully functional native macOS Google Calendar client. Not a demo, not a mockup — a real app that I've been using as my daily driver for the past week. Multiple Google accounts, week/month/day views, menu bar widget, Pomodoro timer, keyboard shortcuts, drag & drop, the works.
+
+This week was all about hardening. The kind of work that's invisible to users but makes the difference between "cool side project" and "app I'd trust with my schedule":
+
+- **Security audit** — PrivacyInfo.xcprivacy manifest, proper entitlements, PKCE OAuth flow review
+- **Retry logic** — exponential backoff on Google API rate limits and network failures (no more silent sync drops)
+- **Pagination** — proper handling of large calendars with 2500+ events
+- **Undo/redo** — Cmd+Z works for creating, editing, and deleting events
+- **StoreKit 2** — subscription flow with grace period detection, TestFlight bypass
+- **Concurrent sync** — calendars now sync in parallel, not one by one
+
+## Waiting on Google
+
+Here's the honest part: we're currently waiting on **Google Cloud OAuth verification**. This is the process where Google reviews your app before allowing unrestricted access to their APIs. Until it's approved, new users see a scary "This app isn't verified" warning when signing in.
+
+You can still sign in — click "Advanced" then "Go to hora Calendar (unsafe)" — but it's not the experience I want for launch. Google's review typically takes 2-4 weeks, so we're in a holding pattern.
+
+## TestFlight Is Live
+
+The app is on TestFlight. Internal testing is running, and I'm preparing to open external testing soon. If you're on the [waitlist](https://horacal.app/#newsletter), you'll be among the first to get access.
+
+TestFlight builds get the full app experience without the subscription paywall — I want testers focused on finding bugs, not navigating payment flows.
+
+## What Features Matter to You?
+
+This is where I need your help. hora Calendar is built for people who actually use Google Calendar on Mac every day. But "people who use Google Calendar" is a wide group — freelancers, engineering managers, founders, students.
+
+**I want to hear what features would make hora your default calendar app.**
+
+Some things on my radar:
+- iOS / iPadOS companion app
+- Apple Intelligence integration (meeting briefings, smart scheduling)
+- Natural language event creation ("Coffee with Anna tomorrow at 3")
+- ICS file import/export
+- Deeper Google Workspace integration
+
+**Send your thoughts to [hello@horacal.app](mailto:hello@horacal.app)** — every email gets read. Tell me what's missing from your current calendar setup, what annoys you about existing apps, or what would make you switch.
+
+## What's Next
+
+The roadmap has shifted. Day View and Menu Bar Widget are done. Here's the updated plan:
+
+**Phase 1 — Launch & Polish** (now)
+Mac App Store submission, macOS 27 compatibility, performance optimization, and the final round of QA.
+
+**Phase 2 — iOS & iPadOS**
+A native companion app — not a port, not a web wrapper. Same SwiftUI foundation, designed for touch from the ground up.
+
+**Phase 3 — Apple Intelligence**
+On-device AI for focus time planning, meeting prep briefings, and smart scheduling suggestions.
+
+**Phase 4 — Google Workspace**
+Gmail context for meetings, contact enrichment, and deeper integration with Google's ecosystem.
+
+The foundation is solid. Now it's about getting it into your hands.
+
+---
+
+Join the [waitlist](https://horacal.app/#newsletter), follow the build on [@moto_szama](https://x.com/moto_szama), or just send me what you'd want from a Mac calendar app: [hello@horacal.app](mailto:hello@horacal.app).

@@ -662,7 +662,7 @@ const termsContent = `
     <p>By downloading or using Hora Calendar ("the App"), you agree to these terms.</p>
 
     <h3>Description of Service</h3>
-    <p>Hora Calendar is a free, native macOS application that provides a client interface for Google Calendar. The App communicates directly with Google APIs on your behalf.</p>
+    <p>Hora Calendar is native macOS application that provides a client interface for Google Calendar. The App communicates directly with Google APIs on your behalf.</p>
 
     <h3>Google Account</h3>
     <p>The App requires a Google account to function. Your use of Google services through the App is subject to <a href="https://policies.google.com/terms">Google's Terms of Service</a>. You are responsible for maintaining the security of your Google account credentials.</p>
