@@ -39,7 +39,7 @@
 
 | | Feature | Description |
 |---|---|---|
-| **Week & Month** | 3 Calendar Views | Apple Calendar-style layout. Day View coming soon. |
+| **Week & Month** | 3 Calendar Views | Apple Calendar-style layout. |
 | **Drag & Drop** | Full CRUD | Create, edit, resize, delete. Feels native because it is. |
 | **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
 | **D/W/M/C/T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
@@ -51,8 +51,8 @@
 
 | # | Milestone | Status |
 |---|---|---|
-| 1 | Day View | Next up |
-| 2 | Menu Bar Widget | Planned |
+| 1 | Launch & macOS Polish | Mac App Store release, macOS 27 compatibility, performance optimization, and final QA sprint. |
+| 2 | iOS & iPadOS App | A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch. |
 | 3 | Apple Intelligence (focus time, meeting briefings) | Planned |
 | 4 | Deeper Google Integration (Gmail context for AI) | Planned |
 
