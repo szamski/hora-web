@@ -3,6 +3,7 @@ title: Why I'm Building hora Calendar
 date: 2026-03-26
 description: The story behind hora — a native macOS Google Calendar client built with SwiftUI, without Electron or CalDAV.
 tags: swiftui, macos, google-calendar, electron, caldav, swift, native-app
+cover: /assets/blog/branded-ui.webp
 ---
 
 Every macOS user who relies on Google Calendar knows the pain. You either use the web app, deal with CalDAV sync issues in Apple Calendar, or install an Electron-based app that eats your RAM for breakfast.

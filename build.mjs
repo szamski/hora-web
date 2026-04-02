@@ -27,13 +27,22 @@ for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'assets']) {
 
 // --- Shared CTA block ---
 const ctaBlock = `
+<style>
+    .cta-form { display: flex; gap: 8px; margin-bottom: 24px; }
+    .cta-form input { flex: 1; min-width: 0; padding: 11px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; outline: none; }
+    .cta-form button { background: var(--accent); color: #fff; border: none; padding: 11px 20px; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    @media (max-width: 480px) {
+        .cta-form { flex-direction: column; }
+        .cta-form button { width: 100%; }
+    }
+</style>
 <section style="max-width: 720px; margin: 0 auto; padding: 48px 24px 64px;">
-    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; text-align: center;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px clamp(16px, 5vw, 36px); text-align: center; overflow: hidden;">
         <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em;">Stay in the loop</h3>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Get notified when hora launches. No spam.</p>
-        <form id="newsletter-form" style="display: flex; gap: 8px; margin-bottom: 24px;">
-            <input type="email" name="email" required placeholder="you@email.com" style="flex: 1; padding: 11px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; outline: none;">
-            <button type="submit" style="background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">Subscribe</button>
+        <form id="newsletter-form" class="cta-form">
+            <input type="email" name="email" required placeholder="you@email.com">
+            <button type="submit">Subscribe</button>
         </form>
         <p id="newsletter-msg" style="display: none; font-size: 13px; margin-bottom: 24px;"></p>
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
@@ -261,16 +270,23 @@ ${MOBILE_NAV_JS}
 }
 
 function blogIndexTemplate(posts) {
-    const postList = posts.map(p => {
+    const postList = posts.map((p, i) => {
         const tagsHtml = p.tags.length
             ? `<div class="post-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>`
             : '';
+        const coverHtml = p.cover
+            ? `<div class="post-cover${i === 0 ? ' post-cover--hero' : ''}"><img src="${p.cover}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`
+            : '';
+        const isHero = i === 0;
         return `
-        <a href="${p.slug}/" class="post-card">
-            <p class="post-date">${p.date}</p>
-            <h3>${p.title}</h3>
-            <p class="post-desc">${p.description}</p>
-            ${tagsHtml}
+        <a href="${p.slug}/" class="post-card${isHero ? ' post-card--hero' : ''}">
+            ${coverHtml}
+            <div class="post-body">
+                <p class="post-date">${p.date}</p>
+                <h3>${p.title}</h3>
+                <p class="post-desc">${p.description}</p>
+                ${tagsHtml}
+            </div>
         </a>`;
     }).join('\n');
 
@@ -326,13 +342,18 @@ function blogIndexTemplate(posts) {
         .blog-header h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
         .blog-header p { color: var(--text-muted); font-size: 16px; }
 
-        .posts { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 80px; display: flex; flex-direction: column; gap: 12px; }
-        .post-card { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-decoration: none; transition: background 0.2s, border-color 0.2s; }
-        .post-card:hover { background: var(--surface-hover); border-color: #333; }
-        .post-card h3 { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-        .post-card .post-date { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-        .post-card .post-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 0; }
-        .post-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+        .posts { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 80px; display: flex; flex-direction: column; gap: 16px; }
+        .post-card { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; overflow: hidden; }
+        .post-card:hover { border-color: #333; transform: translateY(-2px); }
+        .post-body { padding: 20px 24px 24px; }
+        .post-card h3 { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+        .post-card .post-date { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .post-card .post-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+        .post-cover img { width: 100%; height: 200px; object-fit: cover; display: block; }
+        .post-card--hero .post-cover img { height: 320px; }
+        .post-card--hero h3 { font-size: 22px; }
+        .post-card--hero .post-desc { font-size: 15px; }
+        .post-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
         .tag { display: inline-block; font-size: 11px; color: var(--text-muted); background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; }
 
         .empty { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px 80px; text-align: center; color: var(--text-muted); }
@@ -343,7 +364,11 @@ function blogIndexTemplate(posts) {
         @media (max-width: 768px) {
             .blog-header { padding: 40px 16px 32px; }
             .blog-header h1 { font-size: 28px; }
-            .posts { padding: 0 16px 60px; }
+            .posts { padding: 0 16px 60px; gap: 12px; }
+            .post-cover img { height: 160px; }
+            .post-card--hero .post-cover img { height: 220px; }
+            .post-card--hero h3 { font-size: 20px; }
+            .post-body { padding: 16px 20px 20px; }
             .nav-links { display: none; }
             .nav-hamburger { display: block; }
             .nav-inner { padding: 0 16px; }
@@ -352,6 +377,10 @@ function blogIndexTemplate(posts) {
             .nav-inner { padding: 0 12px; }
             .nav-brand { font-size: 15px; gap: 6px; }
             .nav-brand img { width: 24px; height: 24px; }
+            .post-cover img { height: 140px; }
+            .post-card--hero .post-cover img { height: 180px; }
+            .post-card--hero h3 { font-size: 18px; }
+            .post-body { padding: 14px 16px 18px; }
         }
     </style>
     <!-- Google Analytics 4 -->
@@ -449,7 +478,8 @@ if (existsSync(POSTS_DIR)) {
         mkdirSync(postDir, { recursive: true });
         writeFileSync(join(postDir, 'index.html'), blogTemplate(title, date, html, description, tags, slug));
 
-        posts.push({ slug, title, date, description, tags });
+        const cover = meta.cover || '';
+        posts.push({ slug, title, date, description, tags, cover });
     }
 }
 
