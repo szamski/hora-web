@@ -14,14 +14,14 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/macOS-15%2B-000?logo=apple&logoColor=white" alt="macOS 14+">
+  <img src="https://img.shields.io/badge/macOS-14%2B-000?logo=apple&logoColor=white" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/SwiftUI-blue?logo=swift&logoColor=white" alt="SwiftUI">
   <img src="https://img.shields.io/badge/Google_Calendar_API-4285F4?logo=googlecalendar&logoColor=white" alt="Google Calendar API">
 </p>
 
 <p align="center">
-  <a href="https://horacal.app/"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/privacy">Privacy</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/terms">Terms</a> &nbsp;&middot;&nbsp;
   <a href="https://x.com/moto_szama">Follow @moto_szama</a>
@@ -35,33 +35,44 @@
 
 ---
 
-### About this repo
+### Features
 
-Landing page, blog, and legal pages for hora Calendar.
+| | Feature | Description |
+|---|---|---|
+| **Week, Month & Day** | 3 Calendar Views | Apple Calendar-style layout with smooth transitions between views. |
+| **Drag & Drop** | Full CRUD | Create, edit, resize, delete events. Feels native because it is. |
+| **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
+| **D/W/M/C/T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
+| **Incremental** | Smart Sync | Configurable intervals. Offline support. Native notifications. |
+| **Multi-Account** | Color-Coded | Multiple Google accounts, each with its own color scheme. |
+| **Autocomplete** | Attendees | Invite people from Google Contacts with instant suggestions. |
+| **Pomodoro** | Focus Timer | Built-in pomodoro timer with configurable work/break intervals. |
+| **Cmd+Shift+A** | Availability Sharing | Query free slots via FreeBusy API, copy to clipboard. |
+| **Menu Bar** | Widget | Pill-shaped indicators, upcoming events, countdown to next meeting. |
+| **9 Languages** | Localization | EN, PL, DE, ES, FR, IT, JA, PT, ZH. |
+| **Undo/Redo** | Cmd+Z | Full undo/redo for create, edit, and delete operations. |
 
-```
-index.html              Landing page (hero, features, roadmap, newsletter CTA)
-build.mjs               Static site generator (Node.js + marked)
-posts/                  Blog posts (Markdown with frontmatter)
-assets/                 Icons, fonts, images, videos, demo GIF
-dist/                   Generated output (gitignored)
-newsletter-worker/      Cloudflare Worker for newsletter signups
-.github/workflows/      deploy.yml (GitHub Pages) + social-copy.yml (AI social media)
-.github/scripts/        generate-social-copy.py + push-to-buffer.py
-```
+### Stack
 
-### Development
+| | |
+|---|---|
+| Language | Swift 6 |
+| UI | SwiftUI + AppKit |
+| API | Google Calendar REST API (direct, no CalDAV) |
+| Auth | OAuth 2.0 + PKCE via `ASWebAuthenticationSession` |
+| Storage | SwiftData (local cache, Google API as source of truth) |
+| Architecture | 3 Swift Packages (HoraCore, HoraGoogleAPI, HoraSync) + main target |
+| CI/CD | Xcode Cloud (builds + TestFlight) + GitHub Actions (tests on PR) |
+| Distribution | Mac App Store / TestFlight |
 
-```bash
-npm ci
-npm run build    # generates dist/
-```
+### Roadmap
 
-Push to `main` triggers auto-deploy to GitHub Pages.
-
-### Blog
-
-Add a post: create `posts/YYYY-MM-DD-slug.md` with frontmatter (title, date, description, tags, cover). On push, social media copy is auto-generated via Gemini AI and pushed to Buffer as drafts.
+| # | Milestone | Status |
+|---|---|---|
+| 1 | Launch & macOS Polish | In progress — Google OAuth verification pending |
+| 2 | iOS & iPadOS App | Planned |
+| 3 | Apple Intelligence (focus time, meeting briefings) | Planned |
+| 4 | Google Workspace (Gmail context, contact enrichment) | Planned |
 
 ### Links
 
@@ -74,5 +85,5 @@ Add a post: create `posts/YYYY-MM-DD-slug.md` with frontmatter (title, date, des
 ---
 
 <p align="center">
-  <sub>Built with plain HTML + CSS. Hosted on GitHub Pages. No frameworks, no dependencies.</sub>
+  <sub>Built with SwiftUI + AppKit. No Electron. No web views. Pure native macOS.</sub>
 </p>
