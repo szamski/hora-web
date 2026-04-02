@@ -1,3 +1,4 @@
 node_modules/
 dist/
 social-posts/
+.DS_Store
