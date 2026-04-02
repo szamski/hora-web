@@ -35,36 +35,33 @@
 
 ---
 
-### Features
-
-| | Feature | Description |
-|---|---|---|
-| **Week & Month** | 3 Calendar Views | Apple Calendar-style layout. |
-| **Drag & Drop** | Full CRUD | Create, edit, resize, delete. Feels native because it is. |
-| **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
-| **D/W/M/C/T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
-| **Incremental** | Smart Sync | Configurable intervals. Native macOS notifications. |
-| **Multi-Account** | Color-Coded | Multiple Google accounts, each with its own color. |
-| **Autocomplete** | Attendees | Invite people from Google Contacts with instant suggestions. |
-
-### Road to Launch
-
-| # | Milestone | Status |
-|---|---|---|
-| 1 | Launch & macOS Polish | Mac App Store release, macOS 27 compatibility, performance optimization, and final QA sprint. |
-| 2 | iOS & iPadOS App | A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch. |
-| 3 | Apple Intelligence (focus time, meeting briefings) | Planned |
-| 4 | Deeper Google Integration (Gmail context for AI) | Planned |
-
 ### About this repo
 
-Landing page, privacy policy, and terms of service for hora Calendar -- required for Google OAuth verification and App Store distribution.
+Landing page, blog, and legal pages for hora Calendar.
 
 ```
-index.html              Landing page + Privacy Policy + Terms of Service
-assets/                 App icon, demo GIF, Bumbbled font
-.github/workflows/      Auto-deploy to GitHub Pages on push
+index.html              Landing page (hero, features, roadmap, newsletter CTA)
+build.mjs               Static site generator (Node.js + marked)
+posts/                  Blog posts (Markdown with frontmatter)
+assets/                 Icons, fonts, images, videos, demo GIF
+dist/                   Generated output (gitignored)
+newsletter-worker/      Cloudflare Worker for newsletter signups
+.github/workflows/      deploy.yml (GitHub Pages) + social-copy.yml (AI social media)
+.github/scripts/        generate-social-copy.py + push-to-buffer.py
 ```
+
+### Development
+
+```bash
+npm ci
+npm run build    # generates dist/
+```
+
+Push to `main` triggers auto-deploy to GitHub Pages.
+
+### Blog
+
+Add a post: create `posts/YYYY-MM-DD-slug.md` with frontmatter (title, date, description, tags, cover). On push, social media copy is auto-generated via Gemini AI and pushed to Buffer as drafts.
 
 ### Links
 
