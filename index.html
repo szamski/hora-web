@@ -286,13 +286,13 @@
         .hero {
             max-width: var(--max-w);
             margin: 0 auto;
-            padding: 80px 24px 60px;
+            padding: 48px 24px 60px;
             text-align: center;
         }
         .hero-icon-wrapper {
             position: relative;
-            width: 320px;
-            height: 320px;
+            width: 200px;
+            height: 200px;
             margin: 0 auto 24px;
             display: flex;
             align-items: center;
@@ -304,8 +304,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 320px;
-            height: 320px;
+            width: 200px;
+            height: 200px;
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, rgba(255, 56, 60, 0.2) 0%, rgba(255, 140, 100, 0.08) 40%, transparent 65%);
             border-radius: 50%;
@@ -319,8 +319,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 200px;
-            height: 200px;
+            width: 140px;
+            height: 140px;
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, rgba(255, 56, 60, 0.45) 0%, rgba(255, 115, 110, 0.2) 45%, transparent 70%);
             border-radius: 50%;
@@ -906,12 +906,6 @@
             TestFlight Beta &mdash; Coming Soon
         </a>
     </div>
-    <div class="demo-frame">
-        <video autoplay loop muted playsinline preload="metadata" poster="assets/hora-icon.png" aria-label="hora Calendar demo showing week view, event creation, and calendar navigation">
-            <source src="assets/hora-demo.mp4" type="video/mp4">
-            <track kind="captions" src="assets/hora-demo.vtt" srclang="en" label="English" default>
-        </video>
-    </div>
     <div class="hero-waitlist" id="newsletter">
         <p class="hero-waitlist-label">Get notified when hora launches. No spam.</p>
         <form id="newsletter-form" class="hero-waitlist-form">
@@ -919,6 +913,12 @@
             <button type="submit" class="btn btn-lg">Join the Waitlist</button>
         </form>
         <p id="newsletter-msg" style="display: none;"></p>
+    </div>
+    <div class="demo-frame">
+        <video autoplay loop muted playsinline preload="metadata" poster="assets/hora-icon.png" aria-label="hora Calendar demo showing week view, event creation, and calendar navigation">
+            <source src="assets/hora-demo.mp4" type="video/mp4">
+            <track kind="captions" src="assets/hora-demo.vtt" srclang="en" label="English" default>
+        </video>
     </div>
 </section>
 
