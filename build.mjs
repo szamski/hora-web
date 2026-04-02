@@ -624,7 +624,7 @@ const privacyContent = `
     <h3>Data We Access</h3>
     <ul>
         <li>Google Calendar: events and calendars (read &amp; write)</li>
-        <li>Google Other Contacts: names and emails (read only, auto-suggested contacts for guest autocomplete)</li>
+        <li>Google Other Contacts: names and emails (read only, for guest autocomplete)</li>
         <li>Google account email address</li>
     </ul>
 
@@ -639,19 +639,33 @@ const privacyContent = `
     <ul>
         <li>All data is stored locally on your Mac using SwiftData</li>
         <li>No data is sent to any server other than Google APIs</li>
+        <li>Hora does not operate any backend servers &mdash; there is no server-side data storage</li>
         <li>This website uses Google Analytics to understand visitor behavior (with cookie consent)</li>
+    </ul>
+
+    <h3>Data Protection</h3>
+    <ul>
+        <li>All communication with Google APIs is encrypted in transit using HTTPS (TLS)</li>
+        <li>OAuth authentication tokens are stored in the macOS Keychain, which provides hardware-backed encryption and is protected by your system login credentials</li>
+        <li>Calendar data cached locally via SwiftData is stored within the macOS application sandbox, accessible only to Hora Calendar</li>
+        <li>Hora requests only the minimum Google API scopes necessary to provide its functionality (calendar read/write, contacts read-only, user email)</li>
+        <li>Hora does not use any artificial intelligence (AI) services or third-party AI integrations &mdash; your data is never processed by AI models</li>
+        <li>No user data is collected, transmitted to, or stored on any external servers beyond the Google APIs required for calendar synchronization</li>
     </ul>
 
     <h3>Data Sharing</h3>
     <ul>
         <li>We do not share your data with anyone</li>
         <li>We do not sell your data</li>
+        <li>We do not use your data for advertising or profiling</li>
     </ul>
 
-    <h3>Data Deletion</h3>
+    <h3>Data Retention &amp; Deletion</h3>
     <ul>
-        <li>Sign out in Hora Settings to remove all local data</li>
-        <li>Revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a></li>
+        <li>Hora retains your data only on your local device for as long as you use the application</li>
+        <li>Sign out in Hora Settings to remove all locally stored data, including cached calendar events and authentication tokens</li>
+        <li>Uninstalling Hora removes all application data from your Mac</li>
+        <li>Revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a> to disconnect Hora from your Google account</li>
     </ul>
 
     <h3>Contact</h3>
@@ -689,7 +703,7 @@ const termsContent = `
 
 const privacyDir = join(DIST, 'privacy');
 mkdirSync(privacyDir, { recursive: true });
-writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'March 25, 2026', privacyContent));
+writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'April 2, 2026', privacyContent));
 
 const termsDir = join(DIST, 'terms');
 mkdirSync(termsDir, { recursive: true });
