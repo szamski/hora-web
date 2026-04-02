@@ -767,6 +767,93 @@
                 text-align: center;
             }
         }
+
+        /* Hero waitlist */
+        .hero-waitlist {
+            max-width: 480px;
+            margin: 32px auto 0;
+        }
+        .hero-waitlist-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .hero-waitlist-form {
+            display: flex;
+            gap: 8px;
+        }
+        .hero-waitlist-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+        .hero-waitlist-form input:focus {
+            border-color: var(--accent);
+        }
+        @media (max-width: 480px) {
+            .hero-waitlist-form { flex-direction: column; }
+            .hero-waitlist-form .btn { width: 100%; justify-content: center; }
+        }
+
+        /* Blog preview */
+        .blog-preview {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 80px 24px;
+            border-top: 1px solid var(--border);
+        }
+        .blog-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .blog-preview-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .blog-preview-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+        .blog-preview-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+        .blog-preview-body {
+            padding: 16px;
+        }
+        .blog-preview-date {
+            font-size: 12px;
+            color: #555;
+        }
+        .blog-preview-body h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 4px 0 6px;
+        }
+        .blog-preview-body p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        @media (max-width: 768px) {
+            .blog-preview-grid { grid-template-columns: 1fr; gap: 12px; }
+            .blog-preview-card img { height: 160px; }
+        }
     </style>
 </head>
 <body>
@@ -807,7 +894,7 @@
         <img src="assets/hora-icon.png" alt="hora Calendar icon" class="hero-icon" width="96" height="96">
     </div>
     <h1 class="branded">hora <span class="gradient-text">Calendar</span></h1>
-    <p class="subtitle">The Google Calendar client that macOS deserves</p>
+    <p class="subtitle">Native Google Calendar app for Mac</p>
     <p class="tagline">No Electron. No CalDAV. Just fast, native SwiftUI.</p>
     <div class="hero-cta" id="download">
         <a href="#" class="btn btn-lg btn-disabled">
@@ -825,12 +912,20 @@
             <track kind="captions" src="assets/hora-demo.vtt" srclang="en" label="English" default>
         </video>
     </div>
+    <div class="hero-waitlist" id="newsletter">
+        <p class="hero-waitlist-label">Get notified when hora launches. No spam.</p>
+        <form id="newsletter-form" class="hero-waitlist-form">
+            <input type="email" name="email" required placeholder="you@email.com">
+            <button type="submit" class="btn btn-lg">Join the Waitlist</button>
+        </form>
+        <p id="newsletter-msg" style="display: none;"></p>
+    </div>
 </section>
 
 <!-- Features -->
 <section class="features" id="features">
     <div class="section-heading">
-        <h2 class="branded">What you <span class="gradient-text">get</span></h2>
+        <h2 class="branded">Native macOS Calendar <span class="gradient-text">Features</span></h2>
         <p>Built for speed. Designed for clarity.</p>
     </div>
     <div class="features-grid">
@@ -905,30 +1000,40 @@
     </div>
 </section>
 
-<!-- Stay in the loop -->
-<section class="cta-section" id="newsletter">
-    <div class="cta-card">
-        <h3>Stay in the loop</h3>
-        <p class="cta-sub">Get notified when hora launches. No spam.</p>
-        <form id="newsletter-form" class="cta-form">
-            <input type="email" name="email" required placeholder="you@email.com">
-            <button type="submit" class="btn">Subscribe</button>
-        </form>
-        <p id="newsletter-msg" style="display: none;"></p>
-        <div class="cta-divider"><span>or follow along</span></div>
-        <div class="cta-socials">
-            <a href="https://x.com/moto_szama" target="_blank" rel="noopener">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                @moto_szama
-            </a>
-            <a href="https://github.com/szamski/hora-web" target="_blank" rel="noopener">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                Star on GitHub
-            </a>
-        </div>
+<!-- From the Blog -->
+<section class="blog-preview" id="blog">
+    <div class="section-heading">
+        <h2 class="branded">From the <span class="gradient-text">Blog</span></h2>
+        <p>Building hora in public. Updates, dev logs, and honest progress reports.</p>
     </div>
+    <div class="blog-preview-grid">
+        <a href="/blog/2026-04-02-week-one/" class="blog-preview-card">
+            <img src="/assets/blog/week-view-april.webp" alt="hora Calendar Week View" loading="lazy">
+            <div class="blog-preview-body">
+                <span class="blog-preview-date">April 2, 2026</span>
+                <h3>Week One in Numbers</h3>
+                <p>107 commits, 15,000 lines of Swift. The honest breakdown.</p>
+            </div>
+        </a>
+        <a href="/blog/2026-03-31-road-to-launch/" class="blog-preview-card">
+            <img src="/assets/blog/month-view.webp" alt="hora Calendar Month View" loading="lazy">
+            <div class="blog-preview-body">
+                <span class="blog-preview-date">March 31, 2026</span>
+                <h3>Road to Launch</h3>
+                <p>Where hora stands today and what's coming next.</p>
+            </div>
+        </a>
+        <a href="/blog/2026-03-27-two-days-of-shipping/" class="blog-preview-card">
+            <img src="/assets/blog/day-view-april.webp" alt="hora Calendar Day View" loading="lazy">
+            <div class="blog-preview-body">
+                <span class="blog-preview-date">March 27, 2026</span>
+                <h3>Building hora in 48 Hours</h3>
+                <p>PKCE auth, WidgetKit, dual timezone, and availability sharing.</p>
+            </div>
+        </a>
+    </div>
+    <p style="text-align: center; margin-top: 24px;"><a href="/blog/" style="color: var(--text-muted); font-size: 14px;">View all posts &rarr;</a></p>
 </section>
-
 
 </main>
 <!-- Footer -->

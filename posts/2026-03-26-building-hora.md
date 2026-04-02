@@ -30,4 +30,4 @@ It's built with:
 
 ## What's Next
 
-I'm working toward an initial release on the Mac App Store and TestFlight. Follow the progress on [X](https://x.com/moto_szama) or star the project on [GitHub](https://github.com/szamski/hora-web).
+I'm working toward an initial release on the Mac App Store and TestFlight. Read about [what happened in the first 48 hours](/blog/2026-03-27-two-days-of-shipping/) or follow the progress on [X](https://x.com/moto_szama).

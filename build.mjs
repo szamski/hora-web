@@ -97,7 +97,7 @@ const ctaBlock = `
 </script>`;
 
 // --- Blog template (matches site design) ---
-function blogTemplate(title, date, content, description, tags, slug) {
+function blogTemplate(title, date, content, description, tags, slug, cover) {
     const tagsHtml = tags.length
         ? `<div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>`
         : '';
@@ -115,7 +115,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
     <meta property="og:url" content="https://horacal.app/blog/${slug}/">
-    <meta property="og:image" content="https://horacal.app/assets/og-image.png">
+    <meta property="og:image" content="https://horacal.app${cover || '/assets/og-image.png'}">
     <meta property="og:site_name" content="hora Calendar">
     <meta property="article:published_time" content="${date}">
     <meta property="article:author" content="Maciej Szamowski">
@@ -123,6 +123,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
     <meta name="twitter:site" content="@moto_szama">
     <meta name="twitter:title" content="${title}">
     <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="https://horacal.app${cover || '/assets/og-image.png'}">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -134,7 +135,7 @@ function blogTemplate(title, date, content, description, tags, slug) {
       "author": { "@type": "Person", "name": "Maciej Szamowski", "url": "https://szamowski.dev" },
       "publisher": { "@type": "Organization", "name": "hora Calendar", "url": "https://horacal.app" },
       "url": "https://horacal.app/blog/${slug}/",
-      "image": "https://horacal.app/assets/og-image.png",
+      "image": "https://horacal.app${cover || '/assets/og-image.png'}",
       "mainEntityOfPage": "https://horacal.app/blog/${slug}/"
     }
     </script>
@@ -476,7 +477,7 @@ if (existsSync(POSTS_DIR)) {
 
         const postDir = join(blogDir, slug);
         mkdirSync(postDir, { recursive: true });
-        writeFileSync(join(postDir, 'index.html'), blogTemplate(title, date, html, description, tags, slug));
+        writeFileSync(join(postDir, 'index.html'), blogTemplate(title, date, html, description, tags, slug, meta.cover));
 
         const cover = meta.cover || '';
         posts.push({ slug, title, date, description, tags, cover });
