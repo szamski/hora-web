@@ -1194,7 +1194,7 @@
             obs.observe(sec);
         }
     });
-    // --- Newsletter Form ---
+    // --- Waitlist Signup ---
     var form = document.getElementById('newsletter-form');
     var msg = document.getElementById('newsletter-msg');
     if (form) {
@@ -1204,6 +1204,7 @@
             var btn = form.querySelector('button');
             btn.textContent = 'Sending...';
             btn.disabled = true;
+            track('waitlist_submit', { method: 'email' });
 
             fetch('https://hora-newsletter.na-serio-maciej-szamowski.workers.dev/', {
                 method: 'POST',
@@ -1216,7 +1217,7 @@
                     msg.style.color = '#4ade80';
                     msg.style.display = 'block';
                     form.style.display = 'none';
-                    track('newsletter_signup', { method: 'email' });
+                    track('waitlist_success', { method: 'email' });
                 } else {
                     throw new Error('Failed');
                 }
@@ -1227,9 +1228,29 @@
                 msg.style.display = 'block';
                 btn.textContent = 'Subscribe';
                 btn.disabled = false;
+                track('waitlist_error', { method: 'email' });
             });
         });
     }
+
+    // --- Star on GitHub ---
+    var ghLink = document.querySelector('.hero-actions-github');
+    if (ghLink) {
+        ghLink.addEventListener('click', function() {
+            track('github_star_click', { link_url: ghLink.href });
+        });
+    }
+
+    // --- Mac App Store & TestFlight (przyszłe linki) ---
+    document.querySelectorAll('#download .btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = btn.textContent.trim().replace(/\s+/g, ' ');
+            var eventName = text.toLowerCase().indexOf('testflight') !== -1
+                ? 'testflight_click'
+                : 'mac_app_store_click';
+            track(eventName, { cta_name: text, disabled: btn.classList.contains('btn-disabled') });
+        });
+    });
 })();
 </script>
 
