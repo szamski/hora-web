@@ -511,6 +511,25 @@ sitemap = sitemap.replace(
 sitemap = sitemap.replace('</urlset>', `${blogIndexUrl}\n${blogUrls}\n</urlset>`);
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
 
+// --- Inject latest blog posts into index.html ---
+const latestPosts = posts.slice(0, 3);
+const blogPreviewCards = latestPosts.map(p => {
+    const dateFormatted = new Date(p.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const coverImg = p.cover ? `<img src="${p.cover}" alt="${p.title}" loading="lazy">` : '';
+    return `        <a href="/blog/${p.slug}/" class="blog-preview-card">
+            ${coverImg}
+            <div class="blog-preview-body">
+                <span class="blog-preview-date">${dateFormatted}</span>
+                <h3>${p.title}</h3>
+                <p>${p.description.slice(0, 120)}${p.description.length > 120 ? '...' : ''}</p>
+            </div>
+        </a>`;
+}).join('\n');
+
+let indexHtml = readFileSync(join(DIST, 'index.html'), 'utf-8');
+indexHtml = indexHtml.replace('<!-- BLOG_PREVIEW_CARDS -->', blogPreviewCards);
+writeFileSync(join(DIST, 'index.html'), indexHtml);
+
 // --- Generate RSS feed ---
 const rssItems = posts.map(p => `    <item>
       <title><![CDATA[${p.title}]]></title>
@@ -756,5 +775,351 @@ sitemap = sitemap.replace('</urlset>', `  <url>
 </urlset>`);
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
 
+// --- Build features page ---
+const featuresPageTemplate = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features — hora Calendar</title>
+    <meta name="description" content="Every feature in hora Calendar — a native macOS Google Calendar client. Week, month, day views, keyboard shortcuts, Pomodoro, availability sharing, and more.">
+    <link rel="canonical" href="https://horacal.app/features/">
+    <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    <meta property="og:title" content="Features — hora Calendar">
+    <meta property="og:description" content="Every feature in hora Calendar — native macOS Google Calendar client built with Swift and SwiftUI.">
+    <meta property="og:url" content="https://horacal.app/features/">
+    <meta property="og:image" content="https://horacal.app/assets/og-image.png">
+    <style>
+        @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+        @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0A0A0A; --surface: #141414; --border: #222; --border-light: #2a2a2a; --text: #FAFAFA; --text-muted: #9CA3AF; --accent: #FF383C; --accent-glow: #FF736E; }
+        body { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; }
+        .branded { font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; }
+        .gradient-text { background: linear-gradient(135deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: 'Bumbbled', 'Geist', sans-serif; font-weight: 400; font-size: 17px; }
+        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a.active { color: var(--text); }
+        .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
+        .nav-hamburger svg { display: block; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile.open { display: flex; }
+        .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .nav-mobile a:hover { color: var(--text); }
+        .nav-mobile a.btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; font-weight: 600; border: none; border-radius: 999px; padding: 12px 24px; margin-top: 8px; font-size: 15px; }
+
+        .features-hero { max-width: 960px; margin: 0 auto; padding: 64px 24px 48px; text-align: center; }
+        .features-hero h1 { font-family: 'Bumbbled', 'Geist', sans-serif; font-size: 40px; font-weight: 400; margin-bottom: 12px; letter-spacing: -0.02em; }
+        .features-hero p { font-size: 16px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+
+        .features-section { max-width: 960px; margin: 0 auto; padding: 0 24px 64px; }
+        .features-section-label { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 20px; }
+        .features-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .feat-card { padding: 24px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); transition: all 0.2s; }
+        .feat-card:hover { border-color: var(--border-light); }
+        .feat-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+        .feat-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+        .feat-card .feat-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .feat-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 999px; padding: 3px 9px; }
+
+        .feat-card-wide { grid-column: span 2; display: flex; gap: 32px; align-items: center; }
+        .feat-card-wide .feat-text { flex: 1; }
+        .feat-card-wide .feat-visual { flex-shrink: 0; font-size: 13px; color: var(--text-muted); background: var(--surface); border-radius: 8px; padding: 16px 20px; font-family: 'SF Mono', 'Fira Code', monospace; }
+        .feat-card-wide .feat-visual .shortcut-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; }
+        .feat-card-wide .feat-visual .shortcut-keys { display: flex; gap: 3px; }
+        .feat-card-wide .feat-visual kbd { display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 3px 8px; font-size: 12px; color: var(--text); font-family: inherit; min-width: 26px; text-align: center; }
+
+        .feat-screenshot { max-width: 960px; margin: 0 auto; padding: 0 24px 48px; }
+        .feat-screenshot img { width: 100%; border-radius: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 16px 48px rgba(0,0,0,0.5), 0 0 60px rgba(255,56,60,0.03); }
+
+        footer { border-top: 1px solid var(--border); padding: 24px; }
+        .footer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+        .footer-inner p { font-size: 13px; color: var(--text-muted); }
+        .footer-inner a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-inner a:hover { color: var(--text); }
+        .footer-links { display: flex; align-items: center; gap: 16px; }
+
+        @media (max-width: 768px) {
+            .feat-grid { grid-template-columns: 1fr; }
+            .feat-card-wide { grid-column: span 1; flex-direction: column; }
+            .features-hero { padding: 40px 16px 32px; }
+            .features-hero h1 { font-size: 30px; }
+            .features-section { padding: 0 16px 48px; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-brand">
+            <img src="/assets/hora-icon.png" alt="" width="28" height="28">
+            Calendar
+        </a>
+        <div class="nav-links">
+            <a href="/features/" class="active">Features</a>
+            <a href="/#roadmap">Journey</a>
+            <a href="/blog/">Blog</a>
+            <a href="/#download" class="btn">Get the App</a>
+        </div>
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="var m=document.getElementById('nav-m');m.classList.toggle('open');this.setAttribute('aria-expanded',m.classList.contains('open'))">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <div class="nav-mobile" id="nav-m">
+        <a href="/features/" onclick="document.getElementById('nav-m').classList.remove('open')">Features</a>
+        <a href="/#roadmap" onclick="document.getElementById('nav-m').classList.remove('open')">Journey</a>
+        <a href="/blog/">Blog</a>
+        <a href="/#download" class="btn" onclick="document.getElementById('nav-m').classList.remove('open')">Get the App</a>
+    </div>
+</nav>
+
+<main>
+<div class="features-hero">
+    <h1 class="branded">Every <span class="gradient-text">Feature</span> in hora</h1>
+    <p>A native macOS Google Calendar client built with Swift and SwiftUI. Here's everything it does today.</p>
+</div>
+
+<!-- Calendar Views -->
+<div class="features-section">
+    <div class="features-section-label">Calendar Views</div>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <h3>Week View</h3>
+            <p>Full 7-day or 5-day work week with hourly grid. Color-coded events from multiple calendars, time indicators, and smooth scrolling. Click any empty slot to create an event instantly.</p>
+            <div class="feat-badges"><span class="feat-badge">5/7 day toggle</span><span class="feat-badge">Hourly grid</span></div>
+        </div>
+        <div class="feat-card">
+            <h3>Month View</h3>
+            <p>Bird's eye view of your entire month with event density indicators. All-day events displayed as colored bars, timed events as compact rows. Click any day to drill down.</p>
+            <div class="feat-badges"><span class="feat-badge">Event density</span><span class="feat-badge">All-day events</span></div>
+        </div>
+        <div class="feat-card">
+            <h3>Day View</h3>
+            <p>Focused single-day view with detailed time slots. See every event, meeting link, and attendee at a glance. Perfect for busy days with back-to-back meetings.</p>
+            <div class="feat-badges"><span class="feat-badge">Detailed view</span><span class="feat-badge">Attendee list</span></div>
+        </div>
+        <div class="feat-card">
+            <h3>Mini Calendar</h3>
+            <p>Sidebar mini calendar for quick date navigation. Click any date to jump there instantly. Shows event density dots for each day.</p>
+            <div class="feat-badges"><span class="feat-badge">Quick navigation</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="feat-screenshot">
+    <img src="/assets/features/views.webp" alt="hora Calendar — Week, Month, and Day views" loading="lazy">
+</div>
+
+<!-- Event Management -->
+<div class="features-section">
+    <div class="features-section-label">Event Management</div>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <h3>Create Events</h3>
+            <p>Click an empty time slot or press ⌘N. Set title, time, calendar, location, description, and conference link. Optimistic UI — the event appears instantly before sync confirms.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Edit &amp; Delete</h3>
+            <p>Click any event to edit. Change time, title, attendees, recurrence — everything syncs back to Google Calendar in real time. Delete with confirmation or ⌘⌫.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Drag &amp; Drop</h3>
+            <p>Move events between days and time slots by dragging. Visual feedback shows the new position before you drop. Works across all calendar views.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Resize Events</h3>
+            <p>Drag the bottom edge of any event to change its duration. The time updates live as you drag. Quick way to extend or shorten meetings.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Recurring Events</h3>
+            <p>Full recurrence support — daily, weekly, monthly, yearly, custom patterns. Edit single occurrences or the entire series. Syncs with Google's recurrence rules.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Invitation Management</h3>
+            <p>Accept, decline, or tentatively accept meeting invitations directly from hora. See pending invitations styled differently (dashed borders) so they stand out.</p>
+            <div class="feat-badges"><span class="feat-badge">Accept</span><span class="feat-badge">Decline</span><span class="feat-badge">Maybe</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="feat-screenshot">
+    <img src="/assets/features/events.webp" alt="hora Calendar — Event creation and drag &amp; drop" loading="lazy">
+</div>
+
+<!-- Google Integration -->
+<div class="features-section">
+    <div class="features-section-label">Google Integration</div>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <h3>Multi-Account</h3>
+            <p>Sign in with multiple Google accounts. Each account's calendars are color-coded and can be toggled independently. Work and personal calendars, one app.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Direct API</h3>
+            <p>hora talks directly to Google Calendar REST API. No third-party servers, no middleware, no CalDAV translation layer. Your data goes straight between your Mac and Google.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Incremental Sync</h3>
+            <p>Uses Google's sync tokens for efficient incremental updates. Only fetches what changed since the last sync. Configurable sync intervals — from 30 seconds to manual.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Google Meet</h3>
+            <p>Add Google Meet conference links when creating events. One-click join button on events that have meeting links. No need to open a browser to find the link.</p>
+        </div>
+    </div>
+</div>
+
+<div class="feat-screenshot">
+    <img src="/assets/features/sync.webp" alt="hora Calendar — Multi-account Google Calendar sync" loading="lazy">
+</div>
+
+<!-- Productivity -->
+<div class="features-section">
+    <div class="features-section-label">Productivity</div>
+    <div class="feat-grid">
+        <div class="feat-card-wide feat-card">
+            <div class="feat-text">
+                <h3>Keyboard Shortcuts</h3>
+                <p>Full keyboard navigation inspired by Google Calendar. Navigate between views, create events, jump to today, and move between dates — all without touching the mouse.</p>
+            </div>
+            <div class="feat-visual">
+                <div class="shortcut-row"><span class="shortcut-keys"><kbd>D</kbd><kbd>W</kbd><kbd>M</kbd></span> Switch views</div>
+                <div class="shortcut-row"><span class="shortcut-keys"><kbd>⌘</kbd><kbd>N</kbd></span> New event</div>
+                <div class="shortcut-row"><span class="shortcut-keys"><kbd>⌘</kbd><kbd>T</kbd></span> Jump to today</div>
+                <div class="shortcut-row"><span class="shortcut-keys"><kbd>←</kbd><kbd>→</kbd></span> Navigate dates</div>
+                <div class="shortcut-row"><span class="shortcut-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>A</kbd></span> Share availability</div>
+            </div>
+        </div>
+        <div class="feat-card">
+            <h3>Pomodoro Timer</h3>
+            <p>Built-in Pomodoro timer in the day view. Start a focus session tied to your current task. Visual countdown in the sidebar — no need for a separate app.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Availability Sharing</h3>
+            <p>Press ⌘⇧A to generate your free time slots using Google's FreeBusy API. Copies formatted availability to your clipboard. Paste into Slack, email, anywhere.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Menu Bar Widget</h3>
+            <p>Always-visible menu bar widget shows your next upcoming event. Quick glance at what's next without switching to the calendar. Click to expand for more detail.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Go to Date</h3>
+            <p>Jump to any date with the date picker or ⌘G. Navigate months and years without scrolling. Get to that meeting from 3 months ago in two clicks.</p>
+        </div>
+    </div>
+</div>
+
+<div class="feat-screenshot">
+    <img src="/assets/features/productivity.webp" alt="hora Calendar — Menu bar widget with upcoming events" loading="lazy">
+</div>
+
+<!-- Appearance & Localization -->
+<div class="features-section">
+    <div class="features-section-label">Appearance &amp; Localization</div>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <h3>Light &amp; Dark Mode</h3>
+            <p>Full support for light mode, dark mode, and auto (follows system). Carefully tuned contrast and opacity values for readability in both modes.</p>
+        </div>
+        <div class="feat-card">
+            <h3>9 Languages</h3>
+            <p>English, Polish, German, Spanish, French, Italian, Japanese, Portuguese, and Simplified Chinese. Interface adapts to your system language automatically.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Calendar Colors</h3>
+            <p>Each calendar gets its own color, matching your Google Calendar settings. Events are color-coded so you can instantly tell which account and calendar they belong to.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Window State</h3>
+            <p>hora remembers your window size and position between launches. Open it up and it's exactly where you left it. Plays nice with Stage Manager and Spaces.</p>
+        </div>
+    </div>
+</div>
+
+<div class="feat-screenshot">
+    <img src="/assets/features/settings.webp" alt="hora Calendar — Appearance and language settings" loading="lazy">
+</div>
+
+<!-- Privacy & Technical -->
+<div class="features-section">
+    <div class="features-section-label">Privacy &amp; Technical</div>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <h3>Privacy First</h3>
+            <p>No analytics on your calendar data. No third-party servers. No tracking. hora connects directly to Google — your events never touch any other server. Ever.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Native macOS</h3>
+            <p>Built with Swift 6 and SwiftUI. No Electron, no web views, no browser engine. Uses a fraction of the memory and CPU compared to web-based alternatives.</p>
+            <div class="feat-badges"><span class="feat-badge">Swift 6</span><span class="feat-badge">SwiftUI</span><span class="feat-badge">SwiftData</span></div>
+        </div>
+        <div class="feat-card">
+            <h3>Notifications</h3>
+            <p>Native macOS notifications for upcoming events. Uses the system notification center — supports Do Not Disturb, Focus modes, and notification grouping.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Xcode Cloud CI/CD</h3>
+            <p>Every commit is tested, every build is reproducible. Automated builds via Xcode Cloud with TestFlight distribution for beta testers.</p>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: underline;">szamowski.dev</a></p>
+        <div class="footer-links">
+            <a href="/privacy/" style="font-size: 13px;">Privacy</a>
+            <a href="/terms/" style="font-size: 13px;">Terms</a>
+            <a href="mailto:hello@horacal.app" aria-label="Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+            <a href="https://x.com/moto_szama" aria-label="X / Twitter">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>`;
+
+const featuresDir = join(DIST, 'features');
+mkdirSync(featuresDir, { recursive: true });
+writeFileSync(join(featuresDir, 'index.html'), featuresPageTemplate);
+
+// Add features to sitemap
+sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf-8');
+const today = new Date().toISOString().split('T')[0];
+sitemap = sitemap.replace('</urlset>', `  <url>
+    <loc>https://horacal.app/features/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>`);
+writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+
 console.log(`Built ${posts.length} blog post(s) → dist/blog/`);
 console.log('Built legal pages → dist/privacy/, dist/terms/');
+console.log('Built features page → dist/features/');

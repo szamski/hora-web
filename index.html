@@ -434,71 +434,187 @@
             line-height: 1.5;
         }
 
-        /* Roadmap */
-        .roadmap {
+        /* Journey */
+        .journey {
             max-width: var(--max-w);
             margin: 0 auto;
             padding: 80px 24px;
             border-top: 1px solid var(--border);
         }
-        .roadmap-timeline {
-            max-width: 600px;
+        .journey-phases {
+            max-width: var(--max-w);
             margin: 0 auto;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }
-        /* Vertical line */
-        .roadmap-timeline::before {
+        .journey-phase-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .journey-phase-label::after {
             content: '';
-            position: absolute;
-            left: 15px;
-            top: 8px;
-            bottom: 8px;
-            width: 2px;
-            background: linear-gradient(180deg, var(--accent), var(--accent-glow), var(--border));
-            border-radius: 1px;
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
-        .roadmap-item {
+        .journey-phase-label .phase-icon {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 10px;
+        }
+        .phase-icon.done { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .phase-icon.now { background: rgba(255,56,60,0.15); color: var(--accent); }
+        .phase-icon.next { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+        /* Shipped grid */
+        .shipped-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 6px;
+        }
+        .shipped-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #6b7280;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .shipped-item:hover {
+            background: rgba(34,197,94,0.04);
+            border-color: rgba(34,197,94,0.15);
+            color: var(--text);
+        }
+        .shipped-check {
+            color: #22c55e;
+            font-size: 13px;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+        .shipped-item:hover .shipped-check {
+            opacity: 1;
+        }
+        .shipped-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #22c55e;
+            margin-top: 12px;
+            padding: 6px 14px;
+            background: rgba(34,197,94,0.06);
+            border: 1px solid rgba(34,197,94,0.12);
+            border-radius: 999px;
+            font-weight: 500;
+        }
+
+        /* Now list */
+        .now-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .now-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 0;
+            background: transparent;
+            border: none;
+            border-left: 2px solid var(--accent);
+            font-size: 13px;
+            color: var(--text);
+            transition: background 0.2s;
+        }
+        .now-item:hover {
+            background: var(--accent-subtle);
+        }
+        .now-tag {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 7px;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+        .now-tag.bug { background: rgba(215,58,74,0.15); color: #f87171; }
+        .now-tag.feat { background: rgba(162,238,239,0.1); color: #67e8f9; }
+
+        /* Next list */
+        .next-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .next-item {
             display: flex;
             align-items: flex-start;
-            gap: 20px;
-            padding: 20px 0;
-            position: relative;
+            gap: 16px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.015);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
         }
-        .roadmap-dot {
+        .next-item:hover {
+            border-color: var(--accent-subtle-border);
+            box-shadow: 0 0 24px rgba(255,56,60,0.04);
+        }
+        .next-num {
             flex-shrink: 0;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: var(--bg);
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            font-size: 13px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
+            background: rgba(255,255,255,0.03);
+            border: 1.5px solid var(--border);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
             transition: all 0.2s;
         }
-        .roadmap-item:hover .roadmap-dot {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 16px rgba(255, 56, 60, 0.4);
+        .next-item:hover .next-num {
+            border-color: var(--accent);
+            color: var(--accent);
         }
-        .roadmap-content h3 {
-            font-size: 15px;
+        .next-item h4 {
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 4px;
-            transition: color 0.2s;
+            margin-bottom: 3px;
         }
-        .roadmap-item:hover .roadmap-content h3 {
-            color: var(--accent-glow);
-        }
-        .roadmap-content p {
+        .next-item p {
             font-size: 13px;
             color: var(--text-muted);
             line-height: 1.5;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        @media (max-width: 600px) {
+            .shipped-grid { grid-template-columns: 1fr 1fr; }
         }
 
         /* Unified CTA */
@@ -681,7 +797,7 @@
             .hero { padding: 48px 16px 40px; }
             .hero-icon { width: 72px; height: 72px; }
             .hero-cta { flex-direction: column; align-items: center; }
-            .features, .roadmap { padding: 48px 16px; }
+            .features, .journey { padding: 48px 16px; }
             .legal { padding: 40px 16px 60px; }
             .follow-card { padding: 24px 20px; width: 100%; }
             .cta-section { padding: 0 16px 64px; }
@@ -906,7 +1022,7 @@
         </a>
         <div class="nav-links">
             <a href="#features">Features</a>
-            <a href="#roadmap">Roadmap</a>
+            <a href="#roadmap">Journey</a>
             <a href="/blog/">Blog</a>
             <a href="#download" class="btn">Get the App</a>
         </div>
@@ -921,7 +1037,7 @@
 </nav>
 <div class="nav-mobile" id="nav-mobile">
     <a href="#features" onclick="closeMobileNav()">Features</a>
-    <a href="#roadmap" onclick="closeMobileNav()">Roadmap</a>
+    <a href="#roadmap" onclick="closeMobileNav()">Journey</a>
     <a href="/blog/">Blog</a>
     <a href="#download" class="btn" onclick="closeMobileNav()">Get the App</a>
 </div>
@@ -1009,43 +1125,104 @@
             <p>Multiple Google accounts with color-coded calendars. Switch context without switching apps.</p>
         </div>
     </div>
+    <p style="text-align: center; margin-top: 24px;"><a href="/features/" style="color: var(--text-muted); font-size: 14px;">See all features in detail &rarr;</a></p>
 </section>
 
-<!-- Roadmap -->
-<section class="roadmap" id="roadmap">
+<!-- Journey -->
+<section class="journey" id="roadmap">
     <div class="section-heading">
-        <h2 class="branded">Road to <span class="gradient-text">Launch</span></h2>
-        <p>What's ahead for hora Calendar.</p>
+        <h2 class="branded">The <span class="gradient-text">Journey</span></h2>
+        <p>What's shipped, what's in progress, and what's next.</p>
     </div>
-    <div class="roadmap-timeline">
-        <div class="roadmap-item">
-            <span class="roadmap-dot" style="background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--accent);">1</span>
-            <div class="roadmap-content">
-                <h3>Launch & macOS Polish</h3>
-                <p>Mac App Store release, macOS 27 compatibility, performance optimization, and final QA sprint.</p>
+    <div class="journey-phases">
+
+        <!-- SHIPPED -->
+        <div>
+            <div class="journey-phase-label">
+                <span class="phase-icon done">&#10003;</span> Shipped
+            </div>
+            <div class="shipped-grid">
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Week view</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Month view</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Day view</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Event creation</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Event editing</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Drag &amp; drop</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Event resize</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Multi-account sync</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Google OAuth</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Incremental sync</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Keyboard shortcuts</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Menu bar widget</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Pomodoro timer</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Availability sharing</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Invitation management</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Calendar visibility</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Recurring events</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> 9 languages</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Light &amp; Dark mode</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Go to date</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> 5/7 day week toggle</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> One-click meeting join</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Window state restore</div>
+                <div class="shipped-item"><span class="shipped-check">&#10003;</span> Xcode Cloud CI/CD</div>
+            </div>
+            <div class="shipped-count">24 features shipped &middot; 25+ bugs squashed</div>
+        </div>
+
+        <!-- NOW -->
+        <div>
+            <div class="journey-phase-label">
+                <span class="phase-icon now" style="animation: pulse 2s infinite;">&#9679;</span> Working on now
+            </div>
+            <div class="now-list">
+                <div class="now-item"><span class="now-tag feat">feat</span> Focus mode &amp; DND integration</div>
+                <div class="now-item"><span class="now-tag feat">feat</span> Quick &quot;Running late&quot; reply</div>
+                <div class="now-item"><span class="now-tag feat">feat</span> Email attendees from event detail</div>
+                <div class="now-item"><span class="now-tag feat">feat</span> Invitation &quot;Ignore&quot; option</div>
+                <div class="now-item"><span class="now-tag bug">bug</span> Light mode contrast polish</div>
+                <div class="now-item"><span class="now-tag feat">feat</span> Dynamic Dock icon (macOS 26)</div>
+                <div class="now-item"><span class="now-tag feat">feat</span> Localization native review</div>
             </div>
         </div>
-        <div class="roadmap-item">
-            <span class="roadmap-dot">2</span>
-            <div class="roadmap-content">
-                <h3>iOS & iPadOS App</h3>
-                <p>A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch.</p>
+
+        <!-- NEXT -->
+        <div>
+            <div class="journey-phase-label">
+                <span class="phase-icon next">&#8594;</span> What's next
+            </div>
+            <div class="next-list">
+                <div class="next-item">
+                    <span class="next-num">1</span>
+                    <div>
+                        <h4>Mac App Store Launch</h4>
+                        <p>Final QA sprint, macOS 27 compatibility, performance optimization.</p>
+                    </div>
+                </div>
+                <div class="next-item">
+                    <span class="next-num">2</span>
+                    <div>
+                        <h4>iOS &amp; iPadOS App</h4>
+                        <p>A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch.</p>
+                    </div>
+                </div>
+                <div class="next-item">
+                    <span class="next-num">3</span>
+                    <div>
+                        <h4>Apple Intelligence</h4>
+                        <p>Smart scheduling, focus time planning, and meeting prep briefings powered by on-device intelligence.</p>
+                    </div>
+                </div>
+                <div class="next-item">
+                    <span class="next-num">4</span>
+                    <div>
+                        <h4>Google Workspace</h4>
+                        <p>Gmail context for meetings, contact enrichment, and deeper Google ecosystem integration.</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="roadmap-item">
-            <span class="roadmap-dot">3</span>
-            <div class="roadmap-content">
-                <h3>Apple Intelligence</h3>
-                <p>Apple Intelligence for focus time planning, meeting prep briefings, and smart scheduling.</p>
-            </div>
-        </div>
-        <div class="roadmap-item">
-            <span class="roadmap-dot">4</span>
-            <div class="roadmap-content">
-                <h3>Google Workspace</h3>
-                <p>Gmail context for meetings, contact enrichment, and deeper Google ecosystem integration.</p>
-            </div>
-        </div>
+
     </div>
 </section>
 
@@ -1056,30 +1233,7 @@
         <p>Building hora in public. Updates, dev logs, and honest progress reports.</p>
     </div>
     <div class="blog-preview-grid">
-        <a href="/blog/2026-04-02-week-one/" class="blog-preview-card">
-            <img src="/assets/blog/week-view-april.webp" alt="hora Calendar Week View" loading="lazy">
-            <div class="blog-preview-body">
-                <span class="blog-preview-date">April 2, 2026</span>
-                <h3>Week One in Numbers</h3>
-                <p>107 commits, 15,000 lines of Swift. The honest breakdown.</p>
-            </div>
-        </a>
-        <a href="/blog/2026-03-31-road-to-launch/" class="blog-preview-card">
-            <img src="/assets/blog/month-view.webp" alt="hora Calendar Month View" loading="lazy">
-            <div class="blog-preview-body">
-                <span class="blog-preview-date">March 31, 2026</span>
-                <h3>Road to Launch</h3>
-                <p>Where hora stands today and what's coming next.</p>
-            </div>
-        </a>
-        <a href="/blog/2026-03-27-two-days-of-shipping/" class="blog-preview-card">
-            <img src="/assets/blog/day-view-april.webp" alt="hora Calendar Day View" loading="lazy">
-            <div class="blog-preview-body">
-                <span class="blog-preview-date">March 27, 2026</span>
-                <h3>Building hora in 48 Hours</h3>
-                <p>PKCE auth, WidgetKit, dual timezone, and availability sharing.</p>
-            </div>
-        </a>
+        <!-- BLOG_PREVIEW_CARDS -->
     </div>
     <p style="text-align: center; margin-top: 24px;"><a href="/blog/" style="color: var(--text-muted); font-size: 14px;">View all posts &rarr;</a></p>
 </section>
