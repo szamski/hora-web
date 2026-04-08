@@ -120,18 +120,16 @@ def main():
 
     results = []
 
-    # LinkedIn
+    # LinkedIn — post + first comment as one idea
     li_post = extract_linkedin_post(copy)
     if li_post:
-        resp = create_idea(api_key, org_id, "LinkedIn post", li_post)
-        results.append(("LinkedIn post", resp))
-        print(f"LinkedIn idea created ({len(li_post)} chars)")
-
         li_comment = extract_linkedin_comment(copy)
+        li_text = li_post
         if li_comment:
-            resp = create_idea(api_key, org_id, "LinkedIn first comment", li_comment)
-            results.append(("LinkedIn comment", resp))
-            print("LinkedIn comment idea created")
+            li_text += f"\n\n---\nFIRST COMMENT:\n\n{li_comment}"
+        resp = create_idea(api_key, org_id, "LinkedIn", li_text)
+        results.append(("LinkedIn", resp))
+        print(f"LinkedIn idea created ({len(li_text)} chars)")
     else:
         print("Could not extract LinkedIn post from copy", file=sys.stderr)
 
@@ -142,13 +140,15 @@ def main():
         results.append(("X standalone", resp))
         print(f"X standalone idea created ({len(standalone)} chars)")
 
-    # X/Twitter — thread
+    # X/Twitter — entire thread as one idea
     thread = extract_x_thread(copy)
     if thread:
-        for i, post in enumerate(thread, 1):
-            resp = create_idea(api_key, org_id, f"X thread {i}/{len(thread)}", post)
-            results.append((f"X thread {i}", resp))
-        print(f"X thread ideas created ({len(thread)} posts)")
+        thread_text = "\n\n---\n\n".join(
+            f"[{i}/{len(thread)}]\n{post}" for i, post in enumerate(thread, 1)
+        )
+        resp = create_idea(api_key, org_id, "X thread", thread_text)
+        results.append(("X thread", resp))
+        print(f"X thread idea created ({len(thread)} posts)")
 
     if not standalone and not thread:
         print("Could not extract X posts from copy", file=sys.stderr)
