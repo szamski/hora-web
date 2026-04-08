@@ -5,6 +5,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.request
 import urllib.error
 
@@ -164,16 +165,31 @@ Number of screenshots in post: {img_count}
         method="POST"
     )
 
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode('utf-8')
-        print(f"Gemini API error {e.code}: {error_body}", file=sys.stderr)
-        sys.exit(1)
-    except Exception as e:
-        print(f"Request failed: {e}", file=sys.stderr)
-        sys.exit(1)
+    max_retries = 4
+    data = None
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+            break
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode('utf-8')
+            if e.code in (429, 503) and attempt < max_retries - 1:
+                wait = 15 * (2 ** attempt)
+                print(f"Gemini API {e.code}, retrying in {wait}s (attempt {attempt + 1}/{max_retries})...")
+                time.sleep(wait)
+                req = urllib.request.Request(
+                    url,
+                    data=request_body.encode('utf-8'),
+                    headers={"Content-Type": "application/json"},
+                    method="POST"
+                )
+                continue
+            print(f"Gemini API error {e.code}: {error_body}", file=sys.stderr)
+            sys.exit(1)
+        except Exception as e:
+            print(f"Request failed: {e}", file=sys.stderr)
+            sys.exit(1)
 
     try:
         ai_copy = data["candidates"][0]["content"]["parts"][0]["text"]

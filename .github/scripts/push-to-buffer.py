@@ -5,27 +5,37 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.request
 import urllib.error
 
 BUFFER_API = "https://api.buffer.com"
 
 
-def buffer_request(api_key, query, variables=None):
+def buffer_request(api_key, query, variables=None, max_retries=3):
     body = {"query": query}
     if variables:
         body["variables"] = variables
-    req = urllib.request.Request(
-        BUFFER_API,
-        data=json.dumps(body).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    for attempt in range(max_retries):
+        req = urllib.request.Request(
+            BUFFER_API,
+            data=json.dumps(body).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503) and attempt < max_retries - 1:
+                wait = 10 * (2 ** attempt)
+                print(f"Buffer API {e.code}, retrying in {wait}s (attempt {attempt + 1}/{max_retries})...")
+                time.sleep(wait)
+                continue
+            raise
 
 
 def create_draft(api_key, channel_id, text):
