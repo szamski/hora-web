@@ -39,7 +39,22 @@ export default {
 		};
 
 		if (res.ok) {
-			// Wyślij event do GA4 Measurement Protocol
+			// Welcome email via Resend template
+			await fetch('https://api.resend.com/emails', {
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					from: 'Maciej from hora <hello@horacal.app>',
+					to: [email],
+					subject: "You're on the hora Calendar waitlist",
+					template_id: env.RESEND_WELCOME_TEMPLATE_ID,
+				}),
+			});
+
+			// GA4 Measurement Protocol
 			await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${env.GA_MEASUREMENT_ID}&api_secret=${env.GA_API_SECRET}`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
