@@ -843,8 +843,9 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .feat-card-wide .feat-visual .shortcut-keys { display: flex; gap: 3px; }
         .feat-card-wide .feat-visual kbd { display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 3px 8px; font-size: 12px; color: var(--text); font-family: inherit; min-width: 26px; text-align: center; }
 
-        .feat-screenshot { max-width: 640px; margin: 0 auto; padding: 0 24px 48px; }
-        .feat-screenshot img { width: 100%; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4); }
+        .feat-screenshot { max-width: 640px; margin: 0 auto; padding: 16px 24px 56px; position: relative; }
+        .feat-screenshot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; height: 60%; background: radial-gradient(ellipse, rgba(255,56,60,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+        .feat-screenshot img { position: relative; z-index: 1; width: 100%; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.5), 0 0 80px rgba(255,56,60,0.04); }
 
         footer { border-top: 1px solid var(--border); padding: 24px; }
         .footer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
