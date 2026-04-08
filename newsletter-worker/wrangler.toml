@@ -4,6 +4,7 @@ compatibility_date = "2026-03-26"
 
 [vars]
 RESEND_AUDIENCE_ID = "3c81d864-8821-423f-af0e-61385ccbc511"
+GA_MEASUREMENT_ID = "G-WQZ32S81FX"
 
-# RESEND_API_KEY should be set as a secret:
-# npx wrangler secret put RESEND_API_KEY
+# Secrets (set via `npx wrangler secret put`):
+# RESEND_API_KEY, GA_API_SECRET

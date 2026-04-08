@@ -39,6 +39,21 @@ export default {
 		};
 
 		if (res.ok) {
+			// Wyślij event do GA4 Measurement Protocol
+			await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${env.GA_MEASUREMENT_ID}&api_secret=${env.GA_API_SECRET}`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					client_id: email,
+					events: [{
+						name: 'waitlist_success',
+						params: {
+							method: 'server_side',
+						}
+					}]
+				}),
+			});
+
 			return new Response(JSON.stringify({ success: true }), { headers: cors });
 		}
 
