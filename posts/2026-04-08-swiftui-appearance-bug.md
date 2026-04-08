@@ -1,0 +1,188 @@
+---
+title: "The SwiftUI Bug I Can't Fix: .preferredColorScheme Ignores Non-Key Windows"
+date: 2026-04-08
+description: "SwiftUI's .preferredColorScheme doesn't update non-key windows immediately on macOS. Here's everything I've tried, the diagnostic tests I wrote, and why I'm asking for help."
+tags: swiftui, macos, appearance, dark-mode, light-mode, bug, open-source, help-wanted
+cover: /assets/blog/appearance-bug-hero.webp
+---
+
+I've been building [hora Calendar](https://horacal.app) — a native macOS Google Calendar client — and I hit a wall. Not a "spend another hour on it" wall. A "I've tried six different approaches over two days and none of them fully work" well.
+
+The bug is simple to describe: when you switch between Light, Dark, and Auto in hora's Settings, the main window doesn't update until you close Settings or switch focus. The data propagates in 0.38ms. SwiftUI just... doesn't re-render.
+
+I'm writing this because I genuinely need help. If you've solved this or have ideas I haven't tried, please reach out.
+
+## What's happening
+
+hora has three appearance modes: Auto (follow system), Light, and Dark. The user picks one in Settings. The setting is stored via `@AppStorage("appearanceMode")` and applied with `.preferredColorScheme()`.
+
+Here's the relevant code:
+
+```swift
+enum AppearanceMode: String, CaseIterable {
+    case auto = "Auto"
+    case light = "Light"
+    case dark = "Dark"
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .auto: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
+    }
+}
+```
+
+And the application:
+
+```swift
+// ContentView.swift
+@AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .auto
+
+var body: some View {
+    TabView { /* calendar views */ }
+        .preferredColorScheme(appearanceMode.colorScheme)
+}
+
+// SettingsView.swift (separate Scene)
+@AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .auto
+
+var body: some View {
+    TabView { /* settings tabs */ }
+        .preferredColorScheme(appearanceMode.colorScheme)
+}
+```
+
+The problem: on macOS, `Settings` and the main `WindowGroup` are separate SwiftUI `Scene`s. When the user changes the appearance picker in Settings, `@AppStorage` propagates instantly (I measured it). But **SwiftUI defers re-rendering of non-key windows**. Since Settings is the key window at that moment, the main window's `.preferredColorScheme()` update is delayed until it regains focus.
+
+Here's how it looks — you click "Auto" in Settings while the system is in Dark Mode, and the main window stays bright until you close Settings:
+
+<video autoplay loop muted playsinline style="width:100%; border-radius: 12px; margin: 16px 0;">
+  <source src="/assets/blog/appearance-bug-demo.webm" type="video/webm">
+</video>
+
+## Everything I've tried
+
+I spent two full days on this. Here's the table:
+
+| Approach | Result |
+|---|---|
+| `.preferredColorScheme()` only (current) | Works, but delays update until main window gets focus |
+| `window.appearance` per-window from `onChange` | Mixed state — SwiftUI and AppKit fight over who controls appearance |
+| `window.appearance` + `invalidateShadow()` + `display()` | No visible improvement |
+| `NSApp.appearance` (global) + reset MenuBarExtra windows | Forces update broadly, but still delays/mixed rendering |
+| `AppDelegate` observing `UserDefaults.didChangeNotification` | Fires immediately, but setting `window.appearance` alone doesn't force SwiftUI to re-render |
+| Removing `.preferredColorScheme` entirely, relying on `window.appearance` | SwiftUI views completely ignore the window's appearance |
+
+The code for the AppKit approach I removed looked like this:
+
+```swift
+// This was the old approach — removed in 674e18f
+private func applyAppearance(_ mode: AppearanceMode) {
+    NSApp.appearance = mode.nsAppearance
+    DispatchQueue.main.async {
+        for window in NSApp.windows {
+            window.appearance = mode.nsAppearance
+            window.invalidateShadow()
+            window.displayIfNeeded()
+        }
+    }
+}
+```
+
+It seems clean, but mixing AppKit's `NSAppearance` with SwiftUI's `preferredColorScheme` creates a fight. Sometimes the window flashes between themes, sometimes the MenuBarExtra (which should always follow system appearance) gets forced into the wrong mode.
+
+## What the tests show
+
+I wrote diagnostic tests to pin down exactly where the delay happens ([cb22ee1](https://github.com/szamski/hora-calendar/commit/cb22ee1)):
+
+**Unit test** — `@AppStorage` propagation via UserDefaults is near-instant:
+
+```swift
+func testAppStoragePropagationTiming() {
+    let key = "appearanceMode_test"
+    let defaults = UserDefaults.standard
+
+    let writeTime = CFAbsoluteTimeGetCurrent()
+    defaults.set(AppearanceMode.dark.rawValue, forKey: key)
+
+    let readValue = defaults.string(forKey: key)
+    let readTime = CFAbsoluteTimeGetCurrent()
+
+    let propagationMs = (readTime - writeTime) * 1000
+    // Result: 0.38ms — data layer is not the bottleneck
+    XCTAssertLessThan(propagationMs, 10)
+}
+```
+
+**UI test** — timelapse screenshots every 200ms after clicking the appearance toggle:
+
+```swift
+func testDiagnostic_LightToAuto_SystemDark() throws {
+    openGeneralSettings()
+
+    let lightBtn = appearanceButton("Light")
+    lightBtn.click()
+    sleep(3)
+
+    // Capture "before" state
+    let beforeScreenshot = XCTAttachment(screenshot: app.screenshot())
+    beforeScreenshot.name = "BEFORE — Light mode stable"
+    add(beforeScreenshot)
+
+    // Switch Light → Auto (which means Dark on a dark system)
+    let autoBtn = appearanceButton("Auto")
+    autoBtn.click()
+
+    // Timelapse: 15 screenshots, 200ms apart = 3 seconds of evidence
+    captureTimelapse(label: "Light→Auto", count: 15, intervalMs: 200)
+
+    // Close settings and watch what happens
+    app.typeKey("w", modifierFlags: .command)
+    sleep(1)
+    captureTimelapse(label: "After Settings closed", count: 5, intervalMs: 500)
+}
+```
+
+The timelapse confirms: the main window appearance changes **only after Settings loses key window status**. The data is already there — SwiftUI just doesn't act on it.
+
+## What I've ruled out
+
+- **It's not a data propagation issue.** UserDefaults syncs in < 1ms.
+- **It's not a bug in my code.** The same delay happens with a minimal two-window SwiftUI app.
+- **It's not an AppKit-vs-SwiftUI conflict.** I stripped all AppKit appearance code and the delay persists.
+- **MenuBarExtra works fine.** It always follows system appearance, unaffected by `.preferredColorScheme`.
+
+## What did get fixed
+
+Along the way, I fixed the other part of  — light mode contrast. Event blocks were nearly invisible against the white background. The fix was straightforward: conditional opacity based on `colorScheme`:
+
+```swift
+@Environment(\.colorScheme) private var colorScheme
+
+let isLight = colorScheme == .light
+let bgOpacity = isSelected ? 0.85 : (isPending ? 0.0 : (isLight ? 0.25 : 0.15))
+let textColor = isSelected ? .white : (isPending ? color.opacity(isLight ? 0.85 : 0.7) : color)
+```
+
+This pattern was applied across DayView, WeekView, and MonthView — background fills, text colors, dashed borders for pending invitations, capsule badges. Small bumps (0.15 → 0.25 for backgrounds, 0.5 → 0.7 for borders) but the cumulative effect makes light mode actually usable.
+
+## Possible approaches I haven't tried
+
+- **Custom `NSViewRepresentable` bridge** that observes `effectiveAppearance` and forces the SwiftUI environment to update
+- **Moving Settings into a sheet/popover** within the main window instead of a separate Scene
+- **Filing a Feedback with Apple** (I know, I know)
+- Something I haven't thought of yet — that's where you come in
+
+## Help me out?
+
+If you've dealt with multi-window SwiftUI appearance switching on macOS, or if you've found a way to force `.preferredColorScheme` to re-render non-key windows — I'd love to hear from you.
+
+Drop me an email at [hello@horacal.app](mailto:hello@horacal.app). Even a "I hit the same thing, here's what didn't work" is valuable at this point.
+
+This is the kind of problem that probably has a 3-line solution that someone who's been deep in AppKit for years knows off the top of their head. I just haven't found that person yet.
+
+---
+
+Follow the build at [@moto_szama](https://x.com/moto_szama), check out [hora Calendar](https://horacal.app).
