@@ -23,6 +23,7 @@ def buffer_request(api_key, query, variables=None, max_retries=3):
             headers={
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {api_key}",
+                "User-Agent": "hora-social-bot/1.0",
             },
             method="POST",
         )
