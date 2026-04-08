@@ -59,7 +59,7 @@ Mac App Store submission, macOS 27 compatibility, performance optimization, and 
 A native companion app — not a port, not a web wrapper. Same SwiftUI foundation, designed for touch from the ground up.
 
 **Phase 3 — Apple Intelligence**
-On-device AI for focus time planning, meeting prep briefings, and smart scheduling suggestions.
+Apple Intelligence for focus time planning, meeting prep briefings, and smart scheduling suggestions.
 
 **Phase 4 — Google Workspace**
 Gmail context for meetings, contact enrichment, and deeper integration with Google's ecosystem.
