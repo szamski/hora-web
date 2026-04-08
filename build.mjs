@@ -228,7 +228,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover) {
         </a>
         <div class="nav-links">
             <a href="/#features">Features</a>
-            <a href="/#roadmap">Roadmap</a>
+            <a href="/#roadmap">Journey</a>
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
@@ -239,7 +239,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover) {
 </nav>
 <div class="nav-mobile" id="nav-mobile">
     <a href="/#features">Features</a>
-    <a href="/#roadmap">Roadmap</a>
+    <a href="/#roadmap">Journey</a>
     <a href="/blog/">Blog</a>
     <a href="/#download" class="btn">Get the App</a>
 </div>
@@ -402,7 +402,7 @@ function blogIndexTemplate(posts) {
         </a>
         <div class="nav-links">
             <a href="/#features">Features</a>
-            <a href="/#roadmap">Roadmap</a>
+            <a href="/#roadmap">Journey</a>
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
@@ -413,7 +413,7 @@ function blogIndexTemplate(posts) {
 </nav>
 <div class="nav-mobile" id="nav-mobile">
     <a href="/#features">Features</a>
-    <a href="/#roadmap">Roadmap</a>
+    <a href="/#roadmap">Journey</a>
     <a href="/blog/">Blog</a>
     <a href="/#download" class="btn">Get the App</a>
 </div>
@@ -632,7 +632,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         </a>
         <div class="nav-links">
             <a href="/#features">Features</a>
-            <a href="/#roadmap">Roadmap</a>
+            <a href="/#roadmap">Journey</a>
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
@@ -643,7 +643,7 @@ function legalPageTemplate(title, lastUpdated, content) {
 </nav>
 <div class="nav-mobile" id="nav-mobile">
     <a href="/#features">Features</a>
-    <a href="/#roadmap">Roadmap</a>
+    <a href="/#roadmap">Journey</a>
     <a href="/blog/">Blog</a>
     <a href="/#download" class="btn">Get the App</a>
 </div>
@@ -810,6 +810,8 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
         .nav-links a.active { color: var(--text); }
+        .nav-links a.btn { color: #fff; font-weight: 600; }
+        .nav-links a.btn:hover { color: #fff; }
         .btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent), var(--accent-glow)); color: #fff; border: none; border-radius: 999px; padding: 8px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
@@ -846,6 +848,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .feat-screenshot { max-width: 640px; margin: 0 auto; padding: 16px 24px 56px; position: relative; }
         .feat-screenshot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; height: 60%; background: radial-gradient(ellipse, rgba(255,56,60,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
         .feat-screenshot img { position: relative; z-index: 1; width: 100%; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.5), 0 0 80px rgba(255,56,60,0.04); }
+        .feat-screenshot-sm { max-width: 380px; }
 
         footer { border-top: 1px solid var(--border); padding: 24px; }
         .footer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
@@ -963,7 +966,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
     </div>
 </div>
 
-<div class="feat-screenshot">
+<div class="feat-screenshot feat-screenshot-sm">
     <img src="/assets/features/events.webp" alt="hora Calendar — Event creation and drag &amp; drop" loading="lazy">
 </div>
 
@@ -1030,7 +1033,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
     </div>
 </div>
 
-<div class="feat-screenshot">
+<div class="feat-screenshot feat-screenshot-sm">
     <img src="/assets/features/productivity.webp" alt="hora Calendar — Menu bar widget with upcoming events" loading="lazy">
 </div>
 
@@ -1057,7 +1060,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
     </div>
 </div>
 
-<div class="feat-screenshot">
+<div class="feat-screenshot feat-screenshot-sm">
     <img src="/assets/features/settings.webp" alt="hora Calendar — Appearance and language settings" loading="lazy">
 </div>
 
