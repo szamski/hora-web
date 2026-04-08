@@ -38,24 +38,24 @@ def buffer_request(api_key, query, variables=None, max_retries=3):
             raise
 
 
-def create_draft(api_key, channel_id, text):
+def create_idea(api_key, org_id, title, text):
     mutation = """
-    mutation CreatePost($input: CreatePostInput!) {
-        createPost(input: $input) {
-            ... on PostActionSuccess {
-                post { id text }
-            }
-            ... on MutationError {
-                message
+    mutation CreateIdea($input: CreateIdeaInput!) {
+        createIdea(input: $input) {
+            ... on Idea {
+                id
+                content { title text }
             }
         }
     }
     """
     variables = {
         "input": {
-            "text": text,
-            "channelId": channel_id,
-            "saveToDraft": True,
+            "organizationId": org_id,
+            "content": {
+                "title": title,
+                "text": text,
+            },
         }
     }
     return buffer_request(api_key, mutation, variables)
@@ -105,12 +105,13 @@ def extract_x_thread(copy):
 
 def main():
     api_key = os.environ.get("BUFFER_API_KEY")
-    linkedin_channel = os.environ.get("BUFFER_LINKEDIN_CHANNEL_ID")
-    x_channel = os.environ.get("BUFFER_X_CHANNEL_ID")
-    threads_channel = os.environ.get("BUFFER_THREADS_CHANNEL_ID")
+    org_id = os.environ.get("BUFFER_ORG_ID")
 
     if not api_key:
         print("Missing BUFFER_API_KEY", file=sys.stderr)
+        sys.exit(1)
+    if not org_id:
+        print("Missing BUFFER_ORG_ID", file=sys.stderr)
         sys.exit(1)
 
     with open("/tmp/issue-body.md", "r") as f:
@@ -118,66 +119,44 @@ def main():
 
     results = []
 
-    # LinkedIn draft
-    if linkedin_channel:
-        li_post = extract_linkedin_post(copy)
-        if li_post:
-            resp = create_draft(api_key, linkedin_channel, li_post)
-            results.append(("LinkedIn post", resp))
-            print(f"LinkedIn draft created ({len(li_post)} chars)")
+    # LinkedIn
+    li_post = extract_linkedin_post(copy)
+    if li_post:
+        resp = create_idea(api_key, org_id, "LinkedIn post", li_post)
+        results.append(("LinkedIn post", resp))
+        print(f"LinkedIn idea created ({len(li_post)} chars)")
 
-            # LinkedIn first comment as separate draft with note
-            li_comment = extract_linkedin_comment(copy)
-            if li_comment:
-                comment_draft = f"[FIRST COMMENT after posting]\n\n{li_comment}"
-                resp = create_draft(api_key, linkedin_channel, comment_draft)
-                results.append(("LinkedIn comment", resp))
-                print(f"LinkedIn comment draft created")
-        else:
-            print("Could not extract LinkedIn post from copy", file=sys.stderr)
+        li_comment = extract_linkedin_comment(copy)
+        if li_comment:
+            resp = create_idea(api_key, org_id, "LinkedIn first comment", li_comment)
+            results.append(("LinkedIn comment", resp))
+            print("LinkedIn comment idea created")
+    else:
+        print("Could not extract LinkedIn post from copy", file=sys.stderr)
 
-    # X/Twitter draft — standalone version
-    if x_channel:
-        standalone = extract_x_standalone(copy)
-        if standalone:
-            resp = create_draft(api_key, x_channel, standalone)
-            results.append(("X standalone", resp))
-            print(f"X standalone draft created ({len(standalone)} chars)")
+    # X/Twitter — standalone
+    standalone = extract_x_standalone(copy)
+    if standalone:
+        resp = create_idea(api_key, org_id, "X standalone", standalone)
+        results.append(("X standalone", resp))
+        print(f"X standalone idea created ({len(standalone)} chars)")
 
-        # Thread posts as individual drafts
-        thread = extract_x_thread(copy)
-        if thread:
-            for i, post in enumerate(thread, 1):
-                draft_text = f"[THREAD {i}/{len(thread)}]\n\n{post}"
-                resp = create_draft(api_key, x_channel, draft_text)
-                results.append((f"X thread {i}", resp))
-            print(f"X thread drafts created ({len(thread)} posts)")
+    # X/Twitter — thread
+    thread = extract_x_thread(copy)
+    if thread:
+        for i, post in enumerate(thread, 1):
+            resp = create_idea(api_key, org_id, f"X thread {i}/{len(thread)}", post)
+            results.append((f"X thread {i}", resp))
+        print(f"X thread ideas created ({len(thread)} posts)")
 
-        if not standalone and not thread:
-            print("Could not extract X posts from copy", file=sys.stderr)
-
-    # Threads — same content as X
-    if threads_channel:
-        if standalone:
-            resp = create_draft(api_key, threads_channel, standalone)
-            results.append(("Threads standalone", resp))
-            print(f"Threads standalone draft created ({len(standalone)} chars)")
-
-        if thread:
-            for i, post in enumerate(thread, 1):
-                draft_text = f"[THREAD {i}/{len(thread)}]\n\n{post}"
-                resp = create_draft(api_key, threads_channel, draft_text)
-                results.append((f"Threads thread {i}", resp))
-            print(f"Threads thread drafts created ({len(thread)} posts)")
+    if not standalone and not thread:
+        print("Could not extract X posts from copy", file=sys.stderr)
 
     # Check for errors
     errors = []
     for label, resp in results:
         if "errors" in resp:
             errors.append(f"{label}: {resp['errors']}")
-        data = resp.get("data", {}).get("createPost", {})
-        if "message" in data:
-            errors.append(f"{label}: {data['message']}")
 
     if errors:
         print("Buffer errors:", file=sys.stderr)
@@ -185,7 +164,7 @@ def main():
             print(f"  - {e}", file=sys.stderr)
         sys.exit(1)
 
-    print(f"All {len(results)} drafts pushed to Buffer successfully")
+    print(f"All {len(results)} ideas pushed to Buffer successfully")
 
 
 if __name__ == "__main__":

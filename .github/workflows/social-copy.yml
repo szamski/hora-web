@@ -54,7 +54,5 @@ jobs:
         if: steps.detect.outputs.found == 'true'
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_LINKEDIN_CHANNEL_ID: ${{ secrets.BUFFER_LINKEDIN_CHANNEL_ID }}
-          BUFFER_X_CHANNEL_ID: ${{ secrets.BUFFER_X_CHANNEL_ID }}
-          BUFFER_THREADS_CHANNEL_ID: ${{ secrets.BUFFER_THREADS_CHANNEL_ID }}
+          BUFFER_ORG_ID: ${{ secrets.BUFFER_ORG_ID }}
         run: python3 .github/scripts/push-to-buffer.py
