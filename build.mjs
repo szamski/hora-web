@@ -18,7 +18,7 @@ if (existsSync(DIST)) {
 mkdirSync(DIST, { recursive: true });
 
 // Copy all static files
-for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'assets']) {
+for (const item of ['index.html', 'sitemap.xml', 'robots.txt', 'llms.txt', 'assets']) {
     const src = join(ROOT, item);
     if (existsSync(src)) {
         cpSync(src, join(DIST, item), { recursive: true });

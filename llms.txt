@@ -1,0 +1,41 @@
+# hora Calendar
+
+> Native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.
+
+## What is hora?
+
+hora is a native macOS calendar app that connects directly to Google Calendar via the official API. It's built entirely in SwiftUI — no web views, no Electron wrapper. The goal is to be the fastest, most keyboard-friendly Google Calendar client on macOS.
+
+## Key Features
+
+- Week, Month, and Day calendar views
+- Full event CRUD with drag-and-drop and edge resizing
+- Google Meet conference link creation
+- Google Calendar-style keyboard shortcuts (D/W/M, C, /, J/K, T)
+- Incremental sync with configurable intervals
+- Multi-account support with color-coded calendars
+- Native macOS notifications
+- Menu bar quick-view widget
+- Dark mode by default
+
+## Status
+
+hora is in pre-launch. A public beta is planned — subscribe at https://horacal.app/#newsletter to get notified.
+
+## Links
+
+- Website: https://horacal.app
+- Blog: https://horacal.app/blog/
+- Features: https://horacal.app/features/
+- RSS Feed: https://horacal.app/blog/feed.xml
+
+## Author
+
+Maciej Szamowski — https://szamowski.dev
+X/Twitter: @moto_szama
+
+## Tech Stack
+
+- SwiftUI (native macOS app)
+- Google Calendar API (OAuth 2.0, no CalDAV)
+- Website: static HTML + Node.js build script, deployed on GitHub Pages

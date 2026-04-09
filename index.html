@@ -58,6 +58,18 @@
         "screenshot": "https://horacal.app/assets/hora-demo.gif"
     }
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Maciej Szamowski",
+        "url": "https://szamowski.dev",
+        "sameAs": [
+            "https://x.com/moto_szama",
+            "https://github.com/szamski"
+        ]
+    }
+    </script>
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -711,6 +723,53 @@
             margin-bottom: 24px;
         }
 
+        /* FAQ */
+        .faq {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .faq-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .faq-item summary {
+            cursor: pointer;
+            padding: 18px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after {
+            content: '+';
+            font-size: 18px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+        .faq-item[open] summary::after {
+            content: '\2212';
+        }
+        .faq-item .faq-answer {
+            padding: 0 20px 18px;
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
         /* Legal sections */
         .legal-grid {
             max-width: var(--max-w);
@@ -1225,6 +1284,95 @@
 
     </div>
 </section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+    <div class="section-heading">
+        <h2 class="branded">Frequently <span class="gradient-text">Asked Questions</span></h2>
+    </div>
+    <div class="faq-list">
+        <details class="faq-item">
+            <summary>What is hora Calendar?</summary>
+            <div class="faq-answer">hora is a native macOS desktop app for Google Calendar. It connects directly to the Google Calendar API — no CalDAV, no web views, no Electron. Built entirely in SwiftUI for speed and a native feel.</div>
+        </details>
+        <details class="faq-item">
+            <summary>Who is hora for?</summary>
+            <div class="faq-answer">Anyone on macOS who uses Google Calendar and wants a faster, keyboard-friendly experience. It's especially useful if you manage multiple Google accounts or prefer native apps over browser tabs.</div>
+        </details>
+        <details class="faq-item">
+            <summary>How is hora different from Fantastical or Cron?</summary>
+            <div class="faq-answer">hora focuses exclusively on Google Calendar and uses the official API for direct access. There's no CalDAV translation layer, which means faster sync and full feature support like Google Meet link creation. It's also built purely in SwiftUI with no Electron or web technologies.</div>
+        </details>
+        <details class="faq-item">
+            <summary>Is hora free?</summary>
+            <div class="faq-answer">Pricing hasn't been finalized yet. The goal is to keep it accessible. Subscribe to the newsletter to be the first to know about pricing and launch details.</div>
+        </details>
+        <details class="faq-item">
+            <summary>When does hora launch?</summary>
+            <div class="faq-answer">hora is currently in pre-launch development. A public beta is planned — sign up for the newsletter above to get notified when it's available.</div>
+        </details>
+        <details class="faq-item">
+            <summary>Does hora work with Outlook or iCloud calendars?</summary>
+            <div class="faq-answer">Not at the moment. hora is built specifically for Google Calendar. Support for other providers may come in the future, but the focus right now is on making the best possible Google Calendar experience on macOS.</div>
+        </details>
+    </div>
+</section>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "What is hora Calendar?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "hora is a native macOS desktop app for Google Calendar. It connects directly to the Google Calendar API — no CalDAV, no web views, no Electron. Built entirely in SwiftUI for speed and a native feel."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Who is hora for?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Anyone on macOS who uses Google Calendar and wants a faster, keyboard-friendly experience. It's especially useful if you manage multiple Google accounts or prefer native apps over browser tabs."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How is hora different from Fantastical or Cron?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "hora focuses exclusively on Google Calendar and uses the official API for direct access. There's no CalDAV translation layer, which means faster sync and full feature support like Google Meet link creation. It's also built purely in SwiftUI with no Electron or web technologies."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is hora free?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Pricing hasn't been finalized yet. The goal is to keep it accessible. Subscribe to the newsletter to be the first to know about pricing and launch details."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "When does hora launch?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "hora is currently in pre-launch development. A public beta is planned — sign up for the newsletter to get notified when it's available."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Does hora work with Outlook or iCloud calendars?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Not at the moment. hora is built specifically for Google Calendar. Support for other providers may come in the future, but the focus right now is on making the best possible Google Calendar experience on macOS."
+            }
+        }
+    ]
+}
+</script>
 
 <!-- From the Blog -->
 <section class="blog-preview" id="blog">
