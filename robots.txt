@@ -10,4 +10,5 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+# LLM context: https://horacal.app/llms.txt
 Sitemap: https://horacal.app/sitemap.xml
