@@ -1,0 +1,133 @@
+---
+title: "How we fixed the SwiftUI appearance bug (it wasn't .preferredColorScheme)"
+date: 2026-04-10
+description: "Last week I wrote a help-wanted post about .preferredColorScheme not updating non-key windows on macOS. Here's the actual cause — and the three-line fix that made it go away."
+tags: swiftui, macos, appearance, dark-mode, light-mode, bug-fix, devlog
+cover: /assets/blog/appearance-fix-hero.webp
+---
+
+[Last week I published a help-wanted post](/blog/2026-04-08-swiftui-appearance-bug/) about hora Calendar's appearance switching. Light/Dark/Auto toggle in Settings, `@AppStorage`, `.preferredColorScheme()` — textbook setup, and the main window wouldn't update until you defocused Settings. Two full days of approaches that didn't work.
+
+A few people wrote in. The suggestions were good. None of them turned out to be *the* cause — but reading them made me look at the problem from a different angle, and that's what cracked it.
+
+Turns out I was blaming the wrong API. `.preferredColorScheme` was mostly fine. The culprits were three unrelated things stacked on top of each other.
+
+## Cause 1: a glass modifier was swallowing appearance propagation
+
+hora has a subtle "inspector glass" effect on the right sidebar — an `InspectorGlassContext` modifier that sets the material state. I'd left it at:
+
+```swift
+.environment(\.inspectorGlassContext, InspectorGlassContext(state: .active))
+```
+
+That `state: .active` line was the first problem. When the glass context is forced active, it pins the resolved appearance at the moment the view mounts and doesn't re-resolve when `ColorScheme` changes propagate through the environment. The sidebar stayed in its original scheme until the window redrew from scratch — which on macOS happens on focus change.
+
+Removing the forced state was the single biggest win. The sidebar started tracking appearance correctly for the first time.
+
+## Cause 2: `Color(NSColor)` vs. SwiftUI's shape styles
+
+Scattered across the app I had things like:
+
+```swift
+.background(Color(NSColor.windowBackgroundColor))
+.overlay(Rectangle().fill(Color(NSColor.separatorColor)))
+```
+
+These look right. They even *are* right on first render. But `Color(NSColor.windowBackgroundColor)` resolves the color once, at the moment the `Color` value is constructed, against whatever `NSAppearance` is current on that thread. It's captured. When SwiftUI later pushes a new `ColorScheme` through the environment, the captured `Color` doesn't re-resolve.
+
+The fix is to use SwiftUI's native shape styles, which *are* environment-aware:
+
+```swift
+.background(.windowBackground)
+.overlay(Rectangle().fill(.separator))
+```
+
+I replaced every `Color(NSColor.*)` in the view layer. Backgrounds, separators, dashed borders for pending invitations, capsule badges. Tedious. But after this, most surfaces started updating live.
+
+## Cause 3: never pass `nil` to `.preferredColorScheme()`
+
+This is the one I should have caught earlier. The original code:
+
+```swift
+enum AppearanceMode: String, CaseIterable {
+    case auto, light, dark
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .auto:  return nil     // ← the trap
+        case .light: return .light
+        case .dark:  return .dark
+        }
+    }
+}
+
+// Applied as:
+.preferredColorScheme(appearanceMode.colorScheme)
+```
+
+Passing `nil` to `.preferredColorScheme()` means "defer to the system appearance." That's the documented behavior, and it works on *first* application. But transitioning from an explicit value (`.light` or `.dark`) *back* to `nil` doesn't trigger an immediate redraw on macOS. The environment updates, but the window doesn't pick it up until its next draw cycle — which, again, happens on focus change.
+
+Fix: always pass an explicit `ColorScheme`. Never `nil`. For Auto mode, resolve the system appearance ourselves:
+
+```swift
+@State private var systemIsDark = NSApp.effectiveAppearance
+    .bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+
+private var resolvedColorScheme: ColorScheme {
+    switch appearanceMode {
+    case .auto:  return systemIsDark ? .dark : .light
+    case .light: return .light
+    case .dark:  return .dark
+    }
+}
+
+var body: some View {
+    // ...
+    .preferredColorScheme(resolvedColorScheme)
+    .onReceive(NotificationCenter.default.publisher(
+        for: NSApplication.didBecomeActiveNotification)) { _ in
+        updateSystemAppearance()
+    }
+    .onReceive(NotificationCenter.default.publisher(
+        for: NSApplication.didChangeScreenParametersNotification)) { _ in
+        updateSystemAppearance()
+    }
+}
+
+private func updateSystemAppearance() {
+    let isDark = NSApp.effectiveAppearance
+        .bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+    if systemIsDark != isDark {
+        systemIsDark = isDark
+    }
+}
+```
+
+Two things to note:
+
+- The Settings scene needs this too, independently. Each `Scene` with its own `.preferredColorScheme()` modifier needs its own resolver. I initially applied the fix only to `ContentView` and wondered why Settings still froze.
+- The `NSApplication.didBecomeActiveNotification` observer is what makes Auto mode follow the system when macOS itself switches at sunset. Without it, the app would only re-resolve on launch.
+
+## The combined effect
+
+Each of these three things alone would have produced a subtler version of the same symptom. Stacked, they produced the exact behaviour in the original post: setting updates, environment updates, 0.38ms propagation — and the window just sitting there until you clicked elsewhere.
+
+<video autoplay loop muted playsinline style="width:100%; border-radius: 12px; margin: 16px 0;">
+  <source src="/assets/blog/appearance-fix-demo.webm" type="video/webm">
+</video>
+
+After the fix, toggling Light → Dark → Auto updates every window instantly, including Settings while it's open.
+
+The debug test I wrote for the first post is still in the suite, renamed. It now passes on non-key windows, which is the thing I couldn't achieve two weeks ago.
+
+## The meta-lesson
+
+I spent two days convinced the bug was inside `.preferredColorScheme()`. It wasn't. The modifier was doing exactly what it's documented to do. The bug was three unrelated things that each made the system *look* like `.preferredColorScheme()` was broken.
+
+"The obvious suspect is innocent" is one of the more annoying shapes a bug can take. But writing the public help-wanted post forced me to spell out every assumption in the diagnostic — and when I sat down to do that a second time, the `nil` in `var colorScheme: ColorScheme?` suddenly looked different.
+
+Thank you to everyone who wrote in.
+
+---
+
+Follow the build at [@moto_szama](https://x.com/moto_szama), check out [hora Calendar](https://horacal.app), or reach out at [hello@horacal.app](mailto:hello@horacal.app).
