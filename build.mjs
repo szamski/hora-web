@@ -7,7 +7,7 @@ const DIST = join(ROOT, 'dist');
 
 const MOBILE_NAV_JS = `<script>
 function _preventTouch(e){var m=document.getElementById('nav-mobile');if(m&&m.contains(e.target))return;e.preventDefault();}
-function _lockScroll(lock){var h=document.documentElement,b=document.body;h.style.overflow=lock?'hidden':'';b.style.overflow=lock?'hidden':'';if(lock)document.addEventListener('touchmove',_preventTouch,{passive:false});else document.removeEventListener('touchmove',_preventTouch);}
+function _lockScroll(lock){document.body.style.overflow=lock?'hidden':'';if(lock)document.addEventListener('touchmove',_preventTouch,{passive:false});else document.removeEventListener('touchmove',_preventTouch);}
 function toggleMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger'),o=m.classList.toggle('open');b.setAttribute('aria-expanded',o);b.innerHTML=o?'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(o);}
 function closeMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger');m.classList.remove('open');b.setAttribute('aria-expanded','false');b.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(false);}
 </script>`;
@@ -251,7 +251,10 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
+        .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 60; flex-direction: column; overflow-y: auto; }
+        .nav-mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 56px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .nav-mobile-close { background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); display: flex; }
+        .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -322,10 +325,18 @@ ${COOKIE_BANNER_CSS}
     </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-    <a href="/#features">Features</a>
-    <a href="/#roadmap">Journey</a>
-    <a href="/blog/">Blog</a>
-    <a href="/#download" class="btn">Get the App</a>
+    <div class="nav-mobile-header">
+        <a href="/" class="nav-brand"><img src="/assets/hora-icon.png" alt="" width="28" height="28">Calendar</a>
+        <button class="nav-mobile-close" aria-label="Close menu" onclick="closeMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+    </div>
+    <div class="nav-mobile-links">
+        <a href="/#features" onclick="closeMobileNav()">Features</a>
+        <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
+        <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+        <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    </div>
 </div>
 <main>
 <article>
@@ -408,7 +419,10 @@ function blogIndexTemplate(posts) {
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
+        .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 60; flex-direction: column; overflow-y: auto; }
+        .nav-mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 56px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .nav-mobile-close { background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); display: flex; }
+        .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -485,10 +499,18 @@ ${COOKIE_BANNER_CSS}
     </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-    <a href="/#features">Features</a>
-    <a href="/#roadmap">Journey</a>
-    <a href="/blog/">Blog</a>
-    <a href="/#download" class="btn">Get the App</a>
+    <div class="nav-mobile-header">
+        <a href="/" class="nav-brand"><img src="/assets/hora-icon.png" alt="" width="28" height="28">Calendar</a>
+        <button class="nav-mobile-close" aria-label="Close menu" onclick="closeMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+    </div>
+    <div class="nav-mobile-links">
+        <a href="/#features" onclick="closeMobileNav()">Features</a>
+        <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
+        <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+        <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    </div>
 </div>
 <main>
 <div class="blog-header">
@@ -654,7 +676,10 @@ function legalPageTemplate(title, lastUpdated, content) {
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
+        .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 60; flex-direction: column; overflow-y: auto; }
+        .nav-mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 56px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .nav-mobile-close { background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); display: flex; }
+        .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -706,10 +731,18 @@ ${COOKIE_BANNER_CSS}
     </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-    <a href="/#features">Features</a>
-    <a href="/#roadmap">Journey</a>
-    <a href="/blog/">Blog</a>
-    <a href="/#download" class="btn">Get the App</a>
+    <div class="nav-mobile-header">
+        <a href="/" class="nav-brand"><img src="/assets/hora-icon.png" alt="" width="28" height="28">Calendar</a>
+        <button class="nav-mobile-close" aria-label="Close menu" onclick="closeMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+    </div>
+    <div class="nav-mobile-links">
+        <a href="/#features" onclick="closeMobileNav()">Features</a>
+        <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
+        <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+        <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    </div>
 </div>
 <main>
 <section class="legal">
@@ -882,7 +915,10 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
+        .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 60; flex-direction: column; overflow-y: auto; }
+        .nav-mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 56px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .nav-mobile-close { background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); display: flex; }
+        .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .nav-mobile a:hover { color: var(--text); }
@@ -952,10 +988,18 @@ ${COOKIE_BANNER_CSS}
     </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-    <a href="/features/" onclick="closeMobileNav()">Features</a>
-    <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
-    <a href="/blog/" onclick="closeMobileNav()">Blog</a>
-    <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    <div class="nav-mobile-header">
+        <a href="/" class="nav-brand"><img src="/assets/hora-icon.png" alt="" width="28" height="28">Calendar</a>
+        <button class="nav-mobile-close" aria-label="Close menu" onclick="closeMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+    </div>
+    <div class="nav-mobile-links">
+        <a href="/features/" onclick="closeMobileNav()">Features</a>
+        <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
+        <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+        <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    </div>
 </div>
 
 <main>

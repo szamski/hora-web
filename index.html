@@ -227,24 +227,38 @@
         }
         .nav-hamburger svg { display: block; }
 
-        /* Mobile menu overlay */
+        /* Mobile menu overlay (full-screen, above nav, with own close button) */
         .nav-mobile {
             display: none;
             position: fixed;
-            top: 56px;
+            top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: #0a0a0a;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 49;
-            padding: 24px;
+            z-index: 60;
             flex-direction: column;
-            gap: 8px;
             overflow-y: auto;
         }
         .nav-mobile.open { display: flex; }
+        .nav-mobile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            height: 56px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .nav-mobile-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text);
+            display: flex;
+        }
+        .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
         .nav-mobile a {
             color: var(--text-muted);
             text-decoration: none;
@@ -1045,10 +1059,18 @@
     </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-    <a href="#features" onclick="closeMobileNav()">Features</a>
-    <a href="#roadmap" onclick="closeMobileNav()">Journey</a>
-    <a href="/blog/">Blog</a>
-    <a href="#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    <div class="nav-mobile-header">
+        <a href="#" class="nav-brand"><img src="assets/hora-icon.png" alt="" width="28" height="28">Calendar</a>
+        <button class="nav-mobile-close" aria-label="Close menu" onclick="closeMobileNav()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        </button>
+    </div>
+    <div class="nav-mobile-links">
+        <a href="#features" onclick="closeMobileNav()">Features</a>
+        <a href="#roadmap" onclick="closeMobileNav()">Journey</a>
+        <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+        <a href="#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+    </div>
 </div>
 
 <main>
@@ -1526,9 +1548,7 @@ function _preventTouch(e) {
     e.preventDefault();
 }
 function lockScroll(lock) {
-    var h = document.documentElement, b = document.body;
-    h.style.overflow = lock ? 'hidden' : '';
-    b.style.overflow = lock ? 'hidden' : '';
+    document.body.style.overflow = lock ? 'hidden' : '';
     if (lock) document.addEventListener('touchmove', _preventTouch, { passive: false });
     else document.removeEventListener('touchmove', _preventTouch);
 }
