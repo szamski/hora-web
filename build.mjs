@@ -251,7 +251,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -408,7 +408,7 @@ function blogIndexTemplate(posts) {
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -654,7 +654,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
         .nav-mobile a:hover { color: var(--text); }
@@ -882,7 +882,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .btn:hover { opacity: 0.9; }
         .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text); }
         .nav-hamburger svg { display: block; }
-        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; }
+        .nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0a0a; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 49; padding: 24px; flex-direction: column; gap: 8px; overflow-y: auto; }
         .nav-mobile.open { display: flex; }
         .nav-mobile a { color: var(--text-muted); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .nav-mobile a:hover { color: var(--text); }
