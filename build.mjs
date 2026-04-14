@@ -6,7 +6,8 @@ const ROOT = import.meta.dirname;
 const DIST = join(ROOT, 'dist');
 
 const MOBILE_NAV_JS = `<script>
-function _lockScroll(lock){var h=document.documentElement,b=document.body;if(lock){h.style.overflow='hidden';b.style.overflow='hidden';}else{h.style.overflow='';b.style.overflow='';}}
+function _preventTouch(e){var m=document.getElementById('nav-mobile');if(m&&m.contains(e.target))return;e.preventDefault();}
+function _lockScroll(lock){var h=document.documentElement,b=document.body;h.style.overflow=lock?'hidden':'';b.style.overflow=lock?'hidden':'';if(lock)document.addEventListener('touchmove',_preventTouch,{passive:false});else document.removeEventListener('touchmove',_preventTouch);}
 function toggleMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger'),o=m.classList.toggle('open');b.setAttribute('aria-expanded',o);b.innerHTML=o?'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(o);}
 function closeMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger');m.classList.remove('open');b.setAttribute('aria-expanded','false');b.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(false);}
 </script>`;
@@ -34,14 +35,63 @@ const FOOTER_HTML = `<footer>
     </div>
 </footer>`;
 
-const GOOGLE_ADS_TAG = `<!-- Google Ads (conversion tracking only, no GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+const GOOGLE_ADS_TAG = `<!-- Google Ads (conversion tracking only, no GA4) with Consent Mode v2 -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+        var _c = null; try { _c = localStorage.getItem('cookie-consent'); } catch(e){}
+        gtag('consent', 'default', {
+            ad_storage: _c === 'accepted' ? 'granted' : 'denied',
+            ad_user_data: _c === 'accepted' ? 'granted' : 'denied',
+            ad_personalization: _c === 'accepted' ? 'granted' : 'denied',
+            analytics_storage: 'denied'
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script>
         gtag('js', new Date());
         gtag('config', 'AW-18070613857');
     </script>`;
+
+const COOKIE_BANNER_CSS = `
+        .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: var(--surface); border-top: 1px solid var(--border); padding: 16px 24px; transform: translateY(100%); transition: transform 0.3s ease; }
+        .cookie-banner.visible { transform: translateY(0); }
+        .cookie-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .cookie-inner p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        .cookie-inner a { color: var(--text); text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+        .cookie-btns button { font-family: inherit; font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: none; }
+        .cookie-accept { background: var(--accent); color: #fff; }
+        .cookie-accept:hover { filter: brightness(1.1); }
+        .cookie-decline { background: transparent; color: var(--text-muted); border: 1px solid var(--border) !important; }
+        .cookie-decline:hover { color: var(--text); }
+        @media (max-width: 768px) { .cookie-inner { flex-direction: column; align-items: stretch; text-align: center; } .cookie-btns { justify-content: center; } }`;
+
+const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+    <div class="cookie-inner">
+        <p>We use Google Ads cookies to measure campaign performance. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
+        <div class="cookie-btns">
+            <button class="cookie-decline" id="cookie-decline">Decline</button>
+            <button class="cookie-accept" id="cookie-accept">Accept</button>
+        </div>
+    </div>
+</div>
+<script>
+(function(){
+    var stored; try { stored = localStorage.getItem('cookie-consent'); } catch(e){}
+    if (stored) return;
+    var banner = document.getElementById('cookie-banner');
+    setTimeout(function(){ banner.classList.add('visible'); }, 800);
+    function record(v){ try { localStorage.setItem('cookie-consent', v); } catch(e){} banner.classList.remove('visible'); }
+    document.getElementById('cookie-accept').addEventListener('click', function(){
+        record('accepted');
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+        }
+    });
+    document.getElementById('cookie-decline').addEventListener('click', function(){ record('declined'); });
+})();
+</script>`;
 
 const POSTS_DIR = join(ROOT, 'posts');
 
@@ -231,6 +281,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
         .back-link:hover { color: var(--text); }
 
 ${FOOTER_CSS}
+${COOKIE_BANNER_CSS}
 
         @media (max-width: 768px) {
             article { padding: 40px 16px 60px; }
@@ -288,6 +339,7 @@ ${ctaBlock}
 </main>
 ${FOOTER_HTML}
 ${MOBILE_NAV_JS}
+${COOKIE_BANNER_HTML}
 </body>
 </html>`;
 }
@@ -383,6 +435,7 @@ function blogIndexTemplate(posts) {
         .empty { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px 80px; text-align: center; color: var(--text-muted); }
 
 ${FOOTER_CSS}
+${COOKIE_BANNER_CSS}
 
         @media (max-width: 768px) {
             .blog-header { padding: 40px 16px 32px; }
@@ -449,6 +502,7 @@ ${ctaBlock}
 </main>
 ${FOOTER_HTML}
 ${MOBILE_NAV_JS}
+${COOKIE_BANNER_HTML}
 </body>
 </html>`;
 }
@@ -617,6 +671,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         .legal li { position: relative; padding-left: 16px; margin-bottom: 8px; }
         .legal li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
 ${FOOTER_CSS}
+${COOKIE_BANNER_CSS}
 
         @media (max-width: 768px) {
             .legal { padding: 40px 16px 60px; }
@@ -665,6 +720,7 @@ ${FOOTER_CSS}
 </main>
 ${FOOTER_HTML}
 ${MOBILE_NAV_JS}
+${COOKIE_BANNER_HTML}
 </body>
 </html>`;
 }
@@ -694,6 +750,14 @@ const privacyContent = `
         <li>This website uses Plausible Analytics &mdash; a privacy-friendly, cookieless analytics service that does not collect any personal data or track visitors across sites</li>
     </ul>
 
+    <h3>Website Cookies &amp; Advertising</h3>
+    <p>The Hora Calendar macOS application does not set cookies or use any advertising tracking. The marketing website at horacal.app uses a limited set of third-party technologies:</p>
+    <ul>
+        <li><strong>Plausible Analytics</strong> &mdash; cookieless, privacy-friendly traffic analytics. No personal data, no cross-site tracking.</li>
+        <li><strong>Google Ads conversion tracking</strong> &mdash; when you arrive from a Google Ads click, Google's gtag.js sets first-party cookies (<code>_gcl_au</code> and related) to measure whether you later complete the newsletter signup. This is used solely to report Ads campaign performance to us; Google may also use this data per its own policies. No GA4, no remarketing lists, no cross-site profiling is enabled on this site.</li>
+    </ul>
+    <p>You can opt out of Google Ads personalization at <a href="https://adssettings.google.com">adssettings.google.com</a>, or block these cookies in your browser.</p>
+
     <h3>Data Protection</h3>
     <ul>
         <li>All communication with Google APIs is encrypted in transit using HTTPS (TLS)</li>
@@ -708,7 +772,7 @@ const privacyContent = `
     <ul>
         <li>We do not share your data with anyone</li>
         <li>We do not sell your data</li>
-        <li>We do not use your data for advertising or profiling</li>
+        <li>We do not use your calendar, contacts, or app data for advertising or profiling (website Ads conversion cookies are described above and measure only signup completion)</li>
     </ul>
 
     <h3>Data Retention &amp; Deletion</h3>
@@ -754,7 +818,7 @@ const termsContent = `
 
 const privacyDir = join(DIST, 'privacy');
 mkdirSync(privacyDir, { recursive: true });
-writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'April 2, 2026', privacyContent));
+writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'April 14, 2026', privacyContent));
 
 const termsDir = join(DIST, 'terms');
 mkdirSync(termsDir, { recursive: true });
@@ -852,6 +916,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .feat-screenshot img { position: relative; z-index: 1; width: 100%; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.5), 0 0 80px rgba(255,56,60,0.04); }
 
 ${FOOTER_CSS}
+${COOKIE_BANNER_CSS}
 
         @media (max-width: 768px) {
             .feat-grid { grid-template-columns: 1fr; }
@@ -1088,6 +1153,7 @@ ${FOOTER_CSS}
 
 ${FOOTER_HTML}
 ${MOBILE_NAV_JS}
+${COOKIE_BANNER_HTML}
 </body>
 </html>`;
 

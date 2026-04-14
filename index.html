@@ -82,11 +82,20 @@
         plausible.init()
     </script>
 
-    <!-- Google Ads (conversion tracking only, no GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <!-- Google Ads (conversion tracking only, no GA4) with Consent Mode v2 -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+        var _c = null; try { _c = localStorage.getItem('cookie-consent'); } catch(e){}
+        gtag('consent', 'default', {
+            ad_storage: _c === 'accepted' ? 'granted' : 'denied',
+            ad_user_data: _c === 'accepted' ? 'granted' : 'denied',
+            ad_personalization: _c === 'accepted' ? 'granted' : 'denied',
+            analytics_storage: 'denied'
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script>
         gtag('js', new Date());
         gtag('config', 'AW-18070613857');
     </script>
@@ -994,6 +1003,20 @@
             .blog-preview-grid { grid-template-columns: 1fr; gap: 12px; }
             .blog-preview-card img { height: 160px; }
         }
+
+        /* Cookie Banner */
+        .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: var(--surface); border-top: 1px solid var(--border); padding: 16px 24px; transform: translateY(100%); transition: transform 0.3s ease; }
+        .cookie-banner.visible { transform: translateY(0); }
+        .cookie-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .cookie-inner p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        .cookie-inner a { color: var(--text); text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+        .cookie-btns button { font-family: inherit; font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: none; }
+        .cookie-accept { background: var(--accent); color: #fff; }
+        .cookie-accept:hover { filter: brightness(1.1); }
+        .cookie-decline { background: transparent; color: var(--text-muted); border: 1px solid var(--border) !important; }
+        .cookie-decline:hover { color: var(--text); }
+        @media (max-width: 768px) { .cookie-inner { flex-direction: column; align-items: stretch; text-align: center; } .cookie-btns { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -1496,9 +1519,17 @@ function toggleMobileNav() {
         : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
     lockScroll(isOpen);
 }
+function _preventTouch(e) {
+    var menu = document.getElementById('nav-mobile');
+    if (menu && menu.contains(e.target)) return;
+    e.preventDefault();
+}
 function lockScroll(lock) {
-    document.documentElement.style.overflow = lock ? 'hidden' : '';
-    document.body.style.overflow = lock ? 'hidden' : '';
+    var h = document.documentElement, b = document.body;
+    h.style.overflow = lock ? 'hidden' : '';
+    b.style.overflow = lock ? 'hidden' : '';
+    if (lock) document.addEventListener('touchmove', _preventTouch, { passive: false });
+    else document.removeEventListener('touchmove', _preventTouch);
 }
 function closeMobileNav() {
     var menu = document.getElementById('nav-mobile');
@@ -1508,6 +1539,33 @@ function closeMobileNav() {
     btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
     lockScroll(false);
 }
+</script>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+    <div class="cookie-inner">
+        <p>We use Google Ads cookies to measure campaign performance. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
+        <div class="cookie-btns">
+            <button class="cookie-decline" id="cookie-decline">Decline</button>
+            <button class="cookie-accept" id="cookie-accept">Accept</button>
+        </div>
+    </div>
+</div>
+<script>
+(function(){
+    var stored; try { stored = localStorage.getItem('cookie-consent'); } catch(e){}
+    if (stored) return;
+    var banner = document.getElementById('cookie-banner');
+    setTimeout(function(){ banner.classList.add('visible'); }, 800);
+    function record(v){ try { localStorage.setItem('cookie-consent', v); } catch(e){} banner.classList.remove('visible'); }
+    document.getElementById('cookie-accept').addEventListener('click', function(){
+        record('accepted');
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+        }
+    });
+    document.getElementById('cookie-decline').addEventListener('click', function(){ record('declined'); });
+})();
 </script>
 
 </body>
