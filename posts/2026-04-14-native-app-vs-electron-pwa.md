@@ -1,0 +1,124 @@
+---
+title: "Native App vs Electron and PWA: A Mac Dev's Take"
+date: 2026-04-14
+description: "Native app vs Electron vs PWA, from a solo dev shipping hora Calendar in Swift. Memory, feel, battery, and what each one actually costs you on macOS."
+tags: swift, swiftui, macos, electron, pwa, native
+cover: /assets/blog/native-app-vs-electron-pwa-cover.webp
+ogImage: /assets/blog/native-app-vs-electron-pwa-hero.webp
+---
+
+![Native App vs Electron and PWA](/assets/blog/native-app-vs-electron-pwa-hero.webp)
+
+I've spent the last year building [hora Calendar](https://horacal.app) as a native Swift/SwiftUI app for macOS and iOS. Before I started, I had the same argument with myself that everyone has: just ship Electron and be done. It's faster. It's cross-platform. The hiring market is ten times bigger.
+
+I didn't, and I want to write down why — because most of what's online about **native app vs Electron** is either an agency post selling you cross-platform work or a one-line "Electron is bloated" dunk. Neither is useful when you're actually deciding.
+
+So here's the four-way comparison from someone who picked native and shipped it: native, Electron, PWA. (Web wrappers I'm folding into PWA — a wrapped webview is a PWA wearing a hat.)
+
+## What you're actually choosing between
+
+These three things get compared like they're interchangeable. They're not.
+
+**Native** means writing against the OS directly — Swift/SwiftUI on Apple platforms, Kotlin on Android, C#/WinUI or Rust on Windows. You get every API the OS exposes. You also get to build everything twice if you want to be on more than one platform.
+
+**Electron** ships your app as a packaged Chromium browser plus a Node.js runtime. Slack, Discord, VS Code, 1Password, Notion — all Electron. The app is a website, the website is the app, and the runtime is ~150MB on disk before you write a line of your own code.
+
+**PWA** (Progressive Web App) is the website you already have, with a service worker, a manifest, and an "install" button in the browser. It runs in the OS's webview, not its own bundled Chromium. Lighter than Electron, more constrained than native.
+
+If the question is *"native app vs Electron, which one"* — the honest answer is "what kind of product are you building, and how much does it need to know about the OS it lives on?" Below is what I learned by picking native for a calendar.
+
+## Memory and battery: the part nobody warned me about
+
+The numbers people throw around are real. A native macOS menu bar app idles at around 15MB of RAM. The same app in Electron starts at 80–150MB before you've done anything, because you're shipping a full Chromium process and Node alongside your code.
+
+That sounds like an abstract complaint until you have eight Electron apps open — Slack, Discord, Notion, Linear, Spotify, VS Code, 1Password, ChatGPT — and your M-series Mac is sitting at 6GB of RAM spent on Chromium instances that don't talk to each other. You wouldn't open eight Chrome windows and call it normal, but that's effectively what's running.
+
+The most embarrassing recent receipt: in November 2025, Electron apps started causing a [system-wide stutter on macOS Tahoe](https://9to5mac.com/2025/11/21/mac-tahoe-electron-performance-bug/) — window dragging and scrolling lagged across the whole OS, even apps that weren't Electron. The cause was Electron using a private AppKit API in an undocumented way. Apple shipped a fix in a Tahoe beta. But for weeks, every Electron user on Tahoe paid for it.
+
+A native app can't cause that class of bug, because it doesn't need to reach for private APIs to render its own UI.
+
+![RAM: an Electron stack vs a native Swift app](/assets/blog/native-app-vs-electron-pwa-activity-monitor.webp)
+
+## The "feel" you can't fake with CSS
+
+This one matters more than memory and is harder to measure. A Mac user can clock an Electron app in two seconds. They can't always tell you why — but they know.
+
+Here's a partial list of what they're noticing:
+
+- **Scroll inertia and rubber-banding** — `overflow: scroll` is not the same curve as `NSScrollView`. Your hand knows.
+- **Sidebar translucency and material backgrounds** — `NSVisualEffectView` adapts to wallpaper and accent. CSS `backdrop-filter` is a static blur with no awareness of what's behind the window.
+- **Context menus** — native menus animate, dismiss, and respect Accessibility settings. Web context menus are divs that intercept right-click and never quite behave.
+- **Window chrome** — traffic lights, sheet presentations, sidebar collapse, full-screen split-view. Electron fakes all of these. The fakes are visible.
+- **Animations** — SwiftUI animations run on the GPU with the system's spring curves. Web animations on a busy renderer thread stutter when your laptop is warm.
+
+When I'm comparing **Swift vs Electron** for a Mac app, this is the gap that closes the case. A calendar is something you open dozens of times a day. Every interaction either feels like the OS or feels like a tab pretending to be the OS. There is no third option.
+
+<video autoplay loop muted playsinline style="width:100%;border-radius:12px;border:1px solid var(--border);margin:24px 0;">
+  <source src="/assets/blog/native-app-vs-electron-pwa-feel.webm" type="video/webm">
+</video>
+
+(If you want a counter-argument from inside the Electron team, [Felix Rieseberg's "Things people get wrong about Electron"](https://felixrieseberg.com/things-people-get-wrong-about-electron/) is the fairest version. He's right about a lot of it. He'd also be the first to tell you a Mac-only app should probably be native.)
+
+## PWAs: closer to native than Electron, but…
+
+PWAs are the under-talked-about middle option. You ship one website. The user "installs" it from the browser. It gets a Dock icon, runs in its own window, can work offline. It uses the system webview instead of bundling its own — so it's a fraction of the size and weight of Electron.
+
+[Basecamp moved their HEY desktop apps from Electron to a PWA wrapper](https://tevpro.com/why-basecamp-ditched-electron-for-a-pwa-and-why-it-matters/) and the numbers got dramatically better. For a doc-shaped, server-driven product, a PWA is often the right call.
+
+Where it falls apart is when your app needs to *be part of the OS*, not run on top of it. The list of things hora needs that a PWA can't do, on macOS today:
+
+- **EventKit** — read/write the user's local calendars (iCloud, Exchange) without re-implementing every protocol
+- **Background sync** beyond what the browser allows (pulled refresh, network-aware schedules, push from CalDAV)
+- **A real menu bar extra** with a proper popover, not a "minimize to system tray" hack
+- **Widgets** on macOS, iOS Home Screen, Lock Screen, and StandBy — these are SwiftUI views the system renders, not webviews
+- **Focus filters** — let the user say "during Work focus, hide my personal calendar" without the app being open
+- **App Intents** for Spotlight, Shortcuts, and Siri
+- **Keyboard shortcuts** that work when the app is in the background
+
+For a thing that lives in the OS — a calendar, a launcher, a clipboard manager, a window tiler — a PWA can't reach far enough. For a thing that lives in a tab — a doc editor, a CRM, a dashboard — it's almost always the right answer.
+
+![hora widgets across iOS Lock Screen, iOS Home Screen, and the Mac desktop](/assets/blog/native-app-vs-electron-pwa-widgets.webp)
+
+## What native costs you (the honest part)
+
+I'm not going to pretend native is free. The trade is real:
+
+- **One platform at a time.** I shipped macOS and iOS together because SwiftUI shares ~70% of the code. If I wanted Windows next, I'm rewriting in C#/WinUI or Rust/something. There is no "just ship it on Windows."
+- **Smaller ecosystem.** npm has a package for every problem. Swift Package Manager has a package for some problems. The rest, you build.
+- **Slower iteration on UI.** No hot-reload of a webview — Xcode Previews are great when they work and a slot machine when they don't.
+- **You own the OS bugs.** [I shipped a SwiftUI appearance-switching bug](/blog/2026-04-08-swiftui-appearance-bug/) that took two weeks to track to a system-level interaction. With Electron I'd have shipped a Chromium bug instead — different bug, same headache, but at least someone else's frame to blame.
+- **Hiring is harder.** Senior Swift devs are not on every street corner. Senior React devs are.
+
+For hora the math worked because (a) the audience is Apple users, (b) the product *is* the OS integration, and (c) I'd rather be slow and right than fast and forgettable. For a B2B SaaS dashboard, the same math gives you Electron or a PWA, easily.
+
+## When each one is the right call
+
+The short version, after a year of living with the choice:
+
+- **Pick Electron** when you have a web team, the product is consistent across platforms, and the desktop app is mostly the website with system tray and notifications. Slack, Discord, Linear's desktop. This is fine. Just budget for the RAM your users will hate.
+- **Pick a PWA** when the product is server-driven, you don't need OS APIs the browser hasn't exposed, and you want one codebase that's installable on every platform with an icon. This is genuinely the future for a lot of categories.
+- **Pick native** when the product needs to feel like part of the OS, integrate with system services the browser can't reach, or when "feel" is the product. Calendars, launchers, menu bar tools, anything with widgets, anything users open dozens of times a day.
+
+![Decision matrix: pick Native for OS-integrated apps; Electron and PWA only for cross-platform team apps and server-driven tools](/assets/blog/native-app-vs-electron-pwa-matrix.webp)
+
+If you can't tell which bucket you're in, you're probably in the Electron or PWA bucket. Native is a deliberate choice with deliberate costs. Make it on purpose.
+
+## FAQ
+
+**Why are Electron apps so slow on Mac?**
+Each Electron app is a full Chromium browser plus a Node.js runtime — they don't share resources with each other or with Safari/Chrome. Eight Electron apps means eight Chromium instances. On top of that, the November 2025 [Tahoe lag bug](https://9to5mac.com/2025/11/21/mac-tahoe-electron-performance-bug/) showed Electron's reliance on private AppKit APIs can cause OS-wide stutter, not just slowness in the app itself.
+
+**Is Swift harder than Electron?**
+Yes, if you're coming from web. Swift, SwiftUI, and the Apple frameworks are a different mental model — view trees, property wrappers, structured concurrency, EventKit, App Intents. The learning curve is steeper, but the surface area for one platform is finite. The Electron learning curve is shallower and the long tail (signing, notarization, auto-update, Chromium quirks) is forever.
+
+**Can a PWA replace a native macOS app?**
+For document-shaped, server-driven apps — often yes, and increasingly yes as Apple exposes more web APIs. For apps that need EventKit, widgets, menu bar extras, App Intents, or background work the browser doesn't allow — no, not today and probably not soon.
+
+**If native is so much better, why does Slack use Electron?**
+Because Slack runs on Mac, Windows, and Linux, ships from the same codebase as their web app, and a chat client doesn't need deep OS integration to do its job. Electron is the right answer for Slack. It's not the right answer for a calendar.
+
+---
+
+If you want to see what the native trade-off looks like in shipped form, [hora Calendar](https://horacal.app) is the receipt — Mac and iPhone, with widgets, menu bar, Focus filters, and the rest of the iceberg you can only build below the waterline. Roadmap and newsletter on the [landing page](https://horacal.app).
+
+Follow the build at [@moto_szama](https://x.com/moto_szama), check out [hora Calendar](https://horacal.app), or reach out at [hello@horacal.app](mailto:hello@horacal.app).
