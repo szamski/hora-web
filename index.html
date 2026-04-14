@@ -75,25 +75,11 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
     <link rel="llms" href="/llms.txt">
 
-    <!-- Google Analytics 4 (loaded after cookie consent) -->
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-K3DR1kRxwm1G-J9Q8KBme.js"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-
-        function loadGA() {
-            if (document.getElementById('ga-script')) return;
-            var s = document.createElement('script');
-            s.id = 'ga-script';
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX';
-            document.head.appendChild(s);
-            gtag('js', new Date());
-            gtag('config', 'G-WQZ32S81FX');
-        }
-
-        if (localStorage.getItem('cookie-consent') === 'accepted') {
-            loadGA();
-        }
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
     </script>
     <style>
         @font-face {
@@ -874,76 +860,6 @@
             .hero-icon-wrapper::before, .hero-icon-wrapper::after { animation: none; }
         }
 
-        /* Cookie Banner */
-        .cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            padding: 16px 24px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        .cookie-banner.visible {
-            transform: translateY(0);
-        }
-        .cookie-inner {
-            max-width: var(--max-w);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-        .cookie-inner p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-        .cookie-inner a {
-            color: var(--text);
-            text-decoration: underline;
-        }
-        .cookie-btns {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .cookie-btns button {
-            font-family: inherit;
-            font-size: 13px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        .cookie-accept {
-            background: var(--accent);
-            color: #fff;
-        }
-        .cookie-accept:hover {
-            background: var(--accent-hover);
-        }
-        .cookie-decline {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border) !important;
-        }
-        .cookie-decline:hover {
-            color: var(--text);
-            border-color: #444 !important;
-        }
-        @media (max-width: 600px) {
-            .cookie-inner {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
         /* Hero actions */
         .hero-actions {
             max-width: 520px;
@@ -1411,7 +1327,7 @@
 <script>
 (function() {
     function track(eventName, params) {
-        if (typeof gtag === 'function') gtag('event', eventName, params);
+        if (typeof plausible === 'function') plausible(eventName, { props: params });
     }
 
     // --- CTA Buttons ---
@@ -1553,37 +1469,6 @@
                 : 'mac_app_store_click';
             track(eventName, { cta_name: text, disabled: btn.classList.contains('btn-disabled') });
         });
-    });
-})();
-</script>
-
-<!-- Cookie Banner -->
-<div class="cookie-banner" id="cookie-banner">
-    <div class="cookie-inner">
-        <p>We use cookies for analytics to understand how you use this site. <a href="#privacy">Privacy Policy</a></p>
-        <div class="cookie-btns">
-            <button class="cookie-decline" id="cookie-decline">Decline</button>
-            <button class="cookie-accept" id="cookie-accept">Accept</button>
-        </div>
-    </div>
-</div>
-<script>
-(function() {
-    var consent = localStorage.getItem('cookie-consent');
-    if (consent) return;
-
-    var banner = document.getElementById('cookie-banner');
-    setTimeout(function() { banner.classList.add('visible'); }, 800);
-
-    document.getElementById('cookie-accept').addEventListener('click', function() {
-        localStorage.setItem('cookie-consent', 'accepted');
-        banner.classList.remove('visible');
-        loadGA();
-    });
-
-    document.getElementById('cookie-decline').addEventListener('click', function() {
-        localStorage.setItem('cookie-consent', 'declined');
-        banner.classList.remove('visible');
     });
 })();
 </script>

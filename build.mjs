@@ -210,13 +210,11 @@ function blogTemplate(title, date, content, description, tags, slug, cover) {
             .nav-brand img { width: 24px; height: 24px; }
         }
     </style>
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-K3DR1kRxwm1G-J9Q8KBme.js"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-WQZ32S81FX');
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
     </script>
 </head>
 <body>
@@ -384,13 +382,11 @@ function blogIndexTemplate(posts) {
             .post-body { padding: 14px 16px 18px; }
         }
     </style>
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-K3DR1kRxwm1G-J9Q8KBme.js"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-WQZ32S81FX');
+        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+        plausible.init()
     </script>
 </head>
 <body>
@@ -693,7 +689,7 @@ const privacyContent = `
         <li>All data is stored locally on your Mac using SwiftData</li>
         <li>No data is sent to any server other than Google APIs</li>
         <li>Hora does not operate any backend servers &mdash; there is no server-side data storage</li>
-        <li>This website uses Google Analytics to understand visitor behavior (with cookie consent)</li>
+        <li>This website uses Plausible Analytics &mdash; a privacy-friendly, cookieless analytics service that does not collect any personal data or track visitors across sites</li>
     </ul>
 
     <h3>Data Protection</h3>

@@ -7,7 +7,7 @@ Landing page + blog for hora Calendar. Static site, deployed to GitHub Pages.
 - Static HTML (`index.html`) + Node.js build script (`build.mjs`) + `marked` for Markdown
 - Deploy: GitHub Actions -> GitHub Pages (on push to main)
 - Domain: horacal.app
-- Analytics: GA4 (G-WQZ32S81FX), loaded only after cookie consent
+- Analytics: Plausible (cookieless, no consent banner needed); custom events via `plausible(name, { props })`
 - Newsletter: Cloudflare Worker (`newsletter-worker/`)
 - Fonts: Bumbbled (custom, `assets/Bumbbled.otf`) + Geist (CDN)
 
