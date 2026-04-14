@@ -3,7 +3,7 @@ title: "The SwiftUI Bug I Can't Fix: .preferredColorScheme Ignores Non-Key Windo
 date: 2026-04-08
 description: "SwiftUI's .preferredColorScheme doesn't update non-key windows immediately on macOS. Here's everything I've tried, the diagnostic tests I wrote, and why I'm asking for help."
 tags: swiftui, macos, appearance, dark-mode, light-mode, bug, open-source, help-wanted
-cover: /assets/blog/appearance-bug-hero.webp
+cover: /assets/blog/swiftui-appearance-bug-cover.webp
 ---
 
 I've been building [hora Calendar](https://horacal.app) — a native macOS Google Calendar client — and I hit a wall. Not a "spend another hour on it" wall. A "I've tried six different approaches over two days and none of them fully work" well.

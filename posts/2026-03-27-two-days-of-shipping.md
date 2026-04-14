@@ -3,7 +3,7 @@ title: "Building a Native macOS Google Calendar App in 48 Hours"
 date: 2026-03-27
 description: "How I shipped PKCE auth, WidgetKit, dual timezone, and availability sharing for hora — a native SwiftUI Google Calendar client for macOS."
 tags: swiftui, macos, google-calendar, indie-dev, build-in-public, widgetkit, pkce, native-app
-cover: /assets/blog/day-view-april.webp
+cover: /assets/blog/two-days-of-shipping-cover.webp
 ---
 
 Two days. That's all it took to transform [hora](https://horacal.app) — a native macOS Google Calendar client built with SwiftUI — from a working prototype into something that actually *feels* like a product.

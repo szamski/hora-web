@@ -3,7 +3,7 @@ title: "How we fixed the SwiftUI appearance bug (it wasn't .preferredColorScheme
 date: 2026-04-10
 description: "Last week I wrote a help-wanted post about .preferredColorScheme not updating non-key windows on macOS. Here's the actual cause — and the three-line fix that made it go away."
 tags: swiftui, macos, appearance, dark-mode, light-mode, bug-fix, devlog
-cover: /assets/blog/appearance-fix-hero.webp
+cover: /assets/blog/fixing-the-appearance-bug-cover.webp
 ---
 
 [Last week I published a help-wanted post](/blog/2026-04-08-swiftui-appearance-bug/) about hora Calendar's appearance switching. Light/Dark/Auto toggle in Settings, `@AppStorage`, `.preferredColorScheme()` — textbook setup, and the main window wouldn't update until you defocused Settings. Two full days of approaches that didn't work.

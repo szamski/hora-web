@@ -3,7 +3,7 @@ title: "Road to Launch: Where hora Calendar Stands Today"
 date: 2026-03-31
 description: "hora Calendar is almost ready. Here's where we are with App Store prep, Google Cloud verification, TestFlight, and what's coming next."
 tags: indie-dev, build-in-public, macos, google-calendar, swiftui, app-store, testflight
-cover: /assets/blog/month-view.webp
+cover: /assets/blog/road-to-launch-cover.webp
 ---
 
 It's been five days since I [started building hora](/blog/2026-03-26-building-hora/), and the app has gone from prototype to something I genuinely use every day. A lot happened since [the first 48-hour sprint](/blog/2026-03-27-two-days-of-shipping/). Here's an honest update on where things stand.
