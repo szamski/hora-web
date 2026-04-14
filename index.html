@@ -240,13 +240,16 @@
             flex-direction: column;
             overflow-y: auto;
         }
+        @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .nav-mobile { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        }
         .nav-mobile.open { display: flex; }
         .nav-mobile-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
-            height: 56px;
+            padding: 0 16px;
+            height: 57px;
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
         }
@@ -259,7 +262,7 @@
             display: flex;
         }
         .nav-mobile-links { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-        .nav-mobile a {
+        .nav-mobile-links a {
             color: var(--text-muted);
             text-decoration: none;
             font-size: 18px;
@@ -268,8 +271,8 @@
             border-bottom: 1px solid var(--border);
             transition: color 0.2s;
         }
-        .nav-mobile a:hover { color: var(--text); }
-        .nav-mobile a.btn {
+        .nav-mobile-links a:hover { color: var(--text); }
+        .nav-mobile-links a.btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -282,8 +285,9 @@
             padding: 12px 24px;
             margin-top: 8px;
             font-size: 15px;
+            border-bottom: none;
         }
-        .nav-mobile a.btn:hover { color: #fff; }
+        .nav-mobile-links a.btn:hover { color: #fff; }
 
         .btn {
             display: inline-flex;
@@ -883,6 +887,7 @@
             .cta-card { padding: 32px 20px; }
             .cta-form input { min-width: 0; }
             .nav-inner { padding: 0 12px; }
+            .nav-mobile-header { padding: 0 12px; }
             .nav-brand { font-size: 15px; gap: 6px; }
             .nav-brand img { width: 24px; height: 24px; }
         }
