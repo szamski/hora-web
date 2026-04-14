@@ -6,9 +6,34 @@ const ROOT = import.meta.dirname;
 const DIST = join(ROOT, 'dist');
 
 const MOBILE_NAV_JS = `<script>
-function toggleMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger'),o=m.classList.toggle('open');b.setAttribute('aria-expanded',o);b.innerHTML=o?'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';document.body.style.overflow=o?'hidden':'';}
-function closeMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger');m.classList.remove('open');b.setAttribute('aria-expanded','false');b.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';document.body.style.overflow='';}
+function _lockScroll(lock){var h=document.documentElement,b=document.body;if(lock){h.style.overflow='hidden';b.style.overflow='hidden';}else{h.style.overflow='';b.style.overflow='';}}
+function toggleMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger'),o=m.classList.toggle('open');b.setAttribute('aria-expanded',o);b.innerHTML=o?'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(o);}
+function closeMobileNav(){var m=document.getElementById('nav-mobile'),b=document.querySelector('.nav-hamburger');m.classList.remove('open');b.setAttribute('aria-expanded','false');b.innerHTML='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';_lockScroll(false);}
 </script>`;
+
+const FOOTER_CSS = `
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; }
+        footer p { font-size: 13px; color: #9CA3AF; }
+        .footer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .footer-inner a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-inner a:hover { color: var(--text); }
+        .footer-links { display: flex; align-items: center; gap: 16px; }
+        .footer-links a { font-size: 13px; }
+        @media (max-width: 768px) { .footer-inner { flex-direction: column; gap: 12px; text-align: center; } }`;
+
+const FOOTER_HTML = `<footer>
+    <div class="footer-inner">
+        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="text-decoration: underline;">szamowski.dev</a></p>
+        <div class="footer-links">
+            <a href="/privacy/">Privacy</a>
+            <a href="/terms/">Terms</a>
+            <a href="mailto:hello@horacal.app" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="https://github.com/szamski/hora-web" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
+            <a href="https://x.com/moto_szama" aria-label="X / Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+    </div>
+</footer>`;
+
 const POSTS_DIR = join(ROOT, 'posts');
 
 // --- Clean & copy static files to dist ---
@@ -195,8 +220,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
         .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 14px; margin-bottom: 32px; transition: color 0.2s; }
         .back-link:hover { color: var(--text); }
 
-        footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; }
-        footer p { font-size: 13px; color: #555; }
+${FOOTER_CSS}
 
         @media (max-width: 768px) {
             article { padding: 40px 16px 60px; }
@@ -252,18 +276,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
 </article>
 ${ctaBlock}
 </main>
-<footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
-    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
-        <div style="display: flex; gap: 16px; align-items: center;">
-            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
-            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
-            <a href="mailto:hello@horacal.app" aria-label="Email" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
-            <a href="https://github.com/szamski/hora-web" aria-label="GitHub" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
-            <a href="https://x.com/moto_szama" aria-label="X / Twitter" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
-    </div>
-</footer>
+${FOOTER_HTML}
 ${MOBILE_NAV_JS}
 </body>
 </html>`;
@@ -358,8 +371,7 @@ function blogIndexTemplate(posts) {
 
         .empty { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px 80px; text-align: center; color: var(--text-muted); }
 
-        footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; }
-        footer p { font-size: 13px; color: #555; }
+${FOOTER_CSS}
 
         @media (max-width: 768px) {
             .blog-header { padding: 40px 16px 32px; }
@@ -424,18 +436,7 @@ function blogIndexTemplate(posts) {
 </div>
 ${ctaBlock}
 </main>
-<footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
-    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
-        <div style="display: flex; gap: 16px; align-items: center;">
-            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
-            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
-            <a href="mailto:hello@horacal.app" aria-label="Email" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
-            <a href="https://github.com/szamski/hora-web" aria-label="GitHub" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
-            <a href="https://x.com/moto_szama" aria-label="X / Twitter" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
-    </div>
-</footer>
+${FOOTER_HTML}
 ${MOBILE_NAV_JS}
 </body>
 </html>`;
@@ -603,8 +604,7 @@ function legalPageTemplate(title, lastUpdated, content) {
         .legal ul { color: var(--text-muted); font-size: 15px; margin-bottom: 16px; padding-left: 24px; list-style: none; }
         .legal li { position: relative; padding-left: 16px; margin-bottom: 8px; }
         .legal li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
-
-        footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; }
+${FOOTER_CSS}
 
         @media (max-width: 768px) {
             .legal { padding: 40px 16px 60px; }
@@ -651,18 +651,7 @@ function legalPageTemplate(title, lastUpdated, content) {
     ${content}
 </section>
 </main>
-<footer style="border-top: 1px solid var(--border); padding: 24px; text-align: center;">
-    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-        <p style="font-size: 13px; color: #9CA3AF;">&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: #9CA3AF; text-decoration: underline;">szamowski.dev</a></p>
-        <div style="display: flex; gap: 16px; align-items: center;">
-            <a href="/privacy/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Privacy</a>
-            <a href="/terms/" style="font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Terms</a>
-            <a href="mailto:hello@horacal.app" aria-label="Email" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
-            <a href="https://github.com/szamski/hora-web" aria-label="GitHub" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></a>
-            <a href="https://x.com/moto_szama" aria-label="X / Twitter" style="color: var(--text-muted); transition: color 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
-    </div>
-</footer>
+${FOOTER_HTML}
 ${MOBILE_NAV_JS}
 </body>
 </html>`;
@@ -849,12 +838,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
         .feat-screenshot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; height: 60%; background: radial-gradient(ellipse, rgba(255,56,60,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
         .feat-screenshot img { position: relative; z-index: 1; width: 100%; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.5), 0 0 80px rgba(255,56,60,0.04); }
 
-        footer { border-top: 1px solid var(--border); padding: 24px; }
-        .footer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
-        .footer-inner p { font-size: 13px; color: var(--text-muted); }
-        .footer-inner a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-inner a:hover { color: var(--text); }
-        .footer-links { display: flex; align-items: center; gap: 16px; }
+${FOOTER_CSS}
 
         @media (max-width: 768px) {
             .feat-grid { grid-template-columns: 1fr; }
@@ -880,7 +864,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
             <a href="/blog/">Blog</a>
             <a href="/#download" class="btn">Get the App</a>
         </div>
-        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="var m=document.getElementById('nav-m');m.classList.toggle('open');this.setAttribute('aria-expanded',m.classList.contains('open'))">
+        <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <line x1="3" y1="6" x2="21" y2="6"/>
                 <line x1="3" y1="12" x2="21" y2="12"/>
@@ -888,13 +872,13 @@ const featuresPageTemplate = `<!DOCTYPE html>
             </svg>
         </button>
     </div>
-    <div class="nav-mobile" id="nav-m">
-        <a href="/features/" onclick="document.getElementById('nav-m').classList.remove('open')">Features</a>
-        <a href="/#roadmap" onclick="document.getElementById('nav-m').classList.remove('open')">Journey</a>
-        <a href="/blog/">Blog</a>
-        <a href="/#download" class="btn" onclick="document.getElementById('nav-m').classList.remove('open')">Get the App</a>
-    </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a href="/features/" onclick="closeMobileNav()">Features</a>
+    <a href="/#roadmap" onclick="closeMobileNav()">Journey</a>
+    <a href="/blog/" onclick="closeMobileNav()">Blog</a>
+    <a href="/#download" class="btn" onclick="closeMobileNav()">Get the App</a>
+</div>
 
 <main>
 <div class="features-hero">
@@ -1089,21 +1073,8 @@ const featuresPageTemplate = `<!DOCTYPE html>
 
 </main>
 
-<footer>
-    <div class="footer-inner">
-        <p>&copy; 2026 hora Calendar. Developed by <a href="https://szamowski.dev" style="color: var(--text-muted); text-decoration: underline;">szamowski.dev</a></p>
-        <div class="footer-links">
-            <a href="/privacy/" style="font-size: 13px;">Privacy</a>
-            <a href="/terms/" style="font-size: 13px;">Terms</a>
-            <a href="mailto:hello@horacal.app" aria-label="Email">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
-            <a href="https://x.com/moto_szama" aria-label="X / Twitter">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-        </div>
-    </div>
-</footer>
+${FOOTER_HTML}
+${MOBILE_NAV_JS}
 </body>
 </html>`;
 
