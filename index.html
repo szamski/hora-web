@@ -81,6 +81,15 @@
         window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
         plausible.init()
     </script>
+
+    <!-- Google Ads (conversion tracking only, no GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-18070613857');
+    </script>
     <style>
         @font-face {
             font-family: 'Bumbbled';
@@ -1437,6 +1446,9 @@
                     msg.style.display = 'block';
                     form.style.display = 'none';
                     track('waitlist_success', { method: 'email' });
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'conversion', { 'send_to': 'AW-18070613857/NVQcCNP48ZscEOHe3qhD' });
+                    }
                 } else {
                     throw new Error('Failed');
                 }

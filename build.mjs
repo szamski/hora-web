@@ -34,6 +34,15 @@ const FOOTER_HTML = `<footer>
     </div>
 </footer>`;
 
+const GOOGLE_ADS_TAG = `<!-- Google Ads (conversion tracking only, no GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-18070613857');
+    </script>`;
+
 const POSTS_DIR = join(ROOT, 'posts');
 
 // --- Clean & copy static files to dist ---
@@ -136,6 +145,7 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
     <meta name="description" content="${description}">
     <link rel="canonical" href="https://horacal.app/blog/${slug}/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    ${GOOGLE_ADS_TAG}
     <link rel="alternate" type="application/rss+xml" title="hora Calendar Blog" href="/blog/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${title}">
@@ -312,6 +322,7 @@ function blogIndexTemplate(posts) {
     <meta name="description" content="Updates, dev logs, and announcements from the hora Calendar team.">
     <link rel="canonical" href="https://horacal.app/blog/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    ${GOOGLE_ADS_TAG}
     <link rel="alternate" type="application/rss+xml" title="hora Calendar Blog" href="/blog/feed.xml">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Blog — hora Calendar">
@@ -564,6 +575,7 @@ function legalPageTemplate(title, lastUpdated, content) {
     <meta name="description" content="${title} for hora Calendar, a native macOS Google Calendar client.">
     <link rel="canonical" href="https://horacal.app/${title.toLowerCase().replace(/\s+/g, '-')}/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    ${GOOGLE_ADS_TAG}
     <style>
         @font-face { font-family: 'Bumbbled'; src: url('/assets/Bumbbled.otf') format('opentype'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
@@ -774,6 +786,7 @@ const featuresPageTemplate = `<!DOCTYPE html>
     <meta name="description" content="Every feature in hora Calendar — a native macOS Google Calendar client. Week, month, day views, keyboard shortcuts, Pomodoro, availability sharing, and more.">
     <link rel="canonical" href="https://horacal.app/features/">
     <link rel="icon" href="/assets/hora-icon.png" type="image/png">
+    ${GOOGLE_ADS_TAG}
     <meta property="og:title" content="Features — hora Calendar">
     <meta property="og:description" content="Every feature in hora Calendar — native macOS Google Calendar client built with Swift and SwiftUI.">
     <meta property="og:url" content="https://horacal.app/features/">
