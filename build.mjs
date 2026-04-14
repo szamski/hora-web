@@ -274,8 +274,8 @@ function blogIndexTemplate(posts) {
         const tagsHtml = p.tags.length
             ? `<div class="post-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>`
             : '';
-        const coverHtml = p.cover
-            ? `<div class="post-cover${i === 0 ? ' post-cover--hero' : ''}"><img src="${p.cover}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`
+        const coverHtml = p.cover && i === 0
+            ? `<div class="post-cover post-cover--hero"><img src="${p.cover}" alt="" loading="eager"></div>`
             : '';
         const isHero = i === 0;
         return `
