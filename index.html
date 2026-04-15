@@ -91,12 +91,13 @@
             ad_storage: _c === 'accepted' ? 'granted' : 'denied',
             ad_user_data: _c === 'accepted' ? 'granted' : 'denied',
             ad_personalization: _c === 'accepted' ? 'granted' : 'denied',
-            analytics_storage: 'denied'
+            analytics_storage: _c === 'accepted' ? 'granted' : 'denied'
         });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
     <script>
         gtag('js', new Date());
+        gtag('config', 'G-WQZ32S81FX');
         gtag('config', 'AW-18070613857');
     </script>
     <style>
@@ -1570,7 +1571,7 @@ function closeMobileNav() {
 <!-- Cookie Banner -->
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
     <div class="cookie-inner">
-        <p>We use Google Ads cookies to measure campaign performance. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
+        <p>We use Google Ads and Google Analytics cookies to measure campaign performance and site usage. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
         <div class="cookie-btns">
             <button class="cookie-decline" id="cookie-decline">Decline</button>
             <button class="cookie-accept" id="cookie-accept">Accept</button>
@@ -1587,7 +1588,7 @@ function closeMobileNav() {
     document.getElementById('cookie-accept').addEventListener('click', function(){
         record('accepted');
         if (typeof gtag === 'function') {
-            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted' });
         }
     });
     document.getElementById('cookie-decline').addEventListener('click', function(){ record('declined'); });

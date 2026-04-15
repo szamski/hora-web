@@ -44,12 +44,13 @@ const GOOGLE_ADS_TAG = `<!-- Google Ads (conversion tracking only, no GA4) with 
             ad_storage: _c === 'accepted' ? 'granted' : 'denied',
             ad_user_data: _c === 'accepted' ? 'granted' : 'denied',
             ad_personalization: _c === 'accepted' ? 'granted' : 'denied',
-            analytics_storage: 'denied'
+            analytics_storage: _c === 'accepted' ? 'granted' : 'denied'
         });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18070613857"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQZ32S81FX"></script>
     <script>
         gtag('js', new Date());
+        gtag('config', 'G-WQZ32S81FX');
         gtag('config', 'AW-18070613857');
     </script>`;
 
@@ -69,7 +70,7 @@ const COOKIE_BANNER_CSS = `
 
 const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
     <div class="cookie-inner">
-        <p>We use Google Ads cookies to measure campaign performance. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
+        <p>We use Google Ads and Google Analytics cookies to measure campaign performance and site usage. Plausible (cookieless) analytics runs regardless. See our <a href="/privacy/">Privacy Policy</a>.</p>
         <div class="cookie-btns">
             <button class="cookie-decline" id="cookie-decline">Decline</button>
             <button class="cookie-accept" id="cookie-accept">Accept</button>
@@ -86,7 +87,7 @@ const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="
     document.getElementById('cookie-accept').addEventListener('click', function(){
         record('accepted');
         if (typeof gtag === 'function') {
-            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+            gtag('consent', 'update', { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted' });
         }
     });
     document.getElementById('cookie-decline').addEventListener('click', function(){ record('declined'); });
@@ -799,7 +800,8 @@ const privacyContent = `
     <p>The Hora Calendar macOS application does not set cookies or use any advertising tracking. The marketing website at horacal.app uses a limited set of third-party technologies:</p>
     <ul>
         <li><strong>Plausible Analytics</strong> &mdash; cookieless, privacy-friendly traffic analytics. No personal data, no cross-site tracking.</li>
-        <li><strong>Google Ads conversion tracking</strong> &mdash; when you arrive from a Google Ads click, Google's gtag.js sets first-party cookies (<code>_gcl_au</code> and related) to measure whether you later complete the newsletter signup. This is used solely to report Ads campaign performance to us; Google may also use this data per its own policies. No GA4, no remarketing lists, no cross-site profiling is enabled on this site.</li>
+        <li><strong>Google Ads conversion tracking</strong> &mdash; when you arrive from a Google Ads click, Google's gtag.js sets first-party cookies (<code>_gcl_au</code> and related) to measure whether you later complete the newsletter signup. This is used solely to report Ads campaign performance to us; Google may also use this data per its own policies. No remarketing lists or cross-site profiling is enabled on this site.</li>
+        <li><strong>Google Analytics 4 (GA4)</strong> &mdash; measures aggregate site usage (pageviews, referrers, device type). Runs in Consent Mode v2: until you accept cookies it operates in cookieless &ldquo;pinged&rdquo; mode with no identifiers stored; after acceptance it sets first-party cookies (<code>_ga</code>, <code>_ga_*</code>). IP addresses are anonymized by Google and data is retained for 2 months. No advertising features, no Google Signals, no user-ID tracking enabled.</li>
     </ul>
     <p>You can opt out of Google Ads personalization at <a href="https://adssettings.google.com">adssettings.google.com</a>, or block these cookies in your browser.</p>
 
@@ -863,7 +865,7 @@ const termsContent = `
 
 const privacyDir = join(DIST, 'privacy');
 mkdirSync(privacyDir, { recursive: true });
-writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'April 14, 2026', privacyContent));
+writeFileSync(join(privacyDir, 'index.html'), legalPageTemplate('Privacy Policy', 'April 15, 2026', privacyContent));
 
 const termsDir = join(DIST, 'terms');
 mkdirSync(termsDir, { recursive: true });
