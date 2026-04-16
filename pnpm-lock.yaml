@@ -93,6 +93,9 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.3
+      unified:
+        specifier: ^11.0.5
+        version: 11.0.5
 
 packages:
 

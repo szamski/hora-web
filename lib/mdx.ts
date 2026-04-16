@@ -1,9 +1,13 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
+import type { PluggableList } from "unified";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
+import { mdxComponents } from "@/components/mdx";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -13,18 +17,128 @@ export type PageFrontmatter = {
   lastUpdated: string;
 };
 
+type PostFrontmatterRaw = {
+  title: string;
+  date: string;
+  description: string;
+  tags?: string;
+  cover?: string;
+  ogImage?: string;
+};
+
+export type PostFrontmatter = Omit<PostFrontmatterRaw, "tags"> & {
+  tags: string[];
+};
+
+export type PostMeta = {
+  slug: string;
+  frontmatter: PostFrontmatter;
+};
+
+export type Post = PostMeta & {
+  content: React.ReactNode;
+};
+
+function parseTags(tags: string | undefined): string[] {
+  if (!tags) return [];
+  return tags
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+}
+
+function formatDate(date: string): string {
+  return date.length > 10 ? date : date;
+}
+
+const remarkPlugins: PluggableList = [remarkGfm];
+
+const rehypePlugins: PluggableList = [
+  rehypeSlug,
+  [
+    rehypeAutolinkHeadings,
+    {
+      behavior: "append",
+      properties: {
+        className: ["heading-anchor"],
+        ariaLabel: "Link to section",
+        tabIndex: -1,
+      },
+    },
+  ],
+  [
+    rehypePrettyCode,
+    {
+      theme: "github-dark-dimmed",
+      keepBackground: true,
+      defaultLang: "plaintext",
+    },
+  ],
+];
+
+const mdxOptions = { remarkPlugins, rehypePlugins };
+
 export const getPageMdx = cache(async (slug: string) => {
   const filePath = path.join(CONTENT_DIR, "pages", `${slug}.mdx`);
   const raw = await readFile(filePath, "utf-8");
   const { content, frontmatter } = await compileMDX<PageFrontmatter>({
     source: raw,
-    options: {
-      parseFrontmatter: true,
-      mdxOptions: {
-        remarkPlugins: [remarkGfm],
-        rehypePlugins: [rehypeSlug],
-      },
-    },
+    options: { parseFrontmatter: true, mdxOptions },
+    components: mdxComponents,
   });
   return { content, frontmatter };
 });
+
+export const getAllPosts = cache(async (): Promise<PostMeta[]> => {
+  const dir = path.join(CONTENT_DIR, "posts");
+  const files = await readdir(dir);
+  const mdxFiles = files.filter((f) => f.endsWith(".mdx"));
+  const posts = await Promise.all(
+    mdxFiles.map(async (file) => {
+      const slug = file.replace(/\.mdx$/, "");
+      const raw = await readFile(path.join(dir, file), "utf-8");
+      const { frontmatter } = await compileMDX<PostFrontmatterRaw>({
+        source: raw,
+        options: { parseFrontmatter: true },
+      });
+      return {
+        slug,
+        frontmatter: {
+          ...frontmatter,
+          date: formatDate(frontmatter.date),
+          tags: parseTags(frontmatter.tags),
+        },
+      } satisfies PostMeta;
+    }),
+  );
+  return posts.sort(
+    (a, b) =>
+      new Date(b.frontmatter.date).getTime() -
+      new Date(a.frontmatter.date).getTime(),
+  );
+});
+
+export const getPostBySlug = cache(
+  async (slug: string): Promise<Post | null> => {
+    const filePath = path.join(CONTENT_DIR, "posts", `${slug}.mdx`);
+    try {
+      const raw = await readFile(filePath, "utf-8");
+      const { content, frontmatter } = await compileMDX<PostFrontmatterRaw>({
+        source: raw,
+        options: { parseFrontmatter: true, mdxOptions },
+        components: mdxComponents,
+      });
+      return {
+        slug,
+        frontmatter: {
+          ...frontmatter,
+          date: formatDate(frontmatter.date),
+          tags: parseTags(frontmatter.tags),
+        },
+        content,
+      };
+    } catch {
+      return null;
+    }
+  },
+);
