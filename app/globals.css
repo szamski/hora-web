@@ -14,7 +14,7 @@
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-brand: var(--font-bumbbled), var(--font-geist), sans-serif;
 
-  --container-prose: 720px;
+  --container-article: 720px;
   --container-page: 960px;
 }
 

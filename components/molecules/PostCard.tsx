@@ -38,7 +38,7 @@ export function PostCard({
         <div
           className={cn(
             "relative w-full overflow-hidden border-b border-border bg-bg",
-            isHero ? "aspect-[2/1]" : "aspect-[16/9]",
+            isHero ? "aspect-2/1" : "aspect-21/10",
           )}
         >
           <Image

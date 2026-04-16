@@ -5,7 +5,7 @@ import { blog } from "@/content/blog";
 export function StayInLoopCta() {
   const cta = blog.footerCta;
   return (
-    <section className="mx-auto my-12 max-w-prose rounded-2xl border border-border bg-surface px-6 py-10 text-center md:px-10">
+    <section className="mx-auto my-12 max-w-article rounded-2xl border border-border bg-surface px-6 py-10 text-center md:px-10">
       <h2 className="text-xl font-semibold text-text">{cta.heading}</h2>
       <p className="mt-2 text-sm text-muted">{cta.subtitle}</p>
 

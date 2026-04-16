@@ -37,7 +37,7 @@ export default async function BlogIndexPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-prose px-6 pt-12 md:pt-16">
+      <section className="mx-auto max-w-article px-6 pt-12 md:pt-16">
         <h1 className="font-brand text-4xl font-normal tracking-tight md:text-5xl">
           {blog.heading.prefix}{" "}
           <GradientText>{blog.heading.suffixGradient}</GradientText>
@@ -45,7 +45,7 @@ export default async function BlogIndexPage() {
         <p className="mt-2 text-muted">{blog.subtitle}</p>
       </section>
 
-      <section className="mx-auto max-w-prose px-6 py-10">
+      <section className="mx-auto max-w-article px-6 py-10">
         {posts.length === 0 ? (
           <p className="text-center text-muted">No posts yet.</p>
         ) : (

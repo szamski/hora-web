@@ -13,7 +13,7 @@ export function BlogPostLayout({
 }) {
   return (
     <>
-      <article className="mx-auto max-w-prose px-6 py-12 md:py-16">
+      <article className="mx-auto max-w-article px-6 py-12 md:py-16">
         <Link
           href="/blog/"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text"
