@@ -1,7 +1,9 @@
 import Script from "next/script";
 import { Hero } from "@/components/organisms/Hero";
-import { FeaturesGrid } from "@/components/organisms/FeaturesGrid";
-import { Journey } from "@/components/organisms/Journey";
+import { FeaturesStory } from "@/components/organisms/FeaturesStory";
+import { WhyHora } from "@/components/organisms/WhyHora";
+import { BetaCta } from "@/components/organisms/BetaCta";
+import { Roadmap } from "@/components/organisms/Roadmap";
 import { Faq } from "@/components/organisms/Faq";
 import { BlogPreview } from "@/components/organisms/BlogPreview";
 import type { PostCardData } from "@/components/molecules/PostCard";
@@ -12,7 +14,7 @@ const softwareAppLd = {
   "@type": "SoftwareApplication",
   name: "hora Calendar",
   description:
-    "Native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.",
+    "The Mac calendar Google never built. Fast, native, private — a native macOS Google Calendar client built with SwiftUI.",
   url: "https://horacal.app",
   applicationCategory: "BusinessApplication",
   operatingSystem: "macOS",
@@ -48,8 +50,10 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <FeaturesGrid />
-      <Journey />
+      <FeaturesStory />
+      <WhyHora />
+      <BetaCta />
+      <Roadmap />
       <Faq />
       <BlogPreview posts={posts} />
       <Script
