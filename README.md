@@ -22,9 +22,11 @@
 
 <p align="center">
   <a href="https://horacal.app"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/features/">Features</a> &nbsp;&middot;&nbsp;
+  <a href="https://horacal.app/blog">Blog</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/privacy">Privacy</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/terms">Terms</a> &nbsp;&middot;&nbsp;
-  <a href="https://x.com/moto_szama">Follow @moto_szama</a>
+  <a href="https://x.com/moto_szama">@moto_szama</a>
 </p>
 
 ---
@@ -39,18 +41,22 @@
 
 | | Feature | Description |
 |---|---|---|
-| **Week, Month & Day** | 3 Calendar Views | Apple Calendar-style layout with smooth transitions between views. |
+| **Day, Week & Month** | 3 Calendar Views | Apple Calendar–style layout with smooth transitions between views. |
 | **Drag & Drop** | Full CRUD | Create, edit, resize, delete events. Feels native because it is. |
 | **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
-| **D/W/M/C/T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
-| **Incremental** | Smart Sync | Configurable intervals. Offline support. Native notifications. |
+| **D/W/M · C · / · J/K · T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
+| **Incremental** | Smart Sync | Configurable intervals. Native macOS notifications for upcoming events. |
 | **Multi-Account** | Color-Coded | Multiple Google accounts, each with its own color scheme. |
 | **Autocomplete** | Attendees | Invite people from Google Contacts with instant suggestions. |
 | **Pomodoro** | Focus Timer | Built-in pomodoro timer with configurable work/break intervals. |
 | **Cmd+Shift+A** | Availability Sharing | Query free slots via FreeBusy API, copy to clipboard. |
 | **Menu Bar** | Widget | Pill-shaped indicators, upcoming events, countdown to next meeting. |
+| **Recurring** | Events | Full support for recurring rules with exception handling. |
 | **9 Languages** | Localization | EN, PL, DE, ES, FR, IT, JA, PT, ZH. |
 | **Undo/Redo** | Cmd+Z | Full undo/redo for create, edit, and delete operations. |
+| **Light & Dark** | Appearance | Matches system appearance. Polished contrast in both modes. |
+
+See [horacal.app/features](https://horacal.app/features/) for the full list.
 
 ### Stack
 
@@ -65,20 +71,27 @@
 | CI/CD | Xcode Cloud (builds + TestFlight) + GitHub Actions (tests on PR) |
 | Distribution | Mac App Store / TestFlight |
 
-### Roadmap
+### Journey
 
-| # | Milestone | Status |
-|---|---|---|
-| 1 | Launch & macOS Polish | In progress — Google OAuth verification pending |
-| 2 | iOS & iPadOS App | Planned |
-| 3 | Apple Intelligence (focus time, meeting briefings) | Planned |
-| 4 | Google Workspace (Gmail context, contact enrichment) | Planned |
+**Shipped (24+ features, 25+ bugs squashed)** — Day / Week / Month views, full CRUD, drag & drop, resize, multi-account sync, Google OAuth, incremental sync, keyboard shortcuts, menu bar widget, pomodoro timer, availability sharing, invitation management, calendar visibility, recurring events, 9 languages, light & dark mode, 5/7-day week toggle, one-click meeting join, window state restore, Xcode Cloud CI/CD.
+
+**Working on now** — Focus mode & DND integration · Quick "Running late" reply · Email attendees from event detail · Invitation "Ignore" option · Light mode contrast polish · Dynamic Dock icon (macOS 26) · Localization native review.
+
+**What's next**
+
+| # | Milestone |
+|---|---|
+| 1 | Mac App Store launch — final QA sprint, macOS 27 compatibility, performance |
+| 2 | iOS & iPadOS companion — same SwiftUI foundation, designed for touch |
+| 3 | Apple Intelligence — smart scheduling, focus time planning, meeting prep briefings |
+| 4 | Google Workspace — Gmail context, contact enrichment, deeper integration |
 
 ### Links
 
 | | |
 |---|---|
 | Website | [horacal.app](https://horacal.app) |
+| Blog | [horacal.app/blog](https://horacal.app/blog) ([RSS](https://horacal.app/blog/feed.xml)) |
 | X / Twitter | [@moto_szama](https://x.com/moto_szama) |
 | Developer | [szamowski.dev](https://szamowski.dev) |
 
