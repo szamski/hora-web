@@ -1,12 +1,60 @@
+import Script from "next/script";
+import { Hero } from "@/components/organisms/Hero";
+import { FeaturesGrid } from "@/components/organisms/FeaturesGrid";
+import { Journey } from "@/components/organisms/Journey";
+import { Faq } from "@/components/organisms/Faq";
+import { BlogPreview } from "@/components/organisms/BlogPreview";
+import type { PostCardData } from "@/components/molecules/PostCard";
+
+const softwareAppLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "hora Calendar",
+  description:
+    "Native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.",
+  url: "https://horacal.app",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "macOS",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  author: {
+    "@type": "Person",
+    name: "Maciej Szamowski",
+    url: "https://szamowski.dev",
+  },
+  image: "https://horacal.app/assets/hora-icon.png",
+  screenshot: "https://horacal.app/assets/hora-demo.gif",
+};
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Maciej Szamowski",
+  url: "https://szamowski.dev",
+  sameAs: ["https://x.com/moto_szama", "https://github.com/szamski"],
+};
+
 export default function Home() {
+  const posts: PostCardData[] = [];
+
   return (
-    <main className="flex-1 flex items-center justify-center p-8">
-      <div className="text-center space-y-4">
-        <h1 className="font-brand text-5xl text-accent">
-          hora Calendar
-        </h1>
-        <p className="text-muted">Migration in progress.</p>
-      </div>
-    </main>
+    <>
+      <Hero />
+      <FeaturesGrid />
+      <Journey />
+      <Faq />
+      <BlogPreview posts={posts} />
+      <Script
+        id="software-app-jsonld"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppLd) }}
+      />
+      <Script
+        id="person-jsonld"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
+      />
+    </>
   );
 }
