@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import localFont from "next/font/local";
 import { Geist } from "next/font/google";
+import { Nav } from "@/components/organisms/Nav";
+import { Footer } from "@/components/organisms/Footer";
+import { CookieBanner } from "@/components/organisms/CookieBanner";
 import "./globals.css";
 
 const geist = Geist({
@@ -87,7 +90,10 @@ export default function RootLayout({
           `}
         </Script>
 
-        {children}
+        <Nav />
+        <div className="flex-1">{children}</div>
+        <Footer />
+        <CookieBanner />
 
         <Script src={PLAUSIBLE_SRC} strategy="afterInteractive" />
         <Script id="plausible-init" strategy="afterInteractive">
