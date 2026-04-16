@@ -16,12 +16,14 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <SectionHeading heading={faq.heading} className="mb-12" />
-      <div className="space-y-3">
-        {faq.items.map((item) => (
-          <FaqItem key={item.q} question={item.q} answer={item.a} />
-        ))}
+    <section id="faq" className="bg-surface/20 py-20 md:py-28">
+      <div className="mx-auto max-w-3xl px-6">
+        <SectionHeading heading={faq.heading} className="mb-12" />
+        <div className="space-y-3">
+          {faq.items.map((item) => (
+            <FaqItem key={item.q} question={item.q} answer={item.a} />
+          ))}
+        </div>
       </div>
       <Script
         id="faq-jsonld"
