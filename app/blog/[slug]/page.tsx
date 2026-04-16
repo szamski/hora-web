@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { BlogPostLayout } from "@/components/templates/BlogPostLayout";
 import { getAllPosts, getPostBySlug } from "@/lib/mdx";
@@ -81,10 +80,8 @@ export default async function BlogPostPage({
   return (
     <>
       <BlogPostLayout frontmatter={fm}>{post.content}</BlogPostLayout>
-      <Script
-        id="blog-post-jsonld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </>

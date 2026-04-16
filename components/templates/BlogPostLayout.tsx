@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Prose } from "@/components/atoms/Prose";
 import { Tag } from "@/components/atoms/Tag";
-import { CtaBlock } from "@/components/organisms/CtaBlock";
+import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import type { PostFrontmatter } from "@/lib/mdx";
 
 export function BlogPostLayout({
@@ -13,7 +13,7 @@ export function BlogPostLayout({
 }) {
   return (
     <>
-      <article className="mx-auto max-w-article px-6 py-12 md:py-16">
+      <article className="mx-auto max-w-page px-6 py-12 md:py-16">
         <Link
           href="/blog/"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text"
@@ -37,7 +37,7 @@ export function BlogPostLayout({
         <Prose className="mt-10">{children}</Prose>
       </article>
 
-      <CtaBlock />
+      <StayInLoopCta />
     </>
   );
 }

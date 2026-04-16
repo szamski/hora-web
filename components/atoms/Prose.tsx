@@ -22,6 +22,7 @@ export function Prose({
         "prose-hr:border-border",
         "prose-img:rounded-xl prose-img:border prose-img:border-border",
         "prose-li:text-muted prose-li:marker:text-accent",
+        "[&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:pl-6",
         "prose-table:text-sm prose-th:text-text prose-td:text-muted",
         className,
       )}

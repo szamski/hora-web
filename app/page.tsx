@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { Hero } from "@/components/organisms/Hero";
 import { FeaturesStory } from "@/components/organisms/FeaturesStory";
 import { WhyHora } from "@/components/organisms/WhyHora";
@@ -56,16 +55,12 @@ export default async function Home() {
       <Roadmap />
       <Faq />
       <BlogPreview posts={posts} />
-      <Script
-        id="software-app-jsonld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppLd) }}
       />
-      <Script
-        id="person-jsonld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
       />
     </>

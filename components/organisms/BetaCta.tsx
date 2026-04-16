@@ -1,37 +1,67 @@
-import { Button } from "@/components/atoms/Button";
+import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { home } from "@/content/home";
+import { getWaitlistCount } from "@/lib/waitlist";
 
-export function BetaCta() {
+export async function BetaCta() {
   const cta = home.betaCta;
+  const hero = home.hero.newsletter;
+  const socialProof = hero.socialProof;
+  const liveCount = await getWaitlistCount(socialProof.count);
+
   return (
-    <section className="relative mx-auto my-16 max-w-article px-6 md:my-24">
+    <section className="relative overflow-hidden py-24 md:py-32">
+      {/* Ambient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-6 -top-4 h-40 rounded-full blur-3xl"
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(255,56,60,0.18) 0%, transparent 70%)",
+            "radial-gradient(ellipse 700px 400px at 15% 0%, rgba(255,56,60,0.12), transparent 65%)," +
+            "radial-gradient(ellipse 800px 500px at 85% 100%, rgba(255,115,110,0.08), transparent 65%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.3]"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          maskImage:
+            "radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 85%)",
         }}
       />
 
-      <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-surface/80 p-10 text-center backdrop-blur md:p-14">
-        <h2 className="text-3xl font-semibold tracking-tight text-text md:text-4xl">
-          {cta.heading}
-        </h2>
-        <p className="mt-3 text-base text-muted">{cta.subtitle}</p>
-        <p className="mt-1 text-xs text-muted">{cta.note}</p>
-
-        <div className="mt-7 flex justify-center">
-          <Button
-            href={cta.button.href}
-            size="lg"
-            className="shadow-[0_0_0_0_rgba(255,56,60,0)] transition-shadow duration-300 hover:shadow-[0_0_36px_rgba(255,56,60,0.45)]"
-          >
-            {cta.button.label}
-          </Button>
+      <div className="relative mx-auto max-w-2xl px-6">
+        {/* Header */}
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
+            {cta.eyebrow}
+          </span>
+          <h2 className="mt-5 font-brand text-4xl font-normal leading-tight tracking-tight md:text-5xl">
+            {cta.heading}
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted md:text-lg">
+            {cta.subtitle}
+          </p>
+          <p className="mt-2 text-xs text-muted/80">{cta.note}</p>
         </div>
 
-        <p className="mx-auto mt-10 max-w-md text-xs italic text-muted/80">
+        {/* Waitlist card */}
+        <div className="mt-10 md:mt-12">
+          <WaitlistCard
+            eyebrow={cta.cardEyebrow}
+            headline={cta.cardHeadline}
+            subheadline={cta.cardSubheadline}
+            liveCount={liveCount}
+            socialLabel={socialProof.label}
+            avatars={socialProof.avatars}
+          />
+        </div>
+
+        {/* Footnote */}
+        <p className="mx-auto mt-10 max-w-md text-balance text-center text-sm italic text-muted/80 md:mt-12">
           {cta.footnote}
         </p>
       </div>

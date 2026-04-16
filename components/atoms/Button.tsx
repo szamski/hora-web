@@ -6,7 +6,9 @@ type Size = "sm" | "md" | "lg";
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-br from-accent to-accent-glow text-white hover:opacity-90 focus-visible:ring-accent",
+    "relative overflow-hidden bg-linear-to-br from-accent to-accent-glow text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_24px_-8px_rgba(255,56,60,0.55)] transition-shadow hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_14px_32px_-8px_rgba(255,56,60,0.7)] focus-visible:ring-accent " +
+    "before:pointer-events-none before:absolute before:inset-y-0 before:-left-1/4 before:w-1/4 before:bg-linear-to-r before:from-transparent before:via-white/20 before:to-transparent before:opacity-0 before:content-[''] hover:before:opacity-100 hover:before:animate-[shimmer-slide_1.8s_ease-out_infinite] motion-reduce:before:hidden " +
+    "[&>*]:relative [&>*]:z-10",
   outline:
     "border border-border text-text hover:border-accent hover:text-accent focus-visible:ring-accent",
   ghost: "text-muted hover:text-text focus-visible:ring-accent",

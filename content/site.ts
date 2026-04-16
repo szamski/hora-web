@@ -18,7 +18,7 @@ export const site = {
     { label: "Blog", href: "/blog/" },
   ],
   cta: {
-    primary: { label: "Get the App", href: "/#download" },
+    primary: { label: "Join the TestFlight", href: "/" },
   },
   footer: {
     copyright: "© 2026 hora Calendar",

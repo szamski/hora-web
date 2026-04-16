@@ -13,25 +13,44 @@ export const home = {
     title: { prefix: "hora", suffixGradient: "Calendar" },
     tagline: "The Mac calendar Google never built.",
     pillars: ["Fast", "Native", "Private"],
-    descriptor:
-      "Built for people who find Apple Calendar too limited — and everything else too much.",
-    personalNote: [
-      "I've been using calendar apps for years, and they always felt off.",
-      "Too simple. Too complex. Too slow.",
-      "So I started building my own.",
-      "hora is a native macOS calendar designed to feel right.",
-      "Not overloaded, not limited.",
-    ],
-    personalNoteAuthor: {
-      name: "Maciej",
-      role: "Solo dev, building hora",
-    },
     newsletter: {
       placeholder: "you@email.com",
-      button: "Join the Waitlist",
+      button: "Join the TestFlight",
       hint: "Be first to know when we launch",
       githubLabel: "Star on GitHub",
       githubHref: "https://github.com/szamski/hora-web",
+      twitterLabel: "Follow @moto_szama on X",
+      twitterHref: "https://x.com/moto_szama",
+      eyebrow: "Worth the click",
+      headline: "Get in before launch.",
+      subheadline:
+        "When hora goes live, you'll get the invite — and a founding‑user discount — before anyone else.",
+      socialProof: {
+        count: 842,
+        label: "Mac folks already on the Beta TestFlight waitlist",
+        avatars: [
+          {
+            src: "https://randomuser.me/api/portraits/thumb/men/32.jpg",
+            alt: "Waitlist member avatar",
+          },
+          {
+            src: "https://randomuser.me/api/portraits/thumb/women/44.jpg",
+            alt: "Waitlist member avatar",
+          },
+          {
+            src: "https://randomuser.me/api/portraits/thumb/men/86.jpg",
+            alt: "Waitlist member avatar",
+          },
+          {
+            src: "https://randomuser.me/api/portraits/thumb/women/12.jpg",
+            alt: "Waitlist member avatar",
+          },
+          {
+            src: "https://randomuser.me/api/portraits/thumb/men/67.jpg",
+            alt: "Waitlist member avatar",
+          },
+        ],
+      },
     },
     demo: {
       videoSrc: "/assets/hora-demo.mp4",
@@ -118,51 +137,80 @@ export const home = {
   },
 
   whyHora: {
+    eyebrow: "The positioning",
     heading: { prefix: "Why", suffixGradient: "hora?" },
-    positioning: [
-      "Apple Calendar is too limited.",
-      "Fantastical is too much.",
-      "Hora aims for the balance.",
+    descriptor:
+      "Built for people who find Apple Calendar too limited — and everything else too much.",
+    comparison: [
+      { name: "Apple Calendar", tag: "Too limited", tone: "muted" as const },
+      { name: "Fantastical", tag: "Too much", tone: "muted" as const },
+      { name: "hora Calendar", tag: "Just right", tone: "accent" as const },
     ],
+    climax: {
+      prefix: "hora Calendar aims for the",
+      highlight: "balance",
+      suffix: ".",
+    },
+    personalNote: [
+      "I've been using calendar apps for years, and they always felt off.",
+      "Too simple. Too complex. Too slow.",
+      "So I started building my own.",
+      "hora is a native macOS calendar designed to feel right.",
+    ],
+    personalNoteAuthor: {
+      name: "Maciej",
+      role: "Founder & Developer",
+    },
     bio: [
-      "Still in development. Actively tested and improved.",
-      "Built by me — a solo developer.",
-      "Shaped by real usage, not feature checklists.",
+      { icon: "testflight" as const, text: "Live in TestFlight beta" },
+      { icon: "edit" as const, text: "Shaped by real usage, not checklists" },
+      { icon: "shield" as const, text: "Privacy-first by default" },
     ],
   },
 
   betaCta: {
+    eyebrow: "Beta access",
     heading: "Want to try it early?",
     subtitle: "Join the beta and help shape the product.",
     note: "Early access via TestFlight.",
-    button: { label: "Join the beta", href: "#newsletter" },
+    cardEyebrow: "Join the TestFlight",
+    cardHeadline: "Be a founding user.",
+    cardSubheadline:
+      "Drop your email, get the invite, and help shape the first cut of hora.",
     footnote:
       "If you've ever felt like your calendar is either too simple or too complex, you'll probably understand why hora exists.",
   },
 
   roadmap: {
+    eyebrow: "The roadmap",
     heading: { prefix: "What's", suffixGradient: "Next" },
+    subtitle:
+      "Where hora is going. Shipped when it's ready, not when it's scheduled.",
     items: [
       {
         n: 1,
+        status: "Shipping soon" as const,
         title: "Mac App Store Launch",
         description:
           "Final QA sprint, macOS 27 compatibility, performance optimization.",
       },
       {
         n: 2,
+        status: "Up next" as const,
         title: "iOS & iPadOS App",
         description:
           "A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch.",
       },
       {
         n: 3,
+        status: "Planned" as const,
         title: "Apple Intelligence",
         description:
           "Smart scheduling, focus time planning, and meeting prep briefings powered by on-device intelligence.",
       },
       {
         n: 4,
+        status: "On the horizon" as const,
         title: "Google Workspace",
         description:
           "Gmail context for meetings, contact enrichment, and deeper Google ecosystem integration.",
@@ -171,7 +219,10 @@ export const home = {
   },
 
   faq: {
+    eyebrow: "Good to know",
     heading: { prefix: "Frequently", suffixGradient: "Asked Questions" },
+    subtitle:
+      "Short answers to the things people ask before joining the beta.",
     items: [
       {
         q: "What is hora Calendar?",
@@ -201,6 +252,7 @@ export const home = {
   },
 
   blogPreview: {
+    eyebrow: "From the build log",
     heading: { prefix: "From the", suffixGradient: "Blog" },
     subtitle:
       "Building hora in public. Updates, dev logs, and honest progress reports.",

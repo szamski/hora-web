@@ -8,10 +8,30 @@ type Props = {
 };
 
 const baseClasses =
-  "inline-flex items-center rounded-full border border-accent/30 bg-accent/5 px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-accent transition-all md:text-sm md:tracking-normal md:normal-case";
+  "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium tracking-tight text-text " +
+  "border border-white/15 bg-white/6 backdrop-blur-xl " +
+  "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22),inset_0_-1px_0_0_rgba(0,0,0,0.25),0_8px_32px_-8px_rgba(0,0,0,0.55)] " +
+  "transition-all md:text-base";
 
 const interactiveClasses =
-  "hover:border-accent/60 hover:bg-accent/10 hover:shadow-[0_0_24px_rgba(255,56,60,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  "hover:border-white/25 hover:bg-white/10 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),0_0_28px_rgba(255,56,60,0.25),0_8px_32px_-8px_rgba(0,0,0,0.55)] " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+
+function PillContent({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <span
+        aria-hidden
+        className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-3 top-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent"
+      />
+      <span className="relative">{children}</span>
+    </>
+  );
+}
 
 export function PillChip({ children, href, className }: Props) {
   if (href) {
@@ -26,9 +46,13 @@ export function PillChip({ children, href, className }: Props) {
         className={cn(baseClasses, interactiveClasses, className)}
         {...extraProps}
       >
-        {children}
+        <PillContent>{children}</PillContent>
       </Tag>
     );
   }
-  return <span className={cn(baseClasses, className)}>{children}</span>;
+  return (
+    <span className={cn(baseClasses, className)}>
+      <PillContent>{children}</PillContent>
+    </span>
+  );
 }

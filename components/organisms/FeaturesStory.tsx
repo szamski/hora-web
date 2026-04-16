@@ -1,88 +1,219 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Icon, type IconName } from "@/components/atoms/Icon";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
+import { ParallaxImage } from "@/components/molecules/ParallaxImage";
 import { ScrollReveal } from "@/components/molecules/ScrollReveal";
 import { home } from "@/content/home";
 import { cn } from "@/lib/cn";
 
+type FeatureMeta = { icon: IconName; tag: string };
+const featureMeta: FeatureMeta[] = [
+  { icon: "apple", tag: "Native" },
+  { icon: "calendar", tag: "Planning" },
+  { icon: "meet", tag: "Menu bar" },
+  { icon: "sync", tag: "Google sync" },
+  { icon: "keyboard", tag: "Shortcuts" },
+  { icon: "shield", tag: "Privacy" },
+];
+
+function MacWindow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-surface/80 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8),0_24px_48px_-24px_rgba(255,56,60,0.25),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
+      <div className="relative flex h-9 items-center gap-2 border-b border-white/10 bg-linear-to-b from-white/6 to-transparent px-4">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(255,95,87,0.5)]" />
+        <span className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(254,188,46,0.4)]" />
+        <span className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(40,200,64,0.4)]" />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-16 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
+        />
+      </div>
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+function FeatureTag({ icon, label }: { icon: IconName; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
+      <Icon name={icon} size={12} />
+      {label}
+    </span>
+  );
+}
+
+function Numeral({ n }: { n: number }) {
+  return (
+    <span
+      aria-hidden
+      className="font-brand text-7xl leading-none tracking-tight text-transparent md:text-[112px]"
+      style={{
+        WebkitTextStroke: "1px rgba(255,56,60,0.35)",
+        textShadow: "0 0 40px rgba(255,56,60,0.15)",
+      }}
+    >
+      {String(n).padStart(2, "0")}
+    </span>
+  );
+}
+
 export function FeaturesStory() {
   const f = home.features;
   return (
-    <section
-      id="features"
-      className="mx-auto max-w-page px-6 py-20 md:py-28"
-    >
-      <SectionHeading heading={f.heading} className="mb-16 md:mb-20" />
+    <section id="features" className="relative overflow-hidden py-24 md:py-36">
+      {/* Ambient dot grid */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+          maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 85%)",
+        }}
+      />
 
-      <div className="space-y-20 md:space-y-32">
-        {f.sections.map((section, i) => {
-          const imageLeft = i % 2 === 1;
-          return (
-            <ScrollReveal
-              key={section.title}
-              as="article"
-              delay={80}
-              className="grid items-center gap-10 md:grid-cols-2 md:gap-14"
-            >
-              <div className="space-y-3">
-                <h3 className="text-2xl font-semibold tracking-tight text-text md:text-3xl">
-                  {section.title}
-                </h3>
-                {"intro" in section && section.intro ? (
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-muted">
-                    {section.intro.map((line) => (
-                      <span key={line}>{line}</span>
-                    ))}
-                  </div>
-                ) : null}
-                {"bullets" in section && section.bullets ? (
-                  <ul className="list-disc space-y-1 pl-5 text-muted marker:text-accent">
-                    {section.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
-                ) : null}
-                <p className="text-muted leading-relaxed">{section.body}</p>
-              </div>
+      {/* Warm edge glows */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 700px 400px at 0% 10%, rgba(255,56,60,0.12), transparent 60%)," +
+            "radial-gradient(ellipse 700px 500px at 100% 40%, rgba(255,115,110,0.08), transparent 60%)," +
+            "radial-gradient(ellipse 900px 500px at 50% 100%, rgba(255,56,60,0.08), transparent 60%)",
+        }}
+      />
 
-              <div
-                className={cn(
-                  "relative",
-                  imageLeft && "md:order-first",
-                )}
+      <div className="relative mx-auto max-w-page px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
+            Built for Mac
+          </span>
+          <div className="mt-5">
+            <SectionHeading heading={f.heading} />
+          </div>
+          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
+            Six things nobody else quite gets right on macOS. Here's how hora
+            does them.
+          </p>
+        </div>
+
+        <div className="mt-20 space-y-28 md:mt-28 md:space-y-40">
+          {f.sections.map((section, i) => {
+            const imageLeft = i % 2 === 1;
+            const meta = featureMeta[i] ?? featureMeta[0]!;
+            const tiltClass = imageLeft
+              ? "md:-rotate-[1.5deg]"
+              : "md:rotate-[1.5deg]";
+            return (
+              <ScrollReveal
+                key={section.title}
+                as="article"
+                delay={80}
+                className="relative grid items-center gap-12 md:grid-cols-[1fr_1.1fr] md:gap-16"
               >
+                {/* Per-feature warm halo behind the image */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute -inset-8 rounded-full blur-3xl"
+                  className={cn(
+                    "pointer-events-none absolute top-1/2 h-[60%] w-[55%] -translate-y-1/2 rounded-full blur-3xl",
+                    imageLeft ? "left-0" : "right-0",
+                  )}
                   style={{
                     background:
-                      "radial-gradient(ellipse, rgba(255,56,60,0.10) 0%, transparent 70%)",
+                      "radial-gradient(ellipse, rgba(255,56,60,0.28) 0%, rgba(255,115,110,0.08) 40%, transparent 70%)",
                   }}
                 />
-                <div className="relative overflow-hidden rounded-2xl border border-border shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-                  <Image
-                    src={section.image.src}
-                    alt={section.image.alt}
-                    width={1200}
-                    height={800}
-                    sizes="(min-width: 768px) 480px, 100vw"
-                    className="h-auto w-full"
-                  />
-                </div>
-              </div>
-            </ScrollReveal>
-          );
-        })}
-      </div>
 
-      <p className="mt-16 text-center">
-        <Link
-          href={f.allFeaturesLink.href}
-          className="text-sm text-muted transition-colors hover:text-text"
-        >
-          {f.allFeaturesLink.label}
-        </Link>
-      </p>
+                <div className="relative">
+                  <div className="flex items-center gap-4">
+                    <Numeral n={i + 1} />
+                    <FeatureTag icon={meta.icon} label={meta.tag} />
+                  </div>
+
+                  <h3 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-text md:text-[40px]">
+                    {section.title}
+                  </h3>
+
+                  {"intro" in section && section.intro ? (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {section.intro.map((line) => (
+                        <span
+                          key={line}
+                          className="inline-flex items-center rounded-full border border-white/8 bg-white/3 px-3 py-1 text-sm text-muted backdrop-blur-xl"
+                        >
+                          {line}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {"bullets" in section && section.bullets ? (
+                    <ul className="mt-5 space-y-2.5">
+                      {section.bullets.map((b) => (
+                        <li key={b} className="flex items-start gap-3 text-muted">
+                          <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent shadow-[inset_0_0_0_1px_rgba(255,56,60,0.35)]">
+                            <Icon name="check" size={11} />
+                          </span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  <p className="mt-5 text-base leading-relaxed text-muted md:text-[17px]">
+                    {section.body}
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    "relative",
+                    imageLeft && "md:order-first",
+                  )}
+                >
+                  <ParallaxImage strength={36}>
+                    <div className={cn("relative transition-transform duration-700 motion-reduce:transform-none", tiltClass)}>
+                      <MacWindow>
+                        <Image
+                          src={section.image.src}
+                          alt={section.image.alt}
+                          width={1200}
+                          height={800}
+                          sizes="(min-width: 768px) 560px, 100vw"
+                          className="h-auto w-full"
+                        />
+                      </MacWindow>
+                      {/* Reflection floor */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-x-6 -bottom-4 h-8 rounded-full blur-2xl"
+                        style={{
+                          background:
+                            "radial-gradient(ellipse, rgba(255,56,60,0.45) 0%, transparent 70%)",
+                        }}
+                      />
+                    </div>
+                  </ParallaxImage>
+                </div>
+              </ScrollReveal>
+            );
+          })}
+        </div>
+
+        <div className="mt-20 text-center md:mt-28">
+          <Link
+            href={f.allFeaturesLink.href}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-muted backdrop-blur-xl transition-all hover:border-accent/60 hover:bg-white/8 hover:text-text hover:shadow-[0_0_30px_rgba(255,56,60,0.25)]"
+          >
+            {f.allFeaturesLink.label}
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

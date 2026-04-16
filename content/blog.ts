@@ -7,17 +7,19 @@ export const blog = {
     ogDescription:
       "Updates, dev logs, and announcements from building hora.",
   },
+  eyebrow: "Building in public",
   heading: { prefix: "hora", suffixGradient: "Blog" },
-  subtitle: "Updates, dev logs, and announcements.",
+  subtitle:
+    "Updates, dev logs, and announcements from shipping a native macOS calendar.",
   rss: { label: "RSS feed", href: "/blog/feed.xml" },
   footerCta: {
-    heading: "Stay in the loop",
-    subtitle: "Get notified when hora launches. No spam.",
-    followLabel: "OR FOLLOW ALONG",
-    socials: [
-      { label: "@moto_szama", href: "https://x.com/moto_szama", icon: "x" as const },
-      { label: "Star on GitHub", href: "https://github.com/szamski/hora-web", icon: "github" as const },
-    ],
+    eyebrow: "Stay in the loop",
+    heading: "Get launch updates.",
+    subtitle: "Be first to know when hora launches. No spam.",
+    cardEyebrow: "Join the TestFlight",
+    cardHeadline: "Skip the refresh cycle.",
+    cardSubheadline:
+      "Drop your email, get the invite the moment hora ships.",
   },
 } as const;
 

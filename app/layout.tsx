@@ -6,6 +6,9 @@ import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
 import { CookieBanner } from "@/components/organisms/CookieBanner";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
+import { PageTransition } from "@/components/molecules/PageTransition";
+import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
+import { SmoothAnchorScroll } from "@/components/molecules/SmoothAnchorScroll";
 import "./globals.css";
 
 const geist = Geist({
@@ -76,7 +79,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable} ${bumbbled.variable}`}>
-      <body className="min-h-dvh flex flex-col bg-bg text-text">
+      <body className="min-h-dvh flex flex-col text-text">
         <Script id="gads-consent" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -92,8 +95,12 @@ export default function RootLayout({
         </Script>
 
         <AmbientGlow />
+        <ScrollProgressBar />
+        <SmoothAnchorScroll />
         <Nav />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1">
+          <PageTransition>{children}</PageTransition>
+        </div>
         <Footer />
         <CookieBanner />
 

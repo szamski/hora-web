@@ -12,6 +12,7 @@ export type IconName =
   | "x"
   | "apple"
   | "testflight"
+  | "shield"
   | "arrow-right"
   | "check"
   | "menu"
@@ -116,8 +117,15 @@ export function Icon({ name, size = 24, className, ...rest }: Props) {
     case "testflight":
       return (
         <svg {...common} {...strokeProps}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v6l4 2" />
+          <path d="M22 2 11 13" />
+          <path d="M22 2 15 22 11 13 2 9z" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg {...common} {...strokeProps}>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <polyline points="9 12 11 14 15 10" />
         </svg>
       );
     case "arrow-right":

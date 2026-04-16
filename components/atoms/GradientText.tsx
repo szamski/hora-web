@@ -10,7 +10,7 @@ export function GradientText({
   return (
     <span
       className={cn(
-        "bg-gradient-to-br from-accent to-accent-glow bg-clip-text text-transparent",
+        "inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pl-[0.04em] text-transparent",
         className,
       )}
     >

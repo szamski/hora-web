@@ -12,8 +12,8 @@ export function AmbientGlow() {
         className="absolute bottom-[-15%] left-1/2 h-[75%] w-[90%] rounded-full blur-[80px]"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(255,56,60,0.18) 0%, rgba(255,115,110,0.08) 30%, rgba(255,56,60,0.03) 55%, transparent 75%)",
-          animation: "glow-float-a 32s ease-in-out infinite",
+            "radial-gradient(ellipse, rgba(255,56,60,0.035) 0%, rgba(255,115,110,0.015) 30%, rgba(255,56,60,0.005) 55%, transparent 75%)",
+          animation: "glow-float-a 80s ease-in-out infinite",
           willChange: "transform, opacity",
         }}
       />
@@ -23,8 +23,8 @@ export function AmbientGlow() {
         className="absolute top-[-10%] left-[-10%] h-[55%] w-[55%] rounded-full blur-[70px]"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(255,115,110,0.12) 0%, rgba(255,56,60,0.05) 40%, transparent 70%)",
-          animation: "glow-float-b 28s ease-in-out infinite",
+            "radial-gradient(ellipse, rgba(255,115,110,0.025) 0%, rgba(255,56,60,0.01) 40%, transparent 70%)",
+          animation: "glow-float-b 90s ease-in-out infinite",
           animationDelay: "-8s",
           willChange: "transform, opacity",
         }}
@@ -35,8 +35,8 @@ export function AmbientGlow() {
         className="absolute top-0 right-[-5%] h-[55%] w-[50%] rounded-full blur-[60px]"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(255,56,60,0.10) 0%, rgba(255,115,110,0.04) 40%, transparent 65%)",
-          animation: "glow-float-c 24s ease-in-out infinite",
+            "radial-gradient(ellipse, rgba(255,56,60,0.02) 0%, rgba(255,115,110,0.008) 40%, transparent 65%)",
+          animation: "glow-float-c 70s ease-in-out infinite",
           animationDelay: "-14s",
           willChange: "transform, opacity",
         }}
