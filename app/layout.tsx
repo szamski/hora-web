@@ -5,6 +5,7 @@ import { Geist } from "next/font/google";
 import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
 import { CookieBanner } from "@/components/organisms/CookieBanner";
+import { AmbientGlow } from "@/components/organisms/AmbientGlow";
 import "./globals.css";
 
 const geist = Geist({
@@ -90,6 +91,7 @@ export default function RootLayout({
           `}
         </Script>
 
+        <AmbientGlow />
         <Nav />
         <div className="flex-1">{children}</div>
         <Footer />
