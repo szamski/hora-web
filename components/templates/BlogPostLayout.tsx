@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Prose } from "@/components/atoms/Prose";
 import { Tag } from "@/components/atoms/Tag";
@@ -14,7 +13,7 @@ export function BlogPostLayout({
 }) {
   return (
     <>
-      <article className="mx-auto max-w-[var(--container-prose)] px-6 py-16 md:py-20">
+      <article className="mx-auto max-w-prose px-6 py-12 md:py-16">
         <Link
           href="/blog/"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text"
@@ -23,7 +22,7 @@ export function BlogPostLayout({
         </Link>
 
         <p className="text-sm text-muted">{frontmatter.date}</p>
-        <h1 className="mt-2 font-brand text-3xl font-normal leading-tight tracking-tight md:text-5xl">
+        <h1 className="mt-2 text-3xl font-bold leading-tight tracking-tight text-text md:text-4xl">
           {frontmatter.title}
         </h1>
 
@@ -32,20 +31,6 @@ export function BlogPostLayout({
             {frontmatter.tags.map((t) => (
               <Tag key={t}>{t}</Tag>
             ))}
-          </div>
-        ) : null}
-
-        {frontmatter.cover ? (
-          <div className="relative mt-8 overflow-hidden rounded-xl border border-border">
-            <Image
-              src={frontmatter.cover}
-              alt=""
-              width={1600}
-              height={900}
-              priority
-              sizes="(min-width: 768px) 720px, 100vw"
-              className="h-auto w-full"
-            />
           </div>
         ) : null}
 

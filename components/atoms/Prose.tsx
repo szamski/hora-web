@@ -11,8 +11,8 @@ export function Prose({
     <div
       className={cn(
         "prose prose-invert max-w-none",
-        "prose-headings:font-brand prose-headings:font-normal prose-headings:tracking-tight",
-        "prose-h1:text-4xl prose-h2:text-2xl prose-h3:text-lg",
+        "prose-headings:font-sans prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-text",
+        "prose-h1:text-3xl md:prose-h1:text-4xl prose-h2:text-xl prose-h2:mt-10 prose-h3:text-lg",
         "prose-p:text-muted prose-p:leading-relaxed",
         "prose-a:text-accent prose-a:no-underline hover:prose-a:underline",
         "prose-strong:text-text",
@@ -21,7 +21,7 @@ export function Prose({
         "prose-blockquote:border-accent prose-blockquote:text-muted",
         "prose-hr:border-border",
         "prose-img:rounded-xl prose-img:border prose-img:border-border",
-        "prose-li:text-muted prose-li:marker:text-muted",
+        "prose-li:text-muted prose-li:marker:text-accent",
         "prose-table:text-sm prose-th:text-text prose-td:text-muted",
         className,
       )}

@@ -10,9 +10,9 @@ export function LegalPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <article className="mx-auto max-w-[var(--container-prose)] px-6 py-16 md:py-24">
+    <article className="mx-auto max-w-prose px-6 py-12 md:py-16">
       <header className="mb-10">
-        <h1 className="font-brand text-4xl font-normal tracking-tight md:text-5xl">
+        <h1 className="text-3xl font-bold tracking-tight text-text md:text-4xl">
           {title}
         </h1>
         <p className="mt-2 text-sm text-muted">Last updated: {lastUpdated}</p>
