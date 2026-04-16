@@ -13,7 +13,7 @@ export function Hero() {
       {/* Ambient background video */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <video
           autoPlay
@@ -22,7 +22,7 @@ export function Hero() {
           playsInline
           preload="auto"
           poster={hero.demo.posterSrc}
-          className="h-full w-full object-cover opacity-60 motion-reduce:hidden"
+          className="h-full w-full object-cover opacity-40 motion-reduce:hidden"
         >
           <source src={hero.demo.videoSrc} type="video/mp4" />
         </video>
@@ -33,10 +33,10 @@ export function Hero() {
           className="absolute inset-0 hidden h-full w-full object-cover opacity-40 motion-reduce:block"
         />
         {/* Soft top + strong bottom fade so content stays readable and video bleeds into page bg */}
-        <div className="absolute inset-0 bg-linear-to-b from-bg/30 via-bg/10 to-bg" />
+        <div className="absolute inset-0 bg-linear-to-b from-bg/50 via-bg/30 to-bg" />
       </div>
 
-      <div className="relative flex flex-col items-center gap-8 px-6 pb-24 pt-16 text-center md:pb-32 md:pt-24">
+      <div className="relative z-10 flex flex-col items-center gap-8 px-6 pb-24 pt-16 text-center md:pb-32 md:pt-24">
         <ParallaxIcon>
           <div className="relative">
             <div
