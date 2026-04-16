@@ -1,62 +1,72 @@
 import Image from "next/image";
 import { GradientText } from "@/components/atoms/GradientText";
+import { PillChip } from "@/components/atoms/PillChip";
 import { NewsletterForm } from "@/components/molecules/NewsletterForm";
 import { HeroVideo } from "@/components/molecules/HeroVideo";
+import { ParallaxIcon } from "@/components/molecules/ParallaxIcon";
 import { home } from "@/content/home";
 
 export function Hero() {
   const hero = home.hero;
 
   return (
-    <section className="relative flex flex-col items-center gap-6 px-6 pb-16 pt-12 text-center md:pt-16">
-      <div className="relative">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            background:
-              "radial-gradient(ellipse, rgba(255,56,60,0.25) 0%, transparent 70%)",
-          }}
-        />
-        <Image
-          src={hero.iconSrc}
-          alt="hora Calendar icon"
-          width={96}
-          height={96}
-          className="relative rounded-2xl"
-          priority
-        />
-      </div>
+    <section className="relative flex flex-col items-center gap-8 px-6 pb-20 pt-16 text-center md:pb-28 md:pt-24">
+      <ParallaxIcon>
+        <div className="relative">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse, rgba(255,56,60,0.28) 0%, transparent 70%)",
+            }}
+          />
+          <Image
+            src={hero.iconSrc}
+            alt="hora Calendar icon"
+            width={96}
+            height={96}
+            className="relative rounded-2xl"
+            priority
+          />
+        </div>
+      </ParallaxIcon>
 
-      <h1 className="font-brand text-4xl font-normal leading-[1.1] tracking-tight md:text-[56px]">
+      <h1 className="font-brand text-5xl font-normal leading-[1.05] tracking-tight md:text-[64px]">
         {hero.title.prefix}{" "}
         <GradientText>{hero.title.suffixGradient}</GradientText>
       </h1>
 
-      <p className="text-lg text-text md:text-xl">{hero.tagline}</p>
-
-      <p className="text-base font-medium tracking-wide text-muted">
-        {hero.pillars.join(". ")}.
+      <p className="max-w-2xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text md:text-3xl">
+        {hero.tagline}
       </p>
 
-      <p className="max-w-xl text-sm text-muted md:text-base">
-        {hero.descriptor}
-      </p>
-
-      <div className="mx-auto max-w-xl space-y-1.5 text-sm text-muted md:text-base">
-        {hero.personalNote.map((line, i) => (
-          <p key={i}>{line}</p>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {hero.pillars.map((p) => (
+          <PillChip key={p}>{p}</PillChip>
         ))}
       </div>
 
+      <p className="max-w-xl text-balance text-base text-muted md:text-lg">
+        {hero.descriptor}
+      </p>
+
+      <blockquote className="mx-auto max-w-xl border-l-2 border-accent/60 pl-6 text-left">
+        <div className="space-y-1.5 text-sm italic text-muted md:text-base">
+          {hero.personalNote.map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
+      </blockquote>
+
       <div
         id="newsletter"
-        className="mt-2 w-full max-w-120 scroll-mt-24 rounded-2xl border border-border bg-surface p-6"
+        className="mt-4 w-full max-w-120 scroll-mt-24 rounded-2xl border border-border bg-surface/80 p-6 backdrop-blur"
       >
         <NewsletterForm />
       </div>
 
-      <div className="relative mt-6 w-full max-w-4xl">
+      <div className="relative mt-8 w-full max-w-4xl">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-0 mx-auto my-auto h-3/4 w-3/4 rounded-full"
