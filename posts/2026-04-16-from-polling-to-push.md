@@ -3,7 +3,7 @@ title: "Real-time Google Calendar sync on macOS: killing the 5-minute lag"
 date: 2026-04-16
 description: "How hora moved from 5-minute polling to real-time Google Calendar sync on macOS — events.watch, a Cloudflare Worker, and APNs silent push."
 tags: google-calendar, real-time-sync, apns, cloudflare-workers, macos, swift, devlog
-cover: /assets/blog/from-polling-to-push-hero.webp
+cover: /assets/blog/from-polling-to-push-cover.webp
 ogImage: /assets/blog/from-polling-to-push-hero.webp
 ---
 
