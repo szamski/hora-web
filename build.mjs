@@ -284,6 +284,13 @@ function blogTemplate(title, date, content, description, tags, slug, cover, ogIm
         article pre code { background: none; padding: 0; font-size: 14px; }
         article blockquote { border-left: 3px solid var(--accent); padding-left: 16px; margin: 20px 0; color: var(--text-muted); font-style: italic; }
         article hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+        article .table-wrap { margin: 24px 0; border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--surface); }
+        article table { width: 100%; border-collapse: collapse; font-size: 14px; color: var(--text-muted); }
+        article thead { background: rgba(255,255,255,0.02); }
+        article th { text-align: left; padding: 12px 16px; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; font-size: 13px; letter-spacing: 0.01em; }
+        article td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        article tbody tr:last-child td { border-bottom: none; }
+        article tbody tr:hover { background: rgba(255,255,255,0.02); }
 
         .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 14px; margin-bottom: 32px; transition: color 0.2s; }
         .back-link:hover { color: var(--text); }
@@ -567,7 +574,9 @@ if (existsSync(POSTS_DIR)) {
         const date = meta.date || '';
         const description = meta.description || body.slice(0, 150).replace(/[#*\n]/g, '').trim();
         const tags = meta.tags ? meta.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
-        const html = marked.parse(body);
+        const html = marked.parse(body)
+            .replace(/<table>/g, '<div class="table-wrap"><table>')
+            .replace(/<\/table>/g, '</table></div>');
 
         const postDir = join(blogDir, slug);
         mkdirSync(postDir, { recursive: true });
