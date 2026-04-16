@@ -22,6 +22,10 @@ export const home = {
       "hora is a native macOS calendar designed to feel right.",
       "Not overloaded, not limited.",
     ],
+    personalNoteAuthor: {
+      name: "Maciej",
+      role: "Solo dev, building hora",
+    },
     newsletter: {
       placeholder: "you@email.com",
       button: "Join the Waitlist",
