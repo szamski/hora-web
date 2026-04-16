@@ -9,31 +9,44 @@ export function Hero() {
   const hero = home.hero;
 
   return (
-    <section className="relative flex flex-col items-center gap-8 px-6 pb-16 pt-16 text-center md:pb-24 md:pt-24">
-      <Image
-        src={hero.iconSrc}
-        alt="hora Calendar icon"
-        width={96}
-        height={96}
-        className="rounded-2xl"
-        priority
-      />
+    <section className="relative flex flex-col items-center gap-6 px-6 pb-16 pt-12 text-center md:pt-20">
+      <div className="relative">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(ellipse, rgba(255,56,60,0.25) 0%, transparent 70%)",
+          }}
+        />
+        <Image
+          src={hero.iconSrc}
+          alt="hora Calendar icon"
+          width={96}
+          height={96}
+          className="relative rounded-2xl"
+          priority
+        />
+      </div>
 
-      <h1 className="font-brand text-5xl font-normal leading-tight tracking-tight md:text-7xl">
+      <h1 className="font-brand text-4xl font-normal leading-[1.1] tracking-tight md:text-[56px]">
         {hero.title.prefix}{" "}
         <GradientText>{hero.title.suffixGradient}</GradientText>
       </h1>
 
-      <div className="space-y-2">
-        <p className="text-xl text-text md:text-2xl">{hero.subtitle}</p>
-        <p className="text-base text-muted md:text-lg">{hero.tagline}</p>
+      <div className="space-y-1">
+        <p className="text-lg text-text md:text-xl">{hero.subtitle}</p>
+        <p className="text-sm text-muted md:text-base">{hero.tagline}</p>
       </div>
 
-      <div id="newsletter" className="w-full max-w-md">
-        <NewsletterForm className="mx-auto" />
+      <div
+        id="newsletter"
+        className="w-full max-w-120 rounded-2xl border border-border bg-surface p-6"
+      >
+        <NewsletterForm />
       </div>
 
-      <div className="relative mt-8 w-full max-w-4xl">
+      <div className="relative mt-4 w-full max-w-4xl">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-0 mx-auto my-auto h-3/4 w-3/4 rounded-full"
@@ -67,7 +80,7 @@ export function Hero() {
 
       <div
         id="download"
-        className="mt-4 flex w-full flex-col items-center justify-center gap-3 sm:flex-row"
+        className="mt-2 flex w-full flex-col items-center justify-center gap-3 sm:flex-row"
       >
         {hero.downloads.map((d) => (
           <Button

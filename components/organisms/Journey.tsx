@@ -17,7 +17,7 @@ export function Journey() {
         {/* Shipped */}
         <div>
           <PhaseLabel icon="check" tone="done" label={j.shipped.label} />
-          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {j.shipped.items.map((item) => (
               <div
                 key={item}
