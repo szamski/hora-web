@@ -45,6 +45,10 @@ export const home = {
         title: "Feels like a real Mac app. Because it is.",
         intro: ["Opens instantly.", "Scrolls smoothly.", "No Electron. No web views."],
         body: "Just a fast, lightweight calendar that respects your system.",
+        image: {
+          src: "/assets/features/views.webp",
+          alt: "hora Calendar week and month views",
+        },
       },
       {
         title: "Plan your day without friction.",
@@ -55,10 +59,18 @@ export const home = {
           "Fast search across all your calendars",
         ],
         body: "Everything stays simple — even as your schedule grows.",
+        image: {
+          src: "/assets/features/events.webp",
+          alt: "Creating and editing events in hora",
+        },
       },
       {
         title: "Your next meeting. Always visible.",
         body: "See what's coming up directly from the menu bar and join in one click. No opening apps. No searching. No context switching.",
+        image: {
+          src: "/assets/features/productivity.webp",
+          alt: "hora menu bar widget showing upcoming meeting",
+        },
       },
       {
         title: "Works with Google Calendar — without the usual friction.",
@@ -68,10 +80,18 @@ export const home = {
           "Add and join meetings via links (Meet, Zoom, Teams)",
         ],
         body: "Everything stays in sync, without getting in your way.",
+        image: {
+          src: "/assets/features/sync.webp",
+          alt: "Multi-account Google Calendar sync in hora",
+        },
       },
       {
         title: "Built for speed.",
         body: "Use familiar Google Calendar-style shortcuts to navigate, create, and search. Stay in flow — without reaching for the mouse.",
+        image: {
+          src: "/assets/features/pomodoro.webp",
+          alt: "hora focus session",
+        },
       },
       {
         title: "Your data stays between you and Google.",
@@ -81,6 +101,10 @@ export const home = {
           "No data stored outside your device.",
         ],
         body: "Just a direct connection to Google Calendar.",
+        image: {
+          src: "/assets/features/settings.webp",
+          alt: "hora privacy-focused settings",
+        },
       },
     ],
     allFeaturesLink: {

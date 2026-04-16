@@ -14,7 +14,7 @@ export const site = {
   },
   nav: [
     { label: "Features", href: "/features/" },
-    { label: "Journey", href: "/#roadmap" },
+    { label: "Roadmap", href: "/#roadmap" },
     { label: "Blog", href: "/blog/" },
   ],
   cta: {
