@@ -42,7 +42,7 @@ function ComparisonCard({
 
       <p
         className={cn(
-          "relative text-[9px] font-semibold uppercase tracking-[0.18em] md:text-[10px] md:tracking-[0.22em]",
+          "relative whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.08em] md:text-[10px] md:tracking-[0.22em]",
           active ? "text-accent" : "text-muted",
         )}
       >
@@ -162,7 +162,7 @@ export function WhyHora() {
               className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
             >
               <Icon name="x" size={12} />
-              <span>{author.twitterLabel}</span>
+              <span className="hidden sm:inline">{author.twitterLabel}</span>
             </a>
             </figcaption>
         </figure>
