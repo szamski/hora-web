@@ -2,13 +2,13 @@ import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 import { cn } from "@/lib/cn";
 
-type Status = "Shipping soon" | "Up next" | "Planned" | "On the horizon";
+type Status = "Open Beta Tests" | "Up next" | "Planned" | "On the horizon";
 
 const statusStyles: Record<
   Status,
   { pill: string; dot: string; connector: string }
 > = {
-  "Shipping soon": {
+  "Open Beta Tests": {
     pill: "border-accent/50 bg-accent/10 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_0_28px_rgba(255,56,60,0.35)]",
     dot: "bg-accent shadow-[0_0_14px_rgba(255,56,60,1)] ring-4 ring-accent/20",
     connector: "from-accent/70",
@@ -101,7 +101,7 @@ export function Roadmap() {
 
                 {/* Card */}
                 <div className="relative flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/4 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_24px_48px_-32px_rgba(0,0,0,0.6)] md:p-6">
-                  {item.status === "Shipping soon" ? (
+                  {item.status === "Open Beta Tests" ? (
                     <div
                       aria-hidden
                       className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full blur-3xl"
@@ -133,7 +133,7 @@ export function Roadmap() {
                       styles.pill,
                     )}
                   >
-                    {item.status === "Shipping soon" ? (
+                    {item.status === "Open Beta Tests" ? (
                       <span className="relative flex h-1.5 w-1.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />

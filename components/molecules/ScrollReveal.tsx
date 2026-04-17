@@ -17,38 +17,32 @@ export function ScrollReveal({
   as: Tag = "div",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const update = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setVisible(true);
-      return;
-    }
     const el = ref.current;
     if (!el) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+    const rect = el.getBoundingClientRect();
+    const belowFold = rect.top > window.innerHeight;
+    if (!belowFold) return;
+    setVisible(false);
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (!entry) return;
-        if (entry.isIntersecting) {
-          const t = setTimeout(() => setVisible(true), delay);
-          io.disconnect();
-          return () => clearTimeout(t);
-        }
+        if (!entry?.isIntersecting) return;
+        setTimeout(() => setVisible(true), delay);
+        io.disconnect();
       },
       { threshold: 0.15, rootMargin: "0px 0px -80px 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, [delay, reducedMotion]);
+    const fallback = setTimeout(() => setVisible(true), 1500);
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
+  }, [delay]);
 
   return (
     <Tag

@@ -147,19 +147,19 @@ export function WhyHora() {
             ))}
           </blockquote>
 
-          <figcaption className="relative mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
+            <figcaption className="relative mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
             <Image
-              src={site.brand.logoSrc}
+              src="/assets/maciej_szamowski.jpg"
               alt=""
               width={36}
               height={36}
-              className="rounded-lg border border-white/10"
+              className="rounded-full border border-white/10"
             />
             <div className="leading-tight">
               <p className="text-sm font-semibold text-text">{author.name}</p>
               <p className="text-xs text-muted">{author.role}</p>
             </div>
-          </figcaption>
+            </figcaption>
         </figure>
 
         {/* Trust facts */}

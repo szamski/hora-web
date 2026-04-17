@@ -17,23 +17,6 @@ const featureMeta: FeatureMeta[] = [
   { icon: "shield", tag: "Privacy" },
 ];
 
-function MacWindow({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-surface/80 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8),0_24px_48px_-24px_rgba(255,56,60,0.25),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
-      <div className="relative flex h-9 items-center gap-2 border-b border-white/10 bg-linear-to-b from-white/6 to-transparent px-4">
-        <span className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(255,95,87,0.5)]" />
-        <span className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(254,188,46,0.4)]" />
-        <span className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_6px_rgba(40,200,64,0.4)]" />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-16 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
-        />
-      </div>
-      <div className="relative">{children}</div>
-    </div>
-  );
-}
-
 function FeatureTag({ icon, label }: { icon: IconName; label: string }) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
@@ -178,16 +161,39 @@ export function FeaturesStory() {
                 >
                   <ParallaxImage strength={36}>
                     <div className={cn("relative transition-transform duration-700 motion-reduce:transform-none", tiltClass)}>
-                      <MacWindow>
-                        <Image
-                          src={section.image.src}
-                          alt={section.image.alt}
-                          width={1200}
-                          height={800}
-                          sizes="(min-width: 768px) 560px, 100vw"
-                          className="h-auto w-full"
-                        />
-                      </MacWindow>
+                      {(() => {
+                        const media = section.image.src.endsWith(".svg") ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={section.image.src}
+                            alt={section.image.alt}
+                            className="block h-auto w-full rounded-xl"
+                          />
+                        ) : (
+                          <Image
+                            src={section.image.src}
+                            alt={section.image.alt}
+                            width={1200}
+                            height={800}
+                            sizes="(min-width: 768px) 560px, 100vw"
+                            className="block h-auto w-full rounded-xl"
+                            priority
+                            loading="eager"
+                          />
+                        );
+                        const framed = "framed" in section.image && section.image.framed;
+                        return framed ? (
+                          <div className="rounded-2xl bg-linear-to-b from-accent/18 to-accent/2 p-2 ring-2 ring-accent/65 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8),0_0_40px_rgba(255,56,60,0.2)]">
+                            <div className="rounded-[14px] border border-dashed border-accent/35 p-1.5">
+                              {media}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="drop-shadow-[0_40px_80px_rgba(0,0,0,0.7)]">
+                            {media}
+                          </div>
+                        );
+                      })()}
                       {/* Reflection floor */}
                       <div
                         aria-hidden

@@ -53,8 +53,11 @@ export const home = {
       },
     },
     demo: {
-      videoSrc: "/assets/hora-demo.mp4",
-      posterSrc: "/assets/hora-demo-poster.webp",
+      videoSources: [
+        { src: "/assets/horus_demo_new.webm", type: "video/webm" },
+        { src: "/assets/hora_demo_new.mp4", type: "video/mp4" },
+      ],
+      posterSrc: "/assets/hero_demo_new.webp",
       captionsSrc: "/assets/hora-demo.vtt",
       ariaLabel:
         "hora Calendar demo showing week view, event creation, and calendar navigation",
@@ -69,8 +72,9 @@ export const home = {
         intro: ["Opens instantly.", "Scrolls smoothly.", "No Electron. No web views."],
         body: "Just a fast, lightweight calendar that respects your system.",
         image: {
-          src: "/assets/features/views.webp",
+          src: "/assets/hero_features/native.webp",
           alt: "hora Calendar week and month views",
+          framed: true,
         },
       },
       {
@@ -83,16 +87,18 @@ export const home = {
         ],
         body: "Everything stays simple — even as your schedule grows.",
         image: {
-          src: "/assets/features/events.webp",
+          src: "/assets/hero_features/planning.webp",
           alt: "Creating and editing events in hora",
+          framed: true,
         },
       },
       {
         title: "Your next meeting. Always visible.",
         body: "See what's coming up directly from the menu bar and join in one click. No opening apps. No searching. No context switching.",
         image: {
-          src: "/assets/features/productivity.webp",
+          src: "/assets/hero_features/menubar.webp",
           alt: "hora menu bar widget showing upcoming meeting",
+          framed: true,
         },
       },
       {
@@ -104,16 +110,17 @@ export const home = {
         ],
         body: "Everything stays in sync, without getting in your way.",
         image: {
-          src: "/assets/features/sync.webp",
+          src: "/assets/hero_features/google.webp",
           alt: "Multi-account Google Calendar sync in hora",
+          framed: true,
         },
       },
       {
         title: "Built for speed.",
         body: "Use familiar Google Calendar-style shortcuts to navigate, create, and search. Stay in flow — without reaching for the mouse.",
         image: {
-          src: "/assets/features/pomodoro.webp",
-          alt: "hora focus session",
+          src: "/assets/hero_features/speed.svg",
+          alt: "Command key — symbolizing Google Calendar-style keyboard shortcuts",
         },
       },
       {
@@ -125,8 +132,8 @@ export const home = {
         ],
         body: "Just a direct connection to Google Calendar.",
         image: {
-          src: "/assets/features/settings.webp",
-          alt: "hora privacy-focused settings",
+          src: "/assets/hero_features/privacy.svg",
+          alt: "A shield encapsulating your Mac and Google Calendar — symbolizing a direct, protected connection with no middleware",
         },
       },
     ],
@@ -137,7 +144,7 @@ export const home = {
   },
 
   whyHora: {
-    eyebrow: "The positioning",
+    eyebrow: "Just right",
     heading: { prefix: "Why", suffixGradient: "hora?" },
     descriptor:
       "Built for people who find Apple Calendar too limited — and everything else too much.",
@@ -189,24 +196,24 @@ export const home = {
     items: [
       {
         n: 1,
-        status: "Shipping soon" as const,
-        title: "Mac App Store Launch",
+        status: "Open Beta Tests" as const,
+        title: "TestFlight Launch",
         description:
-          "Final QA sprint, macOS 27 compatibility, performance optimization.",
+          "Final QA sprint, performance tuning, stability checks.",
       },
       {
         n: 2,
         status: "Up next" as const,
-        title: "iOS & iPadOS App",
+        title: "Apple Intelligence",
         description:
-          "A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch.",
+          "Quick-add with Natural Language, Focus Time Planning, quality of life improvements powered by on-device ML.",
       },
       {
         n: 3,
         status: "Planned" as const,
-        title: "Apple Intelligence",
+        title: "iOS & iPadOS App",
         description:
-          "Smart scheduling, focus time planning, and meeting prep briefings powered by on-device intelligence.",
+          "A native companion app for iPhone and iPad. Same SwiftUI foundation, designed for touch.",
       },
       {
         n: 4,

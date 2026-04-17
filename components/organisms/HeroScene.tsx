@@ -114,7 +114,9 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
               willChange: "opacity, transform",
             }}
           >
-            <source src={hero.demo.videoSrc} type="video/mp4" />
+            {hero.demo.videoSources.map((source) => (
+              <source key={source.src} src={source.src} type={source.type} />
+            ))}
           </video>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
