@@ -16,7 +16,6 @@ export const blog = {
     eyebrow: "Stay in the loop",
     heading: "Get launch updates.",
     subtitle: "Be first to know when hora launches. No spam.",
-    cardEyebrow: "Join the TestFlight",
     cardHeadline: "Skip the refresh cycle.",
     cardSubheadline:
       "Drop your email, get the invite the moment hora ships.",

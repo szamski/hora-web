@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { PillChip } from "@/components/atoms/PillChip";
 import { ParallaxIcon } from "@/components/molecules/ParallaxIcon";
 import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { home } from "@/content/home";
@@ -146,53 +145,58 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
         {/* Foreground content — fades + floats up as we scroll */}
         <div
           className="relative z-10 flex h-full flex-col items-center justify-center gap-5 px-6 pb-10 pt-6 text-center md:gap-6 md:pt-10"
-          style={{
-            opacity: contentOpacity,
-            transform: `translate3d(0, ${contentTranslate}px, 0)`,
-            willChange: "opacity, transform",
-            pointerEvents: contentOpacity < 0.15 ? "none" : "auto",
-          }}
+          style={{ pointerEvents: contentOpacity < 0.15 ? "none" : "auto" }}
         >
-          <ParallaxIcon>
-            <Image
-              src={hero.iconSrc}
-              alt="hora Calendar icon"
-              width={88}
-              height={88}
-              className="rounded-2xl drop-shadow-[0_18px_36px_rgba(255,56,60,0.28)]"
-              priority
-            />
-          </ParallaxIcon>
+          {/* Top group fades/translates together — isolation is fine here, no backdrop-filter children */}
+          <div
+            className="flex flex-col items-center gap-5 md:gap-6"
+            style={{
+              opacity: contentOpacity,
+              transform: `translate3d(0, ${contentTranslate}px, 0)`,
+              willChange: "opacity, transform",
+            }}
+          >
+            <ParallaxIcon>
+              <Image
+                src={hero.iconSrc}
+                alt="hora Calendar icon"
+                width={88}
+                height={88}
+                className="rounded-2xl drop-shadow-[0_18px_36px_rgba(255,56,60,0.28)]"
+                priority
+              />
+            </ParallaxIcon>
 
-          <h1 className="font-brand text-5xl font-normal leading-[1.2] tracking-tight md:text-[64px]">
-            <WordRise delay={0}>{hero.title.prefix}</WordRise>
-            <span aria-hidden>{"\u00A0"}</span>
-            <WordRise
-              delay={220}
-              className="bg-linear-to-br from-accent to-accent-glow bg-clip-text text-transparent"
-            >
-              {hero.title.suffixGradient}
-            </WordRise>
-          </h1>
+            <h1 className="font-brand text-5xl font-normal leading-[1.2] tracking-tight md:text-[64px]">
+              <WordRise delay={0}>{hero.title.prefix}</WordRise>
+              <span aria-hidden>{"\u00A0"}</span>
+              <WordRise
+                delay={220}
+                className="bg-linear-to-br from-accent to-accent-glow bg-clip-text text-transparent"
+              >
+                {hero.title.suffixGradient}
+              </WordRise>
+            </h1>
 
-          <p className="max-w-2xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text md:text-3xl">
-            {hero.tagline}
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {hero.pillars.map((pillar) => (
-              <PillChip key={pillar}>{pillar}</PillChip>
-            ))}
+            <p className="max-w-2xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text md:text-3xl">
+              {hero.tagline}
+            </p>
           </div>
 
+          {/* Card lives as a flex sibling — own opacity/transform don't block its backdrop-filter */}
           <WaitlistCard
             id="newsletter"
-            eyebrow={newsletter.eyebrow}
             headline={newsletter.headline}
             liveCount={liveCount}
             socialLabel={socialProof.label}
             avatars={socialProof.avatars}
-            className="max-w-xl"
+            variant="hero"
+            className="mt-4 max-w-xl md:mt-8"
+            style={{
+              opacity: contentOpacity,
+              transform: `translate3d(0, ${contentTranslate}px, 0)`,
+              willChange: "opacity, transform",
+            }}
           />
         </div>
       </div>

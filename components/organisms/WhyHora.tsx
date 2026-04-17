@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { GradientText } from "@/components/atoms/GradientText";
-import { Icon, type IconName } from "@/components/atoms/Icon";
+import { Icon } from "@/components/atoms/Icon";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 import { site } from "@/content/site";
@@ -18,7 +18,7 @@ function ComparisonCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border p-6 text-center transition-transform backdrop-blur-xl md:p-7",
+        "relative overflow-hidden rounded-2xl border p-3 text-center transition-transform backdrop-blur-xl md:p-7",
         active
           ? "border-accent/40 bg-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_60px_-24px_rgba(255,56,60,0.55)] md:-translate-y-2"
           : "border-white/8 bg-white/3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
@@ -43,7 +43,7 @@ function ComparisonCard({
 
       <p
         className={cn(
-          "relative text-[10px] font-semibold uppercase tracking-[0.22em]",
+          "relative text-[9px] font-semibold uppercase tracking-[0.18em] md:text-[10px] md:tracking-[0.22em]",
           active ? "text-accent" : "text-muted",
         )}
       >
@@ -51,7 +51,7 @@ function ComparisonCard({
       </p>
       <p
         className={cn(
-          "relative mt-3 text-xl font-semibold tracking-tight md:text-2xl",
+          "relative mt-2 text-sm font-semibold tracking-tight md:mt-3 md:text-2xl",
           active ? "text-text" : "text-muted",
         )}
       >
@@ -100,12 +100,15 @@ export function WhyHora() {
             <SectionHeading heading={w.heading} />
           </div>
           <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {w.descriptor}
+            {w.descriptor}{" "}
+            {w.climax.prefix}{" "}
+            <GradientText>{w.climax.highlight}</GradientText>
+            {w.climax.suffix}
           </p>
         </div>
 
         {/* 3-card comparison */}
-        <div className="mt-14 grid gap-4 md:mt-20 md:grid-cols-3 md:gap-6">
+        <div className="mt-14 grid grid-cols-3 gap-2 md:mt-20 md:gap-6">
           {w.comparison.map((item) => (
             <ComparisonCard
               key={item.name}
@@ -115,13 +118,6 @@ export function WhyHora() {
             />
           ))}
         </div>
-
-        {/* Climax statement */}
-        <p className="mx-auto mt-10 max-w-2xl text-balance text-center text-3xl font-semibold tracking-tight text-text md:text-4xl">
-          {w.climax.prefix}{" "}
-          <GradientText>{w.climax.highlight}</GradientText>
-          {w.climax.suffix}
-        </p>
 
         {/* Founder quote */}
         <figure className="relative mx-auto mt-16 max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-white/4 px-8 py-8 text-left backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_32px_60px_-30px_rgba(0,0,0,0.6)] md:mt-24 md:px-10 md:py-10">
@@ -141,7 +137,7 @@ export function WhyHora() {
             &ldquo;
           </span>
 
-          <blockquote className="relative space-y-1.5 text-[15px] text-text/90 md:text-base">
+          <blockquote className="relative space-y-1.5 font-serif text-sm italic leading-relaxed text-text/90 md:text-base">
             {w.personalNote.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -159,21 +155,18 @@ export function WhyHora() {
               <p className="text-sm font-semibold text-text">{author.name}</p>
               <p className="text-xs text-muted">{author.role}</p>
             </div>
+            <a
+              href={author.twitterHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={author.twitterLabel}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
+            >
+              <Icon name="x" size={12} />
+              <span>{author.twitterLabel}</span>
+            </a>
             </figcaption>
         </figure>
-
-        {/* Trust facts */}
-        <div className="mx-auto mt-14 flex max-w-3xl flex-wrap items-center justify-center gap-3 md:mt-20">
-          {w.bio.map((fact) => (
-            <span
-              key={fact.text}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
-            >
-              <Icon name={fact.icon as IconName} size={14} className="text-accent" />
-              {fact.text}
-            </span>
-          ))}
-        </div>
       </div>
     </section>
   );

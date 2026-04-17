@@ -51,12 +51,12 @@ export async function BetaCta() {
         {/* Waitlist card */}
         <div className="mt-10 md:mt-12">
           <WaitlistCard
-            eyebrow={cta.cardEyebrow}
             headline={cta.cardHeadline}
             subheadline={cta.cardSubheadline}
             liveCount={liveCount}
             socialLabel={socialProof.label}
             avatars={socialProof.avatars}
+            variant="hero"
           />
         </div>
 

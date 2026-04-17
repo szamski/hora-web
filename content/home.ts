@@ -12,15 +12,12 @@ export const home = {
     iconSrc: "/assets/hora-icon.png",
     title: { prefix: "hora", suffixGradient: "Calendar" },
     tagline: "The Mac calendar Google never built.",
-    pillars: ["Fast", "Native", "Private"],
     newsletter: {
       placeholder: "you@email.com",
-      button: "Join the TestFlight",
-      hint: "Be first to know when we launch",
+      button: "Sign up for TestFlight",
+      hint: "Support this project on GitHub",
       githubLabel: "Star on GitHub",
       githubHref: "https://github.com/szamski/hora-web",
-      twitterLabel: "Follow @moto_szama on X",
-      twitterHref: "https://x.com/moto_szama",
       eyebrow: "Worth the click",
       headline: "Get in before launch.",
       subheadline:
@@ -65,76 +62,40 @@ export const home = {
   },
 
   features: {
+    eyebrow: "Built for Mac",
     heading: { prefix: "Native macOS Calendar", suffixGradient: "Features" },
-    sections: [
+    description:
+      "Six things nobody else quite gets right on macOS. Here's how hora does them.",
+    items: [
       {
-        title: "Feels like a real Mac app. Because it is.",
-        intro: ["Opens instantly.", "Scrolls smoothly.", "No Electron. No web views."],
-        body: "Just a fast, lightweight calendar that respects your system.",
-        image: {
-          src: "/assets/hero_features/native.webp",
-          alt: "hora Calendar week and month views",
-          framed: true,
-        },
+        icon: "app-window" as const,
+        title: "Feels like a real Mac app",
+        body: "Opens instantly. Scrolls smoothly. No Electron, no web views — just native SwiftUI.",
       },
       {
-        title: "Plan your day without friction.",
-        bullets: [
-          "Week and month views with smooth transitions",
-          "Drag & drop to create and reschedule events",
-          "Resize events directly on the timeline",
-          "Fast search across all your calendars",
-        ],
-        body: "Everything stays simple — even as your schedule grows.",
-        image: {
-          src: "/assets/hero_features/planning.webp",
-          alt: "Creating and editing events in hora",
-          framed: true,
-        },
+        icon: "calendar" as const,
+        title: "Plan without friction",
+        body: "Week and month views with drag-and-drop, timeline resize, and fast search across all calendars.",
       },
       {
-        title: "Your next meeting. Always visible.",
-        body: "See what's coming up directly from the menu bar and join in one click. No opening apps. No searching. No context switching.",
-        image: {
-          src: "/assets/hero_features/menubar.webp",
-          alt: "hora menu bar widget showing upcoming meeting",
-          framed: true,
-        },
+        icon: "bell" as const,
+        title: "Next meeting. Always visible.",
+        body: "See what's coming up from the menu bar and join it in one click. No app switching.",
       },
       {
-        title: "Works with Google Calendar — without the usual friction.",
-        bullets: [
-          "Multiple Google accounts",
-          "Color-coded calendars",
-          "Add and join meetings via links (Meet, Zoom, Teams)",
-        ],
-        body: "Everything stays in sync, without getting in your way.",
-        image: {
-          src: "/assets/hero_features/google.webp",
-          alt: "Multi-account Google Calendar sync in hora",
-          framed: true,
-        },
+        icon: "sync" as const,
+        title: "Google Calendar, done right",
+        body: "Multiple accounts, color-coded calendars, and native Meet, Zoom, and Teams links.",
       },
       {
-        title: "Built for speed.",
-        body: "Use familiar Google Calendar-style shortcuts to navigate, create, and search. Stay in flow — without reaching for the mouse.",
-        image: {
-          src: "/assets/hero_features/speed.svg",
-          alt: "Command key — symbolizing Google Calendar-style keyboard shortcuts",
-        },
+        icon: "command" as const,
+        title: "Built for speed",
+        body: "Familiar Google Calendar-style shortcuts. Stay in flow without reaching for the mouse.",
       },
       {
-        title: "Your data stays between you and Google.",
-        intro: [
-          "No servers.",
-          "No tracking.",
-          "No data stored outside your device.",
-        ],
-        body: "Just a direct connection to Google Calendar.",
-        image: {
-          src: "/assets/hero_features/privacy.svg",
-          alt: "A shield encapsulating your Mac and Google Calendar — symbolizing a direct, protected connection with no middleware",
-        },
+        icon: "shield" as const,
+        title: "Your data stays yours",
+        body: "A direct connection between your Mac and Google. No servers, no tracking, no middleware.",
       },
     ],
     allFeaturesLink: {
@@ -167,12 +128,9 @@ export const home = {
     personalNoteAuthor: {
       name: "Maciej",
       role: "Founder & Developer",
+      twitterHref: "https://x.com/moto_szama",
+      twitterLabel: "Follow @moto_szama",
     },
-    bio: [
-      { icon: "testflight" as const, text: "Live in TestFlight beta" },
-      { icon: "edit" as const, text: "Shaped by real usage, not checklists" },
-      { icon: "shield" as const, text: "Privacy-first by default" },
-    ],
   },
 
   betaCta: {
@@ -180,7 +138,6 @@ export const home = {
     heading: "Want to try it early?",
     subtitle: "Join the beta and help shape the product.",
     note: "Early access via TestFlight.",
-    cardEyebrow: "Join the TestFlight",
     cardHeadline: "Be a founding user.",
     cardSubheadline:
       "Drop your email, get the invite, and help shape the first cut of hora.",

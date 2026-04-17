@@ -11,13 +11,7 @@ import { cn } from "@/lib/cn";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function NewsletterForm({
-  className,
-  minimal = false,
-}: {
-  className?: string;
-  minimal?: boolean;
-}) {
+export function NewsletterForm({ className }: { className?: string }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -101,33 +95,18 @@ export function NewsletterForm({
         {message}
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-muted">
-        {!minimal && (
-          <>
-            <span>{hero.hint}</span>
-            <span className="h-1 w-1 rounded-full bg-border" aria-hidden />
-          </>
-        )}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-4 text-xs text-muted">
+        <span>{hero.hint}</span>
         <a
           href={hero.githubHref}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track("github_star_click", { link_url: hero.githubHref })}
-          className="inline-flex items-center gap-1.5 transition-colors hover:text-text"
+          className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
         >
           <Icon name="github" size={14} />
-          {hero.githubLabel}
-        </a>
-        <span className="h-1 w-1 rounded-full bg-border" aria-hidden />
-        <a
-          href={hero.twitterHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => track("twitter_follow_click", { link_url: hero.twitterHref })}
-          className="inline-flex items-center gap-1.5 transition-colors hover:text-text"
-        >
-          <Icon name="x" size={12} />
-          {hero.twitterLabel}
+          <span>{hero.githubLabel}</span>
+          <Icon name="arrow-right" size={12} className="opacity-70" />
         </a>
       </div>
     </div>

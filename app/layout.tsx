@@ -79,7 +79,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} ${bumbbled.variable}`}>
       <body className="min-h-dvh flex flex-col text-text">
-        <Script id="gads-consent" strategy="beforeInteractive">
+        <Script
+          id="gads-consent"
+          strategy="beforeInteractive"
+          data-cookieconsent="ignore"
+        >
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

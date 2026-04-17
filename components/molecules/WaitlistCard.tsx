@@ -6,7 +6,7 @@ type Avatar = { src: string; alt: string };
 
 type Props = {
   id?: string;
-  eyebrow: string;
+  eyebrow?: string;
   headline: string;
   subheadline?: string;
   note?: string;
@@ -14,6 +14,8 @@ type Props = {
   socialLabel: string;
   avatars: readonly Avatar[];
   className?: string;
+  variant?: "default" | "hero";
+  style?: React.CSSProperties;
 };
 
 export function WaitlistCard({
@@ -26,12 +28,17 @@ export function WaitlistCard({
   socialLabel,
   avatars,
   className,
+  variant = "default",
+  style,
 }: Props) {
+  const isHero = variant === "hero";
   return (
     <div
       id={id}
+      style={style}
       className={cn(
-        "relative w-full overflow-hidden rounded-3xl border border-white/10 bg-white/4 p-5 text-left backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_60px_-20px_rgba(0,0,0,0.65)] md:p-6",
+        "relative w-full overflow-hidden rounded-3xl border border-white/10 p-5 text-left backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_60px_-20px_rgba(0,0,0,0.65)] md:p-6",
+        isHero ? "bg-white/8" : "bg-white/4",
         id && "scroll-mt-24",
         className,
       )}
@@ -49,10 +56,20 @@ export function WaitlistCard({
         className="pointer-events-none absolute inset-x-4 top-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent"
       />
 
-      <p className="relative text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
-        {eyebrow}
-      </p>
-      <h2 className="relative mt-1 text-xl font-semibold leading-tight tracking-tight text-text md:text-2xl">
+      {eyebrow ? (
+        <p className="relative text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h2
+        className={cn(
+          "relative font-semibold leading-tight tracking-tight text-text",
+          eyebrow ? "mt-1" : "",
+          isHero
+            ? "text-2xl md:text-4xl"
+            : "text-xl md:text-2xl",
+        )}
+      >
         {headline}
       </h2>
       {subheadline ? (
@@ -65,7 +82,7 @@ export function WaitlistCard({
       ) : null}
 
       <div className="relative mt-6">
-        <NewsletterForm className="max-w-none" minimal />
+        <NewsletterForm className="max-w-none" />
       </div>
 
       <div className="relative mt-6 flex flex-col items-start gap-3 border-t border-white/10 pt-3 sm:flex-row sm:items-center">
