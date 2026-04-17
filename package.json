@@ -40,5 +40,10 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "unified": "^11.0.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@sentry/cli"
+    ]
   }
 }
