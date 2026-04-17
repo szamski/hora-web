@@ -30,12 +30,13 @@ export function CookieBanner() {
       // ignore
     }
     setVisible(false);
-    if (choice === "accepted" && typeof window.gtag === "function") {
+    if (typeof window.gtag === "function") {
+      const value = choice === "accepted" ? "granted" : "denied";
       window.gtag("consent", "update", {
-        ad_storage: "granted",
-        ad_user_data: "granted",
-        ad_personalization: "granted",
-        analytics_storage: "granted",
+        ad_storage: value,
+        ad_user_data: value,
+        ad_personalization: value,
+        analytics_storage: value,
       });
     }
   }

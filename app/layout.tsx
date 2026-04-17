@@ -84,13 +84,37 @@ export default function RootLayout({
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            var _c = null; try { _c = localStorage.getItem('cookie-consent'); } catch(e){}
+            window.gtag = gtag;
             gtag('consent', 'default', {
-              ad_storage: _c === 'accepted' ? 'granted' : 'denied',
-              ad_user_data: _c === 'accepted' ? 'granted' : 'denied',
-              ad_personalization: _c === 'accepted' ? 'granted' : 'denied',
-              analytics_storage: _c === 'accepted' ? 'granted' : 'denied'
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              analytics_storage: 'denied',
+              functionality_storage: 'denied',
+              personalization_storage: 'denied',
+              security_storage: 'granted',
+              wait_for_update: 500
             });
+            gtag('set', 'ads_data_redaction', true);
+            gtag('set', 'url_passthrough', true);
+            try {
+              var _c = localStorage.getItem('cookie-consent');
+              if (_c === 'accepted') {
+                gtag('consent', 'update', {
+                  ad_storage: 'granted',
+                  ad_user_data: 'granted',
+                  ad_personalization: 'granted',
+                  analytics_storage: 'granted'
+                });
+              } else if (_c === 'declined') {
+                gtag('consent', 'update', {
+                  ad_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                  analytics_storage: 'denied'
+                });
+              }
+            } catch(e){}
           `}
         </Script>
 
