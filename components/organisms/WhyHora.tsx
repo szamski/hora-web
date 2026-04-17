@@ -3,7 +3,6 @@ import { GradientText } from "@/components/atoms/GradientText";
 import { Icon } from "@/components/atoms/Icon";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
-import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 function ComparisonCard({

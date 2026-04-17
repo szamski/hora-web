@@ -22,6 +22,7 @@ export const home = {
       headline: "Get in before launch.",
       subheadline:
         "When hora goes live, you'll get the invite — and a founding‑user discount — before anyone else.",
+      watchDemoCtaLabel: "Watch the demo",
       socialProof: {
         count: 842,
         label: "Mac folks already on the Beta TestFlight waitlist",
@@ -54,11 +55,27 @@ export const home = {
         { src: "/assets/horus_demo_new.webm", type: "video/webm" },
         { src: "/assets/hora_demo_new.mp4", type: "video/mp4" },
       ],
-      posterSrc: "/assets/hero_demo_new.webp",
+      posterSrc: "/assets/hero_image.webp",
       captionsSrc: "/assets/hora-demo.vtt",
       ariaLabel:
         "hora Calendar demo showing week view, event creation, and calendar navigation",
     },
+  },
+
+  videoShowcase: {
+    eyebrow: "See it in action",
+    heading: { prefix: "Watch", suffixGradient: "hora" },
+    description: "A video tour of how hora Calendar feels on macOS.",
+    highlights: [
+      "Day, week, and month views",
+      "Drag & drop",
+      "Create, Edit, Reschedule",
+      "Focus on what's next",
+    ],
+    unmuteLabel: "Unmute sound",
+    muteLabel: "Mute sound",
+    enlargeLabel: "Enlarge",
+    minimizeLabel: "Exit fullscreen",
   },
 
   features: {

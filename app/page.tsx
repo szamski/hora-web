@@ -1,4 +1,5 @@
 import { Hero } from "@/components/organisms/Hero";
+import { VideoShowcase } from "@/components/organisms/VideoShowcase";
 import { FeaturesStory } from "@/components/organisms/FeaturesStory";
 import { WhyHora } from "@/components/organisms/WhyHora";
 import { BetaCta } from "@/components/organisms/BetaCta";
@@ -49,6 +50,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
+      <VideoShowcase />
       <FeaturesStory />
       <WhyHora />
       <BetaCta />
