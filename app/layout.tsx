@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import { Geist } from "next/font/google";
 import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
-import { CookieBanner } from "@/components/organisms/CookieBanner";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
 import { PageTransition } from "@/components/molecules/PageTransition";
 import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
@@ -97,26 +96,16 @@ export default function RootLayout({
             });
             gtag('set', 'ads_data_redaction', true);
             gtag('set', 'url_passthrough', true);
-            try {
-              var _c = localStorage.getItem('cookie-consent');
-              if (_c === 'accepted') {
-                gtag('consent', 'update', {
-                  ad_storage: 'granted',
-                  ad_user_data: 'granted',
-                  ad_personalization: 'granted',
-                  analytics_storage: 'granted'
-                });
-              } else if (_c === 'declined') {
-                gtag('consent', 'update', {
-                  ad_storage: 'denied',
-                  ad_user_data: 'denied',
-                  ad_personalization: 'denied',
-                  analytics_storage: 'denied'
-                });
-              }
-            } catch(e){}
           `}
         </Script>
+
+        <Script
+          id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="93e42c2d-57e2-448f-9699-a65ce0fffdbd"
+          data-blockingmode="auto"
+          strategy="beforeInteractive"
+        />
 
         <AmbientGlow />
         <ScrollProgressBar />
@@ -126,7 +115,6 @@ export default function RootLayout({
           <PageTransition>{children}</PageTransition>
         </div>
         <Footer />
-        <CookieBanner />
 
         <Script src={PLAUSIBLE_SRC} strategy="afterInteractive" />
         <Script id="plausible-init" strategy="afterInteractive">

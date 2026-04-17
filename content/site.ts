@@ -38,13 +38,6 @@ export const site = {
   newsletter: {
     endpoint: "/api/subscribe",
   },
-  cookieBanner: {
-    message:
-      "We use Google Ads and Google Analytics cookies to measure campaign performance and site usage. Plausible (cookieless) analytics runs regardless.",
-    privacyLink: { label: "Privacy Policy", href: "/privacy/" },
-    accept: "Accept",
-    decline: "Decline",
-  },
 } as const;
 
 export type Site = typeof site;
