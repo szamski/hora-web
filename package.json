@@ -14,7 +14,7 @@
     "@next/mdx": "^16.2.4",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.6",
-    "@sentry/nextjs": "^10.49.0",
+    "@sentry/nextjs": "^10",
     "gray-matter": "^4.0.3",
     "next": "16.2.4",
     "next-mdx-remote": "^6.0.0",
