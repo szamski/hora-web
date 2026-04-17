@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
@@ -10,6 +11,11 @@ import { cn } from "@/lib/cn";
 
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -26,6 +32,50 @@ export function MobileNav({ activePath }: { activePath?: string }) {
     return () => document.removeEventListener("keydown", onEscape);
   }, []);
 
+  const panel = (
+    <div
+      className={cn(
+        "fixed inset-0 z-50 flex-col overflow-y-auto bg-bg/85 backdrop-blur-xl md:hidden",
+        open ? "flex" : "hidden",
+      )}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+    >
+      <div className="flex h-14 items-center justify-between border-b border-border px-4">
+        <Logo />
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+          className="p-2 text-text"
+        >
+          <Icon name="close" size={24} />
+        </button>
+      </div>
+      <div className="flex flex-col gap-2 p-6">
+        {site.nav.map((item) => (
+          <NavLink
+            key={item.href}
+            href={item.href}
+            active={activePath === item.href}
+            onClick={() => setOpen(false)}
+            className="border-b border-border py-3 text-lg"
+          >
+            {item.label}
+          </NavLink>
+        ))}
+        <Link
+          href={site.cta.primary.href}
+          onClick={() => setOpen(false)}
+          className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-linear-to-br from-accent to-accent-glow px-6 text-sm font-semibold text-white"
+        >
+          {site.cta.primary.label}
+        </Link>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <button
@@ -38,47 +88,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>
 
-      <div
-        className={cn(
-          "fixed inset-0 z-50 flex-col overflow-y-auto bg-bg/85 backdrop-blur-xl md:hidden",
-          open ? "flex" : "hidden",
-        )}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Menu"
-      >
-        <div className="flex h-14 items-center justify-between border-b border-border px-4">
-          <Logo />
-          <button
-            type="button"
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-            className="p-2 text-text"
-          >
-            <Icon name="close" size={24} />
-          </button>
-        </div>
-        <div className="flex flex-col gap-2 p-6">
-          {site.nav.map((item) => (
-            <NavLink
-              key={item.href}
-              href={item.href}
-              active={activePath === item.href}
-              onClick={() => setOpen(false)}
-              className="border-b border-border py-3 text-lg"
-            >
-              {item.label}
-            </NavLink>
-          ))}
-          <Link
-            href={site.cta.primary.href}
-            onClick={() => setOpen(false)}
-            className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-glow px-6 text-sm font-semibold text-white"
-          >
-            {site.cta.primary.label}
-          </Link>
-        </div>
-      </div>
+      {mounted ? createPortal(panel, document.body) : null}
     </>
   );
 }

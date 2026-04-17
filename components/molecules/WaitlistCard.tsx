@@ -68,7 +68,7 @@ export function WaitlistCard({
         <NewsletterForm className="max-w-none" minimal />
       </div>
 
-      <div className="relative mt-6 flex items-center gap-3 border-t border-white/10 pt-3">
+      <div className="relative mt-6 flex flex-col items-start gap-3 border-t border-white/10 pt-3 sm:flex-row sm:items-center">
         <div className="flex -space-x-2">
           {avatars.map((a) => (
             // eslint-disable-next-line @next/next/no-img-element
@@ -83,7 +83,7 @@ export function WaitlistCard({
             />
           ))}
         </div>
-        <p className="text-xs text-muted md:text-sm">
+        <p className="text-xs leading-snug text-muted md:text-sm">
           <span className="font-semibold text-text">
             <AnimatedCount value={liveCount} />+
           </span>{" "}
