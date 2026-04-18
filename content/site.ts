@@ -20,6 +20,12 @@ export const site = {
   cta: {
     primary: { label: "Sign up for TestFlight", href: "/" },
   },
+  community: {
+    discord: {
+      label: "Join Discord",
+      href: "https://discord.gg/8JFz4FfBGQ",
+    },
+  },
   footer: {
     copyright: "© 2026 hora Calendar",
     developedBy: { label: "szamowski.dev", href: "https://szamowski.dev" },
@@ -29,6 +35,7 @@ export const site = {
     ],
     socials: [
       { label: "Email", href: "mailto:hello@horacal.app", icon: "mail" },
+      { label: "Discord", href: "https://discord.gg/8JFz4FfBGQ", icon: "discord" },
       { label: "GitHub", href: "https://github.com/szamski/hora-web", icon: "github" },
       { label: "X / Twitter", href: "https://x.com/moto_szama", icon: "x" },
     ],

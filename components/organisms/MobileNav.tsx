@@ -83,6 +83,16 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         >
           {site.cta.primary.label}
         </Link>
+        <a
+          href={site.community.discord.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setOpen(false)}
+          className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-semibold text-text transition-colors hover:border-accent hover:text-accent"
+        >
+          <Icon name="discord" size={18} />
+          {site.community.discord.label}
+        </a>
       </div>
     </div>
   );

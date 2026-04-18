@@ -1,4 +1,5 @@
 import { Button } from "@/components/atoms/Button";
+import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
 import { NavLink } from "@/components/molecules/NavLink";
 import { site } from "@/content/site";
@@ -19,11 +20,31 @@ export function Nav({ activePath }: { activePath?: string }) {
               {item.label}
             </NavLink>
           ))}
+          <a
+            href={site.community.discord.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={site.community.discord.label}
+            className="text-muted transition-colors hover:text-[#5865F2]"
+          >
+            <Icon name="discord" size={20} />
+          </a>
           <Button href={site.cta.primary.href} size="sm">
             {site.cta.primary.label}
           </Button>
         </div>
-        <MobileNav activePath={activePath} />
+        <div className="flex items-center gap-1 md:hidden">
+          <a
+            href={site.community.discord.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={site.community.discord.label}
+            className="p-2 text-text transition-colors hover:text-[#5865F2]"
+          >
+            <Icon name="discord" size={22} />
+          </a>
+          <MobileNav activePath={activePath} />
+        </div>
       </div>
     </nav>
   );
