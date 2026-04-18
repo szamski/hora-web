@@ -56,11 +56,24 @@ export function VideoShowcase() {
   }, [reducedMotion, manuallyStarted]);
 
   useEffect(() => {
+    const video = videoRef.current;
     const onFsChange = () => {
-      setIsFullscreen(document.fullscreenElement === frameRef.current);
+      const doc = document as Document & { webkitFullscreenElement?: Element | null };
+      const fsEl = doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+      setIsFullscreen(fsEl === frameRef.current);
     };
+    const onVideoFsBegin = () => setIsFullscreen(true);
+    const onVideoFsEnd = () => setIsFullscreen(false);
     document.addEventListener("fullscreenchange", onFsChange);
-    return () => document.removeEventListener("fullscreenchange", onFsChange);
+    document.addEventListener("webkitfullscreenchange", onFsChange);
+    video?.addEventListener("webkitbeginfullscreen", onVideoFsBegin);
+    video?.addEventListener("webkitendfullscreen", onVideoFsEnd);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("webkitfullscreenchange", onFsChange);
+      video?.removeEventListener("webkitbeginfullscreen", onVideoFsBegin);
+      video?.removeEventListener("webkitendfullscreen", onVideoFsEnd);
+    };
   }, []);
 
   const toggleMute = useCallback(() => {
@@ -78,12 +91,50 @@ export function VideoShowcase() {
   }, [isMuted]);
 
   const toggleFullscreen = useCallback(() => {
-    const el = frameRef.current;
-    if (!el) return;
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
-    } else {
+    const el = frameRef.current as
+      | (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> | void })
+      | null;
+    const video = videoRef.current as
+      | (HTMLVideoElement & {
+          webkitEnterFullscreen?: () => void;
+          webkitExitFullscreen?: () => void;
+          webkitDisplayingFullscreen?: boolean;
+        })
+      | null;
+    const doc = document as Document & {
+      webkitFullscreenElement?: Element | null;
+      webkitExitFullscreen?: () => Promise<void> | void;
+    };
+
+    const isInFs =
+      !!(doc.fullscreenElement ?? doc.webkitFullscreenElement) ||
+      !!video?.webkitDisplayingFullscreen;
+
+    if (isInFs) {
+      if (typeof doc.exitFullscreen === "function") {
+        doc.exitFullscreen().catch(() => {});
+      } else if (typeof doc.webkitExitFullscreen === "function") {
+        doc.webkitExitFullscreen();
+      } else if (typeof video?.webkitExitFullscreen === "function") {
+        video.webkitExitFullscreen();
+      }
+      return;
+    }
+
+    if (el && typeof el.requestFullscreen === "function") {
       el.requestFullscreen().catch(() => {});
+    } else if (el && typeof el.webkitRequestFullscreen === "function") {
+      const result = el.webkitRequestFullscreen();
+      if (result && typeof (result as Promise<void>).catch === "function") {
+        (result as Promise<void>).catch(() => {});
+      }
+    } else if (video && typeof video.webkitEnterFullscreen === "function") {
+      // iOS Safari: Fullscreen API is only available on <video>.
+      try {
+        video.webkitEnterFullscreen();
+      } catch {
+        /* no-op */
+      }
     }
   }, []);
 
