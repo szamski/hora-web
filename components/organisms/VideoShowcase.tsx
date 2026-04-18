@@ -11,6 +11,7 @@ import {
 } from "react-icons/lu";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 export function VideoShowcase() {
@@ -31,6 +32,24 @@ export function VideoShowcase() {
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !("IntersectionObserver" in window)) return;
+    let seen = false;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting && !seen) {
+          seen = true;
+          track("demo_viewed", { asset: "hero_gif" });
+          io.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(container);
+    return () => io.disconnect();
   }, []);
 
   // Muted autoplay when section enters viewport (skipped for reduced motion).
