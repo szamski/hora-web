@@ -7,6 +7,7 @@ import { Footer } from "@/components/organisms/Footer";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
 import { PageTransition } from "@/components/molecules/PageTransition";
 import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
+import { SectionViewTracker } from "@/components/molecules/SectionViewTracker";
 import { SmoothAnchorScroll } from "@/components/molecules/SmoothAnchorScroll";
 import "./globals.css";
 
@@ -114,6 +115,7 @@ export default function RootLayout({
         <AmbientGlow />
         <ScrollProgressBar />
         <SmoothAnchorScroll />
+        <SectionViewTracker />
         <Nav />
         <div className="flex-1">
           <PageTransition>{children}</PageTransition>

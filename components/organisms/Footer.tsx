@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Icon, type IconName } from "@/components/atoms/Icon";
+import { type IconName } from "@/components/atoms/Icon";
+import { FooterSocialLink } from "@/components/molecules/FooterSocialLink";
 import { site } from "@/content/site";
 
 export function Footer() {
@@ -26,16 +27,12 @@ export function Footer() {
             </Link>
           ))}
           {site.footer.socials.map((social) => (
-            <a
+            <FooterSocialLink
               key={social.href}
               href={social.href}
-              aria-label={social.label}
-              target={social.href.startsWith("http") ? "_blank" : undefined}
-              rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="text-muted transition-colors hover:text-text"
-            >
-              <Icon name={social.icon as IconName} size={18} />
-            </a>
+              label={social.label}
+              icon={social.icon as IconName}
+            />
           ))}
         </div>
       </div>
