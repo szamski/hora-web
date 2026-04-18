@@ -53,7 +53,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
       aria-modal="true"
       aria-label="Menu"
     >
-      <div className="flex h-14 items-center justify-between border-b border-border px-4">
+      <div className="flex h-14 items-center justify-between border-b border-border px-6">
         <Logo />
         <button
           type="button"
