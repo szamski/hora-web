@@ -19,19 +19,11 @@ export function MobileNav({ activePath }: { activePath?: string }) {
 
   useEffect(() => {
     if (!open) return;
-    const { body, documentElement } = document;
-    const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
+    const { body } = document;
     const prevOverflow = body.style.overflow;
-    const prevPaddingRight = body.style.paddingRight;
     body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      const currentPadding =
-        parseFloat(window.getComputedStyle(body).paddingRight) || 0;
-      body.style.paddingRight = `${currentPadding + scrollbarWidth}px`;
-    }
     return () => {
       body.style.overflow = prevOverflow;
-      body.style.paddingRight = prevPaddingRight;
     };
   }, [open]);
 
