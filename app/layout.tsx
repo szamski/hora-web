@@ -133,9 +133,11 @@ export default function RootLayout({
         />
         <Script id="gads-init" strategy="afterInteractive">
           {`
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-            gtag('config', '${GOOGLE_ADS_ID}');
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+            window.gtag('js', new Date());
+            window.gtag('config', '${GA_MEASUREMENT_ID}');
+            window.gtag('config', '${GOOGLE_ADS_ID}');
           `}
         </Script>
       </body>
