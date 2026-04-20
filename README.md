@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hora-icon.png" alt="hora Calendar" width="128">
+  <img src="https://horacal.app/assets/hora-icon.png" alt="hora Calendar" width="128">
 </p>
 
 <h1 align="center">hora Calendar</h1>
