@@ -9,6 +9,8 @@ import { BlogPreview } from "@/components/organisms/BlogPreview";
 import type { PostCardData } from "@/components/molecules/PostCard";
 import { getAllPosts } from "@/lib/mdx";
 
+export const revalidate = 600;
+
 const softwareAppLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",

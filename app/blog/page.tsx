@@ -5,6 +5,8 @@ import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import { blog } from "@/content/blog";
 import { getAllPosts } from "@/lib/mdx";
 
+export const revalidate = 600;
+
 export const metadata: Metadata = {
   title: blog.seo.title,
   description: blog.seo.description,

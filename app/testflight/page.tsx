@@ -5,6 +5,8 @@ import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { home } from "@/content/home";
 import { getWaitlistCount } from "@/lib/waitlist";
 
+export const revalidate = 600;
+
 const title = "I’ve joined the TestFlight for a new calendar app on macOS";
 const description =
   "hora Calendar — a native macOS Google Calendar client, built with SwiftUI. No Electron, no bloat. Currently in open beta.";
