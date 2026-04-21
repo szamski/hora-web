@@ -33,6 +33,7 @@ hora is in pre-launch. A public beta is planned — subscribe at https://horacal
 
 Maciej Szamowski — https://szamowski.dev
 X/Twitter: @moto_szama
+Bluesky: @szamski.bsky.social
 
 ## Tech Stack
 
