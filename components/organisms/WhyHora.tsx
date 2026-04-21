@@ -154,16 +154,28 @@ export function WhyHora() {
               <p className="text-sm font-semibold text-text">{author.name}</p>
               <p className="text-xs text-muted">{author.role}</p>
             </div>
-            <a
-              href={author.twitterHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={author.twitterLabel}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
-            >
-              <Icon name="x" size={12} />
-              <span className="hidden sm:inline">{author.twitterLabel}</span>
-            </a>
+            <div className="ml-auto flex items-center gap-2">
+              <a
+                href={author.twitterHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={author.twitterLabel}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
+              >
+                <Icon name="x" size={12} />
+                <span className="hidden sm:inline">{author.twitterLabel}</span>
+              </a>
+              <a
+                href={author.blueskyHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={author.blueskyLabel}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
+              >
+                <Icon name="bluesky" size={12} />
+                <span className="hidden sm:inline">{author.blueskyLabel}</span>
+              </a>
+            </div>
             </figcaption>
         </figure>
       </div>
