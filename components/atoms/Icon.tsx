@@ -1,6 +1,7 @@
 import type { IconType } from "react-icons";
 import {
   FaApple,
+  FaBluesky,
   FaDiscord,
   FaGithub,
   FaXTwitter,
@@ -31,6 +32,7 @@ export type IconName =
   | "mail"
   | "github"
   | "x"
+  | "bluesky"
   | "discord"
   | "apple"
   | "testflight"
@@ -50,6 +52,7 @@ const iconMap: Record<IconName, IconType> = {
   mail: FiMail,
   github: FaGithub,
   x: FaXTwitter,
+  bluesky: FaBluesky,
   discord: FaDiscord,
   apple: FaApple,
   testflight: FiSend,

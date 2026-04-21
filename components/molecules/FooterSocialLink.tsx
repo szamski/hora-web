@@ -7,6 +7,7 @@ function platformFromHref(href: string) {
   if (href.startsWith("mailto:")) return "email";
   if (href.includes("github.com")) return "github";
   if (href.includes("x.com") || href.includes("twitter.com")) return "x_twitter";
+  if (href.includes("bsky.app") || href.includes("bsky.social")) return "bluesky";
   if (href.includes("discord")) return "discord";
   return "other";
 }

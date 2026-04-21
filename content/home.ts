@@ -147,6 +147,8 @@ export const home = {
       role: "Founder & Developer",
       twitterHref: "https://x.com/moto_szama",
       twitterLabel: "Follow @moto_szama",
+      blueskyHref: "https://bsky.app/profile/szamski.bsky.social",
+      blueskyLabel: "Follow @szamski.bsky.social",
     },
   },
 

@@ -35,7 +35,11 @@ const personLd = {
   "@type": "Person",
   name: "Maciej Szamowski",
   url: "https://szamowski.dev",
-  sameAs: ["https://x.com/moto_szama", "https://github.com/szamski"],
+  sameAs: [
+    "https://x.com/moto_szama",
+    "https://bsky.app/profile/szamski.bsky.social",
+    "https://github.com/szamski",
+  ],
 };
 
 export default async function Home() {
