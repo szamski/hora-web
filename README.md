@@ -14,12 +14,12 @@
 </p>
 
 <p align="center">
-  <a href="https://horacal.app"><img src="https://img.shields.io/badge/Join_TestFlight-000?style=for-the-badge&logo=apple&logoColor=white" alt="Join TestFlight"></a>
+  <a href="https://horacal.app/testflight"><img src="https://img.shields.io/badge/Join_TestFlight-000?style=for-the-badge&logo=apple&logoColor=white" alt="Join TestFlight"></a>
   <a href="https://horacal.app"><img src="https://img.shields.io/badge/horacal.app-111?style=for-the-badge&logo=safari&logoColor=white" alt="Website"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/macOS-14%2B-000?logo=apple&logoColor=white" alt="macOS 14+">
+  <img src="https://img.shields.io/badge/macOS-26%2B-000?logo=apple&logoColor=white" alt="macOS 26+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/SwiftUI-blue?logo=swift&logoColor=white" alt="SwiftUI">
   <img src="https://img.shields.io/badge/Google_Calendar_API-4285F4?logo=googlecalendar&logoColor=white" alt="Google Calendar API">
@@ -40,7 +40,7 @@
 ---
 
 <p align="center">
-  <img src="https://horacal.app/assets/hero_demo_new.webp" alt="hora Calendar demo" width="800">
+  <img src="https://horacal.app/assets/hora_demo_new.gif" alt="hora Calendar demo" width="800">
 </p>
 
 ---
