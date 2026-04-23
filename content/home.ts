@@ -221,7 +221,7 @@ export const home = {
       },
       {
         q: "Is hora free?",
-        a: "Pricing hasn't been finalized yet. The goal is to keep it accessible. Subscribe to the newsletter to be the first to know about pricing and launch details.",
+        a: "hora will be a paid app. At launch there's a limited-time one-time purchase for $49, or a $30/year subscription — both include Family Sharing. The TestFlight beta is free to join.",
       },
       {
         q: "When does hora launch?",
