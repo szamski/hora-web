@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   title: "Join the TestFlight — hora Calendar",
   description,
   alternates: { canonical: "/testflight/" },
-  robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     url: "https://horacal.app/testflight/",

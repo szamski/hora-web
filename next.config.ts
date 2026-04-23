@@ -9,6 +9,20 @@ const withMDX = createMDX({
 const nextConfig: NextConfig = {
   trailingSlash: true,
   pageExtensions: ["ts", "tsx", "mdx"],
+  async redirects() {
+    return [
+      {
+        source: "/blog/2026-04-13-v0.6-qa-grind/",
+        destination: "/blog/2026-04-13-v0-6-qa-grind/",
+        permanent: true,
+      },
+      {
+        source: "/blog/2026-04-13-v0.6-qa-grind",
+        destination: "/blog/2026-04-13-v0-6-qa-grind/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withSentryConfig(withMDX(nextConfig), {
