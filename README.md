@@ -5,7 +5,7 @@
 <h1 align="center">hora Calendar</h1>
 
 <h3 align="center">
-  The Google Calendar client that macOS deserves.
+  The Mac calendar Google never built.
 </h3>
 
 <p align="center">
