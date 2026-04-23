@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import { blog } from "@/content/blog";
 import { getAllPosts } from "@/lib/mdx";
+import { defaultOg } from "@/lib/og";
 
 export const revalidate = 600;
 
@@ -18,11 +19,11 @@ export const metadata: Metadata = {
       ],
     },
   },
-  openGraph: {
+  openGraph: defaultOg({
     title: blog.seo.ogTitle,
     description: blog.seo.ogDescription,
     url: "https://horacal.app/blog/",
-  },
+  }),
 };
 
 export default async function BlogIndexPage() {

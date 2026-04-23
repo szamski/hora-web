@@ -3,16 +3,17 @@ import Image from "next/image";
 import { FeatureCard } from "@/components/molecules/FeatureCard";
 import { GradientText } from "@/components/atoms/GradientText";
 import { features } from "@/content/features";
+import { defaultOg } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: features.seo.title,
   description: features.seo.description,
   alternates: { canonical: "/features/" },
-  openGraph: {
+  openGraph: defaultOg({
     title: features.seo.ogTitle,
     description: features.seo.ogDescription,
     url: "https://horacal.app/features/",
-  },
+  }),
 };
 
 export default function FeaturesPage() {

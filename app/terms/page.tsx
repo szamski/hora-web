@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getPageMdx } from "@/lib/mdx";
 import { LegalPageLayout } from "@/components/templates/LegalPageLayout";
+import { defaultOg } from "@/lib/og";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { frontmatter } = await getPageMdx("terms");
@@ -8,11 +9,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: frontmatter.title,
     description: frontmatter.description,
     alternates: { canonical: "/terms/" },
-    openGraph: {
+    openGraph: defaultOg({
       title: frontmatter.title,
       description: frontmatter.description,
       url: "https://horacal.app/terms/",
-    },
+    }),
   };
 }
 
