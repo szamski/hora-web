@@ -30,9 +30,11 @@
   <a href="https://horacal.app"><strong>Website</strong></a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/features/">Features</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/blog">Blog</a> &nbsp;&middot;&nbsp;
+  <a href="https://discord.gg/8JFz4FfBGQ">Discord</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/privacy">Privacy</a> &nbsp;&middot;&nbsp;
   <a href="https://horacal.app/terms">Terms</a> &nbsp;&middot;&nbsp;
-  <a href="https://x.com/moto_szama">@moto_szama</a>
+  <a href="https://x.com/moto_szama">@moto_szama</a> &nbsp;&middot;&nbsp;
+  <a href="https://bsky.app/profile/szamski.bsky.social">Bluesky</a>
 </p>
 
 ---
@@ -44,7 +46,7 @@
 ---
 
 > [!NOTE]
-> **hora is native.** Built in SwiftUI, talking to the Google Calendar REST API directly — no CalDAV translation layer, no web views, no Electron. It sips battery and opens in milliseconds.
+> **hora is native and real-time.** Built in SwiftUI, talking to the Google Calendar REST API directly — no CalDAV translation layer, no web views, no Electron. Changes land instantly via APN push sync instead of polling. It sips battery and opens in milliseconds.
 
 ### Why hora
 
@@ -79,7 +81,7 @@ The shortcuts you already know from Google Calendar — natively, everywhere.
 ### Features
 
 <details open>
-<summary><strong>14 shipped features</strong> — click to collapse</summary>
+<summary><strong>15 shipped features</strong> — click to collapse</summary>
 
 <br>
 
@@ -89,7 +91,8 @@ The shortcuts you already know from Google Calendar — natively, everywhere.
 | **Drag & Drop** | Full CRUD | Create, edit, resize, delete events. Feels native because it is. |
 | **One Click** | Google Meet | Add conference links when creating events. Join instantly. |
 | **D/W/M · C · / · J/K · T** | Keyboard Shortcuts | Google Calendar shortcuts you already know. |
-| **Incremental** | Smart Sync | Configurable intervals. Native macOS notifications for upcoming events. |
+| **Real-time** | APN Push Sync | Apple Push Notifications deliver calendar changes instantly — no polling, no waiting. |
+| **Incremental** | Smart Sync | Configurable intervals as a fallback. Native macOS notifications for upcoming events. |
 | **Multi-Account** | Color-Coded | Multiple Google accounts, each with its own color scheme. |
 | **Autocomplete** | Attendees | Invite people from Google Contacts with instant suggestions. |
 | **Pomodoro** | Focus Timer | Built-in pomodoro timer with configurable work/break intervals. |
@@ -115,6 +118,7 @@ flowchart LR
   Sync <--> API[HoraGoogleAPI]
   API <-->|REST, incremental| GCal[(Google Calendar)]
   API -.->|OAuth 2.0 + PKCE| Google{{Google}}
+  GCal ==>|APN push, real-time| Sync
 ```
 
 Three Swift Packages, one main target. SwiftData is a local cache — Google Calendar is the source of truth.
@@ -151,7 +155,7 @@ Day / Week / Month views · full CRUD · drag & drop · resize · multi-account 
 
 <br>
 
-Focus mode & DND integration · Quick "Running late" reply · Email attendees from event detail · Invitation "Ignore" option · Light mode contrast polish · Dynamic Dock icon (macOS 26) · Localization native review.
+Apple Intelligence — smart scheduling, focus time planning, meeting prep briefings · Quick "Running late" reply · Email attendees from event detail · Invitation "Ignore" option · Light mode contrast polish · Dynamic Dock icon (macOS 26) · Localization native review.
 
 </details>
 
@@ -161,8 +165,7 @@ Focus mode & DND integration · Quick "Running late" reply · Email attendees fr
 |---|---|
 | 1 | Mac App Store launch — final QA sprint, macOS 27 compatibility, performance |
 | 2 | iOS & iPadOS companion — same SwiftUI foundation, designed for touch |
-| 3 | Apple Intelligence — smart scheduling, focus time planning, meeting prep briefings |
-| 4 | Google Workspace — Gmail context, contact enrichment, deeper integration |
+| 3 | Google Workspace — Gmail context, contact enrichment, deeper integration |
 
 ### Links
 
@@ -170,7 +173,9 @@ Focus mode & DND integration · Quick "Running late" reply · Email attendees fr
 |---|---|
 | Website | [horacal.app](https://horacal.app) |
 | Blog | [horacal.app/blog](https://horacal.app/blog) ([RSS](https://horacal.app/blog/feed.xml)) |
+| Community | [Discord](https://discord.gg/8JFz4FfBGQ) |
 | X / Twitter | [@moto_szama](https://x.com/moto_szama) |
+| Bluesky | [@szamski.bsky.social](https://bsky.app/profile/szamski.bsky.social) |
 | Developer | [szamowski.dev](https://szamowski.dev) |
 
 ---
