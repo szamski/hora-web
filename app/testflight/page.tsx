@@ -54,7 +54,7 @@ export default async function TestFlightPage() {
       >
         <Image
           src={home.hero.demo.posterSrc}
-          alt=""
+          alt="hora Calendar TestFlight beta preview"
           fill
           priority
           sizes="100vw"

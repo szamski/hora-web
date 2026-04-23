@@ -5,6 +5,7 @@ import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import { blog } from "@/content/blog";
 import { getAllPosts } from "@/lib/mdx";
 import { defaultOg } from "@/lib/og";
+import { breadcrumbList } from "@/lib/jsonld";
 
 export const revalidate = 600;
 
@@ -38,8 +39,17 @@ export default async function BlogIndexPage() {
   }));
   const [hero, ...rest] = cards;
 
+  const breadcrumbs = breadcrumbList([
+    { name: "Home", url: "https://horacal.app/" },
+    { name: "Blog", url: "https://horacal.app/blog/" },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       <section className="mx-auto max-w-page px-6 pt-16 md:pt-24">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">

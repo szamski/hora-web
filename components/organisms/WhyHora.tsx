@@ -145,7 +145,7 @@ export function WhyHora() {
             <figcaption className="relative mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
             <Image
               src="/assets/maciej_szamowski.jpg"
-              alt=""
+              alt="Maciej Szamowski"
               width={36}
               height={36}
               className="rounded-full border border-white/10"

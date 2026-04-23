@@ -12,31 +12,36 @@ hora is a native macOS calendar app that connects directly to Google Calendar vi
 - Full event CRUD with drag-and-drop and edge resizing
 - Google Meet conference link creation
 - Google Calendar-style keyboard shortcuts (D/W/M, C, /, J/K, T)
-- Incremental sync with configurable intervals
+- Real-time sync via Google Calendar push notifications (no polling lag)
 - Multi-account support with color-coded calendars
 - Native macOS notifications
-- Menu bar quick-view widget
+- Menu bar quick-view widget with next-meeting countdown
+- WidgetKit home-screen widgets
 - Dark mode by default
 
 ## Status
 
-hora is in pre-launch. A public beta is planned — subscribe at https://horacal.app/#newsletter to get notified.
+hora Calendar 0.6 is in public beta on TestFlight. Join via [hora Calendar TestFlight](https://horacal.app/testflight/) or subscribe to the [waitlist](https://horacal.app/#newsletter).
 
 ## Links
 
-- Website: https://horacal.app
-- Blog: https://horacal.app/blog/
-- Features: https://horacal.app/features/
-- RSS Feed: https://horacal.app/blog/feed.xml
+- [Website](https://horacal.app/)
+- [Features](https://horacal.app/features/)
+- [Blog](https://horacal.app/blog/)
+- [RSS feed](https://horacal.app/blog/feed.xml)
+- [Privacy Policy](https://horacal.app/privacy/)
+- [Terms of Service](https://horacal.app/terms/)
+- [Discord community](https://discord.gg/8JFz4FfBGQ)
 
 ## Author
 
-Maciej Szamowski — https://szamowski.dev
-X/Twitter: @moto_szama
-Bluesky: @szamski.bsky.social
+- [Maciej Szamowski](https://szamowski.dev) — indie macOS developer, building hora Calendar in public
+- X/Twitter: [@moto_szama](https://x.com/moto_szama)
+- Bluesky: [@szamski.bsky.social](https://bsky.app/profile/szamski.bsky.social)
+- GitHub: [@szamski](https://github.com/szamski)
 
 ## Tech Stack
 
-- SwiftUI (native macOS app)
-- Google Calendar API (OAuth 2.0, no CalDAV)
-- Website: static HTML + Node.js build script, deployed on GitHub Pages
+- **App:** SwiftUI, SwiftData, WidgetKit (native macOS, no Electron, no web views)
+- **Sync:** Google Calendar API (OAuth 2.0 PKCE), APNs silent push, Cloudflare Workers webhook
+- **Website:** Next.js 16 App Router, MDX, deployed on Vercel

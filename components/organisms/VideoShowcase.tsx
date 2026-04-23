@@ -282,7 +282,7 @@ export function VideoShowcase() {
                 >
                   <Image
                     src={demo.posterSrc}
-                    alt=""
+                    alt="hora Calendar macOS app demo preview"
                     fill
                     sizes="(min-width: 1024px) 1152px, 100vw"
                     className="object-cover"

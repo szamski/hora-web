@@ -65,7 +65,7 @@ export function HeroVideo({
       >
         <Image
           src={poster}
-          alt=""
+          alt="hora Calendar on macOS showing week view"
           width={1600}
           height={900}
           priority

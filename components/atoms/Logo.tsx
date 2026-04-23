@@ -16,7 +16,7 @@ export function Logo({
     <>
       <Image
         src={site.brand.logoSrc}
-        alt=""
+        alt="hora Calendar logo"
         width={size}
         height={size}
         className="rounded-[6px]"

@@ -140,6 +140,45 @@ export default function RootLayout({
             window.gtag('config', '${GOOGLE_ADS_ID}');
           `}
         </Script>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://horacal.app/#organization",
+                  name: "hora Calendar",
+                  url: "https://horacal.app/",
+                  logo: "https://horacal.app/assets/hora-icon.png",
+                  sameAs: [
+                    "https://x.com/moto_szama",
+                    "https://github.com/szamski",
+                    "https://bsky.app/profile/szamski.bsky.social",
+                    "https://discord.gg/8JFz4FfBGQ",
+                  ],
+                  founder: {
+                    "@type": "Person",
+                    name: "Maciej Szamowski",
+                    url: "https://szamowski.dev",
+                  },
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://horacal.app/#website",
+                  url: "https://horacal.app/",
+                  name: "hora Calendar",
+                  description:
+                    "Native macOS client for Google Calendar. Built with SwiftUI. No Electron. No CalDAV. Just fast.",
+                  publisher: { "@id": "https://horacal.app/#organization" },
+                  inLanguage: "en-US",
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

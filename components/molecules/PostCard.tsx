@@ -47,7 +47,7 @@ export function PostCard({
         >
           <Image
             src={post.cover}
-            alt=""
+            alt={post.title}
             fill
             sizes={
               isHero

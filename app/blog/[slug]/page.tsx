@@ -57,24 +57,47 @@ export default async function BlogPostPage({
   const url = `https://horacal.app/blog/${slug}/`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: fm.title,
-    description: fm.description,
-    datePublished: fm.date,
-    dateModified: fm.date,
-    author: {
-      "@type": "Person",
-      name: "Maciej Szamowski",
-      url: "https://szamowski.dev",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "hora Calendar",
-      url: "https://horacal.app",
-    },
-    url,
-    image: og.startsWith("http") ? og : `https://horacal.app${og}`,
-    mainEntityOfPage: url,
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        headline: fm.title,
+        description: fm.description,
+        datePublished: fm.date,
+        dateModified: fm.date,
+        author: {
+          "@type": "Person",
+          name: "Maciej Szamowski",
+          url: "https://szamowski.dev",
+        },
+        publisher: { "@id": "https://horacal.app/#organization" },
+        url,
+        image: og.startsWith("http") ? og : `https://horacal.app${og}`,
+        mainEntityOfPage: url,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://horacal.app/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: "https://horacal.app/blog/",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: fm.title,
+            item: url,
+          },
+        ],
+      },
+    ],
   };
 
   return (

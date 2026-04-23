@@ -42,7 +42,7 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
       >
         <Image
           src={hero.demo.posterSrc}
-          alt=""
+          alt="hora Calendar macOS app interface"
           fill
           priority
           sizes="100vw"
