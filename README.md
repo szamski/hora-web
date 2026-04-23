@@ -32,7 +32,7 @@
 ---
 
 <p align="center">
-  <img src="assets/hora-demo.gif" alt="hora Calendar demo" width="800">
+  <img src="https://horacal.app/assets/hero_demo_new.webp" alt="hora Calendar demo" width="800">
 </p>
 
 ---
