@@ -18,7 +18,7 @@ export const site = {
     { label: "Blog", href: "/blog/" },
   ],
   cta: {
-    primary: { label: "Sign up for TestFlight", href: "/" },
+    primary: { label: "Sign up for TestFlight", href: "/testflight/" },
   },
   community: {
     discord: {

@@ -49,8 +49,21 @@ export default async function BlogPostPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const [post, allPosts] = await Promise.all([
+    getPostBySlug(slug),
+    getAllPosts(),
+  ]);
   if (!post) notFound();
+
+  const idx = allPosts.findIndex((p) => p.slug === slug);
+  // allPosts is sorted newest → oldest, so the "previous" post (older) is
+  // at idx+1, and the "next" post (newer) is at idx-1.
+  const previous = allPosts[idx + 1]
+    ? { slug: allPosts[idx + 1].slug, title: allPosts[idx + 1].frontmatter.title }
+    : null;
+  const next = allPosts[idx - 1]
+    ? { slug: allPosts[idx - 1].slug, title: allPosts[idx - 1].frontmatter.title }
+    : null;
 
   const fm = post.frontmatter;
   const og = fm.ogImage || fm.cover || "/assets/og-image.png";
@@ -102,7 +115,9 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <BlogPostLayout frontmatter={fm}>{post.content}</BlogPostLayout>
+      <BlogPostLayout frontmatter={fm} previous={previous} next={next}>
+        {post.content}
+      </BlogPostLayout>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
