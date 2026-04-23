@@ -216,7 +216,7 @@ export const home = {
         a: "Anyone on macOS who uses Google Calendar and wants a faster, keyboard-friendly experience. It's especially useful if you manage multiple Google accounts or prefer native apps over browser tabs.",
       },
       {
-        q: "How is hora different from Fantastical or Cron?",
+        q: "How is hora different from Fantastical or Notion Calendar?",
         a: "hora focuses exclusively on Google Calendar and uses the official API for direct access. There's no CalDAV translation layer, which means faster sync and full feature support like Google Meet link creation. It's also built purely in SwiftUI with no Electron or web technologies.",
       },
       {
