@@ -8,6 +8,7 @@ import { Logo } from "@/components/atoms/Logo";
 import { NavLink } from "@/components/molecules/NavLink";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
+import { track } from "@/lib/analytics";
 
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
@@ -79,7 +80,10 @@ export function MobileNav({ activePath }: { activePath?: string }) {
           href={site.community.discord.href}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            track("discord_click", { location: "mobile_menu" });
+            setOpen(false);
+          }}
           className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-semibold text-text transition-colors hover:border-accent hover:text-accent"
         >
           <Icon name="discord" size={18} />

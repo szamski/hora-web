@@ -1,3 +1,7 @@
+"use client";
+
+import { track } from "@/lib/analytics";
+
 export function DiscordCta({
   href = "https://discord.gg/8JFz4FfBGQ",
   label = "Join the Discord",
@@ -42,6 +46,7 @@ export function DiscordCta({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track("discord_click", { location: "blog_cta" })}
           className="inline-block font-bold text-white no-underline transition hover:brightness-110"
           style={{
             background:

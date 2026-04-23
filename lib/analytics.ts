@@ -13,6 +13,7 @@ export type EventProps = Record<string, string | number | boolean>;
 export function track(event: string, props?: EventProps) {
   if (typeof window === "undefined") return;
   window.plausible?.(event, props ? { props } : undefined);
+  window.gtag?.("event", event, props);
 }
 
 export const CONVERSION_TAGS = {
