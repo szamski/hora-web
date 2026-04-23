@@ -14,10 +14,16 @@
 </p>
 
 <p align="center">
+  <a href="https://horacal.app"><img src="https://img.shields.io/badge/Join_TestFlight-000?style=for-the-badge&logo=apple&logoColor=white" alt="Join TestFlight"></a>
+  <a href="https://horacal.app"><img src="https://img.shields.io/badge/horacal.app-111?style=for-the-badge&logo=safari&logoColor=white" alt="Website"></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/macOS-14%2B-000?logo=apple&logoColor=white" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
   <img src="https://img.shields.io/badge/SwiftUI-blue?logo=swift&logoColor=white" alt="SwiftUI">
   <img src="https://img.shields.io/badge/Google_Calendar_API-4285F4?logo=googlecalendar&logoColor=white" alt="Google Calendar API">
+  <img src="https://img.shields.io/badge/Electron-none-success?logo=electron&logoColor=white" alt="No Electron">
 </p>
 
 <p align="center">
@@ -37,7 +43,45 @@
 
 ---
 
+> [!NOTE]
+> **hora is native.** Built in SwiftUI, talking to the Google Calendar REST API directly — no CalDAV translation layer, no web views, no Electron. It sips battery and opens in milliseconds.
+
+### Why hora
+
+|     | **hora** | Fantastical | Notion Calendar |
+| --- | :---: | :---: | :---: |
+| Pure SwiftUI + AppKit | Yes | Partly | No |
+| No Electron / no web views | Yes | Yes | No |
+| Direct Google Calendar API | Yes | CalDAV | Yes |
+| Google Meet link on create | One click | Yes | Yes |
+| Built-in Pomodoro timer | Yes | No | No |
+| Menu bar countdown widget | Yes | Yes | Yes |
+| Availability sharing (FreeBusy) | Yes | Yes | Yes |
+| Localized languages | 9 | 8 | Limited |
+| Pricing | $49 one-time or $30/yr | Subscription | Free |
+
+### Keyboard shortcuts
+
+The shortcuts you already know from Google Calendar — natively, everywhere.
+
+<p>
+  <kbd>D</kbd> Day &nbsp;·&nbsp;
+  <kbd>W</kbd> Week &nbsp;·&nbsp;
+  <kbd>M</kbd> Month &nbsp;·&nbsp;
+  <kbd>T</kbd> Today &nbsp;·&nbsp;
+  <kbd>C</kbd> New event &nbsp;·&nbsp;
+  <kbd>/</kbd> Search &nbsp;·&nbsp;
+  <kbd>J</kbd> / <kbd>K</kbd> Prev / Next &nbsp;·&nbsp;
+  <kbd>⌘</kbd><kbd>Z</kbd> Undo &nbsp;·&nbsp;
+  <kbd>⌘</kbd><kbd>⇧</kbd><kbd>A</kbd> Share availability
+</p>
+
 ### Features
+
+<details open>
+<summary><strong>14 shipped features</strong> — click to collapse</summary>
+
+<br>
 
 | | Feature | Description |
 |---|---|---|
@@ -56,7 +100,24 @@
 | **Undo/Redo** | Cmd+Z | Full undo/redo for create, edit, and delete operations. |
 | **Light & Dark** | Appearance | Matches system appearance. Polished contrast in both modes. |
 
+</details>
+
 See [horacal.app/features](https://horacal.app/features/) for the full list.
+
+### Architecture
+
+```mermaid
+flowchart LR
+  U([You]) --> UI[SwiftUI + AppKit]
+  UI <--> Core[HoraCore]
+  Core <--> Sync[HoraSync]
+  Sync <--> Cache[(SwiftData cache)]
+  Sync <--> API[HoraGoogleAPI]
+  API <-->|REST, incremental| GCal[(Google Calendar)]
+  API -.->|OAuth 2.0 + PKCE| Google{{Google}}
+```
+
+Three Swift Packages, one main target. SwiftData is a local cache — Google Calendar is the source of truth.
 
 ### Stack
 
@@ -73,9 +134,26 @@ See [horacal.app/features](https://horacal.app/features/) for the full list.
 
 ### Journey
 
-**Shipped (24+ features, 25+ bugs squashed)** — Day / Week / Month views, full CRUD, drag & drop, resize, multi-account sync, Google OAuth, incremental sync, keyboard shortcuts, menu bar widget, pomodoro timer, availability sharing, invitation management, calendar visibility, recurring events, 9 languages, light & dark mode, 5/7-day week toggle, one-click meeting join, window state restore, Xcode Cloud CI/CD.
+> [!TIP]
+> **24+ features shipped, 25+ bugs squashed.** Full changelog on the [blog](https://horacal.app/blog).
 
-**Working on now** — Focus mode & DND integration · Quick "Running late" reply · Email attendees from event detail · Invitation "Ignore" option · Light mode contrast polish · Dynamic Dock icon (macOS 26) · Localization native review.
+<details>
+<summary><strong>Shipped</strong></summary>
+
+<br>
+
+Day / Week / Month views · full CRUD · drag & drop · resize · multi-account sync · Google OAuth · incremental sync · keyboard shortcuts · menu bar widget · pomodoro timer · availability sharing · invitation management · calendar visibility · recurring events · 9 languages · light & dark mode · 5/7-day week toggle · one-click meeting join · window state restore · Xcode Cloud CI/CD.
+
+</details>
+
+<details>
+<summary><strong>Working on now</strong></summary>
+
+<br>
+
+Focus mode & DND integration · Quick "Running late" reply · Email attendees from event detail · Invitation "Ignore" option · Light mode contrast polish · Dynamic Dock icon (macOS 26) · Localization native review.
+
+</details>
 
 **What's next**
 
