@@ -1,10 +1,20 @@
+import Image from "next/image";
 import Link from "next/link";
+import { LuArrowRight } from "react-icons/lu";
 import { Prose } from "@/components/atoms/Prose";
 import { Tag } from "@/components/atoms/Tag";
 import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import type { PostFrontmatter, PostMeta } from "@/lib/mdx";
 
 type Adjacent = Pick<PostMeta, "slug"> & { title: string };
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 export function BlogPostLayout({
   frontmatter,
@@ -17,6 +27,10 @@ export function BlogPostLayout({
   next?: Adjacent | null;
   children: React.ReactNode;
 }) {
+  const dateIso = frontmatter.date.length > 10
+    ? frontmatter.date
+    : `${frontmatter.date}T00:00:00Z`;
+
   return (
     <>
       <article className="mx-auto max-w-page px-6 py-12 md:py-16">
@@ -27,10 +41,34 @@ export function BlogPostLayout({
           ← All posts
         </Link>
 
-        <p className="text-sm text-muted">{frontmatter.date}</p>
-        <h1 className="mt-2 text-3xl font-bold leading-tight tracking-tight text-text md:text-4xl">
+        <h1 className="text-3xl font-bold leading-tight tracking-tight text-text md:text-4xl">
           {frontmatter.title}
         </h1>
+
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <Link
+            href="/about/"
+            className="group inline-flex items-center gap-2.5"
+            rel="author"
+          >
+            <Image
+              src="/assets/maciej_szamowski.jpg"
+              alt="Maciej Szamowski"
+              width={32}
+              height={32}
+              className="rounded-full border border-white/10"
+            />
+            <span className="text-sm font-medium text-text transition-colors group-hover:text-accent">
+              Maciej Szamowski
+            </span>
+          </Link>
+          <span aria-hidden className="text-muted">
+            ·
+          </span>
+          <time dateTime={dateIso} className="text-sm text-muted">
+            {formatDate(frontmatter.date)}
+          </time>
+        </div>
 
         {frontmatter.tags.length > 0 ? (
           <div className="mt-5 flex flex-wrap gap-1.5">
@@ -42,10 +80,42 @@ export function BlogPostLayout({
 
         <Prose className="mt-10">{children}</Prose>
 
+        <aside className="mt-16 border-t border-border pt-8">
+          <Link
+            href="/about/"
+            className="group flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/4 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-white/6 sm:flex-row sm:items-center sm:gap-6"
+          >
+            <Image
+              src="/assets/maciej_szamowski.jpg"
+              alt="Maciej Szamowski"
+              width={64}
+              height={64}
+              className="shrink-0 rounded-full border border-white/10"
+            />
+            <div className="flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+                Written by
+              </p>
+              <p className="mt-1 text-lg font-semibold text-text transition-colors group-hover:text-accent">
+                Maciej Szamowski
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Marketer of 16 years turned solo macOS developer. Building hora
+                Calendar in public from Poland.
+              </p>
+            </div>
+            <LuArrowRight
+              size={20}
+              className="shrink-0 text-muted transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent"
+              aria-hidden
+            />
+          </Link>
+        </aside>
+
         {previous || next ? (
           <nav
             aria-label="More posts"
-            className="mt-16 grid gap-4 border-t border-border pt-8 sm:grid-cols-2"
+            className="mt-10 grid gap-4 sm:grid-cols-2"
           >
             {previous ? (
               <Link
