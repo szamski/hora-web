@@ -48,3 +48,6 @@ next-env.d.ts
 
 # PostHog wizard artifact
 posthog-setup-report.md
+
+# Claude Code local config (skills, settings)
+.claude/
