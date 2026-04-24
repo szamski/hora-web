@@ -42,6 +42,29 @@ const personLd = {
   ],
 };
 
+const videoLd = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: "hora Calendar — a native macOS client for Google Calendar",
+  description:
+    "A video tour of hora Calendar on macOS: day, week, and month views, drag & drop rescheduling, and native Google Calendar sync. No Electron, no CalDAV — just fast SwiftUI.",
+  thumbnailUrl: [
+    "https://i.ytimg.com/vi/ahVV5J25cYM/maxresdefault.jpg",
+    "https://i.ytimg.com/vi/ahVV5J25cYM/hqdefault.jpg",
+  ],
+  uploadDate: "2026-04-24",
+  contentUrl: "https://www.youtube.com/watch?v=ahVV5J25cYM",
+  embedUrl: "https://www.youtube.com/embed/ahVV5J25cYM",
+  publisher: {
+    "@type": "Organization",
+    name: "hora Calendar",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://horacal.app/assets/hora-icon.png",
+    },
+  },
+};
+
 export default async function Home() {
   const allPosts = await getAllPosts();
   const posts: PostCardData[] = allPosts.slice(0, 3).map((p) => ({
@@ -70,6 +93,10 @@ export default async function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoLd) }}
       />
     </>
   );

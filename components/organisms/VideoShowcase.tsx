@@ -24,6 +24,9 @@ export function VideoShowcase() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [manuallyStarted, setManuallyStarted] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [nearViewport, setNearViewport] = useState(
+    () => typeof window !== "undefined" && !("IntersectionObserver" in window),
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -51,12 +54,31 @@ export function VideoShowcase() {
     return () => io.disconnect();
   }, []);
 
+  // Facade pattern: defer loading the YT iframe (and its ~500KB of JS) until the
+  // section is near the viewport. Saves LCP/TBT on initial page load.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setNearViewport(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    io.observe(container);
+    return () => io.disconnect();
+  }, []);
+
   const startReducedMotionPlayback = useCallback(() => {
     setManuallyStarted(true);
   }, []);
 
-  const showIframe = !reducedMotion || manuallyStarted;
-  const showPoster = !showIframe || !iframeLoaded;
+  const motionOk = !reducedMotion || manuallyStarted;
+  const shouldMountIframe = motionOk && nearViewport;
+  const showPoster = !motionOk || !iframeLoaded;
   const showReducedMotionPlayButton = reducedMotion && !manuallyStarted;
 
   return (
@@ -126,7 +148,7 @@ export function VideoShowcase() {
           />
 
           <div className="relative aspect-video overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_60px_120px_-30px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)]">
-            {showIframe ? (
+            {shouldMountIframe ? (
               <iframe
                 src={YT_EMBED_URL}
                 title={demo.ariaLabel}
