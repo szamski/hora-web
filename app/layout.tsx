@@ -18,7 +18,7 @@ const geist = Geist({
 });
 
 const bumbbled = localFont({
-  src: "../public/fonts/Bumbbled.otf",
+  src: "../public/fonts/Bumbbled.woff2",
   variable: "--font-bumbbled",
   display: "swap",
   weight: "400",
@@ -36,8 +36,12 @@ export const metadata: Metadata = {
   authors: [{ name: "Maciej Szamowski", url: "https://szamowski.dev" }],
   creator: "Maciej Szamowski",
   icons: {
-    icon: "/assets/hora-icon.png",
-    apple: "/assets/hora-icon.png",
+    icon: [
+      { url: "/assets/hora-favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/assets/hora-apple-touch-180.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   alternates: {
     canonical: "/",
@@ -109,7 +113,7 @@ export default function RootLayout({
           src="https://consent.cookiebot.com/uc.js"
           data-cbid="93e42c2d-57e2-448f-9699-a65ce0fffdbd"
           data-blockingmode="auto"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
 
         <AmbientGlow />
@@ -122,16 +126,16 @@ export default function RootLayout({
         </div>
         <Footer />
 
-        <Script src={PLAUSIBLE_SRC} strategy="afterInteractive" />
-        <Script id="plausible-init" strategy="afterInteractive">
+        <Script src={PLAUSIBLE_SRC} strategy="lazyOnload" />
+        <Script id="plausible-init" strategy="lazyOnload">
           {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
         </Script>
 
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gads-init" strategy="afterInteractive">
+        <Script id="gads-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};

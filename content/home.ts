@@ -56,6 +56,7 @@ export const home = {
         { src: "/assets/hora_demo_new.mp4", type: "video/mp4" },
       ],
       posterSrc: "/assets/hero_image.webp",
+      videoPosterSrc: "/assets/hero_image_poster.webp",
       captionsSrc: "/assets/hora-demo.vtt",
       ariaLabel:
         "hora Calendar demo showing week view, event creation, and calendar navigation",

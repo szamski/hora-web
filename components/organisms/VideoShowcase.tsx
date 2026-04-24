@@ -256,8 +256,8 @@ export function VideoShowcase() {
                 loop
                 muted={isMuted}
                 playsInline
-                preload="metadata"
-                poster={demo.posterSrc}
+                preload="none"
+                poster={demo.videoPosterSrc}
                 controls={false}
                 onClick={showReducedMotionPoster ? undefined : togglePlay}
                 aria-label={demo.ariaLabel}
