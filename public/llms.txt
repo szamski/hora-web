@@ -26,6 +26,7 @@ hora Calendar 0.6 is in public beta on TestFlight. Join via [hora Calendar TestF
 ## Links
 
 - [Website](https://horacal.app/)
+- [About the developer](https://horacal.app/about/)
 - [Features](https://horacal.app/features/)
 - [Blog](https://horacal.app/blog/)
 - [RSS feed](https://horacal.app/blog/feed.xml)

@@ -16,6 +16,7 @@ export const site = {
     { label: "Features", href: "/features/" },
     { label: "Roadmap", href: "/#roadmap" },
     { label: "Blog", href: "/blog/" },
+    { label: "About", href: "/about/" },
   ],
   cta: {
     primary: { label: "Sign up for TestFlight", href: "/testflight/" },
@@ -30,6 +31,7 @@ export const site = {
     copyright: "© 2026 hora Calendar",
     developedBy: { label: "szamowski.dev", href: "https://szamowski.dev" },
     links: [
+      { label: "About", href: "/about/" },
       { label: "Privacy", href: "/privacy/" },
       { label: "Terms", href: "/terms/" },
     ],
