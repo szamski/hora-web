@@ -14,6 +14,9 @@ export function track(event: string, props?: EventProps) {
   if (typeof window === "undefined") return;
   window.plausible?.(event, props ? { props } : undefined);
   window.gtag?.("event", event, props);
+  import("posthog-js").then(({ default: posthog }) => {
+    posthog.capture(event, props);
+  });
 }
 
 export const CONVERSION_TAGS = {

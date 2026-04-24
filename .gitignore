@@ -44,3 +44,7 @@ next-env.d.ts
 # Sentry Config File
 .env.sentry-build-plugin
 .playwright-mcp/
+.env.local
+
+# PostHog wizard artifact
+posthog-setup-report.md

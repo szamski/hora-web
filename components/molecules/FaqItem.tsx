@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { cn } from "@/lib/cn";
+import { track } from "@/lib/analytics";
 
 export function FaqItem({
   question,
@@ -33,7 +34,11 @@ export function FaqItem({
         type="button"
         aria-expanded={open}
         aria-controls={id}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          const next = !open;
+          setOpen(next);
+          if (next) track("faq_expand", { question: question.slice(0, 60) });
+        }}
         className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-medium text-text md:px-6 md:py-5 md:text-lg"
       >
         <span className="flex-1 text-balance">{question}</span>

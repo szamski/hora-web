@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import { render } from "@react-email/render";
 import { WelcomeEmail } from "@/emails/WelcomeEmail";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 
@@ -117,24 +118,32 @@ export async function POST(req: NextRequest) {
   after(async () => {
     const ga = process.env.GA_MEASUREMENT_ID;
     const secret = process.env.GA_API_SECRET;
-    if (!ga || !secret) return;
-    try {
-      await fetch(
-        `https://www.google-analytics.com/mp/collect?measurement_id=${ga}&api_secret=${secret}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            client_id: email,
-            events: [
-              { name: "waitlist_success", params: { method: "server_side" } },
-            ],
-          }),
-        },
-      );
-    } catch {
-      // non-blocking
+    if (ga && secret) {
+      try {
+        await fetch(
+          `https://www.google-analytics.com/mp/collect?measurement_id=${ga}&api_secret=${secret}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              client_id: email,
+              events: [
+                { name: "waitlist_success", params: { method: "server_side" } },
+              ],
+            }),
+          },
+        );
+      } catch {
+        // non-blocking
+      }
     }
+
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: email,
+      event: "waitlist_signup_completed",
+      properties: { method: "server_side", source: "subscribe_api" },
+    });
   });
 
   return NextResponse.json({ success: true }, { headers });

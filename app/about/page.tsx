@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { FaXTwitter, FaBluesky, FaGithub } from "react-icons/fa6";
-import { LuMail, LuArrowRight } from "react-icons/lu";
+import { LuMail } from "react-icons/lu";
 import { getPageMdx } from "@/lib/mdx";
 import { Prose } from "@/components/atoms/Prose";
 import { defaultOg } from "@/lib/og";
 import { site } from "@/content/site";
+import { AboutContactLink } from "@/components/molecules/AboutContactLink";
+import { AboutCtaFooter } from "@/components/organisms/AboutCtaFooter";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { frontmatter } = await getPageMdx("about");
@@ -121,16 +122,15 @@ export default async function AboutPage() {
 
               <div className="mt-5 flex flex-wrap gap-2">
                 {contacts.map(({ href, label, Icon, external }) => (
-                  <a
+                  <AboutContactLink
                     key={label}
                     href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noopener noreferrer" : undefined}
+                    external={external}
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:border-accent/40 hover:bg-white/6 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
                     <Icon size={12} aria-hidden />
                     {label}
-                  </a>
+                  </AboutContactLink>
                 ))}
               </div>
             </div>
@@ -190,47 +190,7 @@ export default async function AboutPage() {
       </article>
 
       {/* CTA FOOTER */}
-      <section className="mx-auto max-w-page px-6 pb-20 md:pb-28">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Link
-            href="/testflight/"
-            className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-accent/30 bg-linear-to-br from-accent/16 to-accent/6 px-6 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-[0_28px_60px_-20px_rgba(255,56,60,0.4)]"
-          >
-            <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                Join the beta
-              </span>
-              <span className="mt-1 block text-base font-semibold text-text md:text-lg">
-                Try hora Calendar on TestFlight
-              </span>
-            </div>
-            <LuArrowRight
-              size={20}
-              className="shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1"
-              aria-hidden
-            />
-          </Link>
-
-          <Link
-            href="/blog/"
-            className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/4 px-6 py-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-white/6"
-          >
-            <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
-                Building in public
-              </span>
-              <span className="mt-1 block text-base font-semibold text-text md:text-lg">
-                Read the dev blog
-              </span>
-            </div>
-            <LuArrowRight
-              size={20}
-              className="shrink-0 text-muted transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent"
-              aria-hidden
-            />
-          </Link>
-        </div>
-      </section>
+      <AboutCtaFooter />
 
       <script
         type="application/ld+json"
