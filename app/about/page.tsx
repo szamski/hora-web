@@ -108,9 +108,9 @@ export default async function AboutPage() {
             </div>
 
             <div>
-              <h1 className="font-brand text-4xl font-normal leading-[1.1] tracking-tight md:text-[56px]">
+              <h1 className="font-brand text-4xl font-normal leading-[1.2] tracking-tight md:text-[56px]">
                 Maciej{" "}
-                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pl-[0.04em] text-transparent">
+                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.18em] pl-[0.04em] text-transparent">
                   Szamowski
                 </span>
               </h1>
@@ -149,8 +149,10 @@ export default async function AboutPage() {
               <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                 {label}
               </dt>
-              <dd className="mt-2 font-brand text-3xl font-normal leading-none tracking-tight text-text md:text-4xl">
-                {value}
+              <dd className="mt-2 font-brand text-3xl font-normal leading-none tracking-tight md:text-4xl">
+                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.12em] pl-[0.04em] text-transparent">
+                  {value}
+                </span>
               </dd>
               <p className="mt-2 text-xs text-muted">{sub}</p>
             </div>
@@ -170,9 +172,12 @@ export default async function AboutPage() {
             }}
           />
           <blockquote className="relative">
-            <p className="font-brand text-2xl leading-snug tracking-tight text-text md:text-[32px]">
-              “The Mac calendar Google never built — shipped by one person, in
-              public, from Poland.”
+            <p className="font-brand text-2xl leading-tight tracking-tight text-text md:text-[32px]">
+              “The Mac calendar Google never built —{" "}
+              <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.12em] pl-[0.04em] text-transparent">
+                shipped by one person, in public, from Poland.
+              </span>
+              ”
             </p>
           </blockquote>
         </figure>
