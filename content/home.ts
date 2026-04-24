@@ -24,7 +24,7 @@ export const home = {
         "When hora goes live, you'll get the invite — and a founding‑user discount — before anyone else.",
       watchDemoCtaLabel: "Watch the demo",
       socialProof: {
-        count: 842,
+        count: 240,
         label: "Mac folks already on the Beta TestFlight waitlist",
         avatars: [
           {
