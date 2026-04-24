@@ -11,9 +11,55 @@ const YT_VIDEO_ID = "ahVV5J25cYM";
 const YT_EMBED_URL =
   `https://www.youtube.com/embed/${YT_VIDEO_ID}` +
   `?autoplay=1&mute=1&loop=1&playlist=${YT_VIDEO_ID}` +
-  `&modestbranding=1&rel=0&playsinline=1`;
+  `&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
 const YT_THUMBNAIL_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/maxresdefault.jpg`;
 const YT_THUMBNAIL_FALLBACK_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/hqdefault.jpg`;
+
+type YTPlayer = {
+  getCurrentTime: () => number;
+  getDuration: () => number;
+  getPlayerState: () => number;
+  isMuted: () => boolean;
+  destroy: () => void;
+};
+
+type YTPlayerEvent = { target: YTPlayer; data?: number };
+
+type YTPlayerConstructor = new (
+  el: HTMLElement | string,
+  opts: {
+    events?: {
+      onReady?: (event: YTPlayerEvent) => void;
+      onStateChange?: (event: YTPlayerEvent) => void;
+    };
+  },
+) => YTPlayer;
+
+declare global {
+  interface Window {
+    YT?: { Player: YTPlayerConstructor };
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
+let ytApiPromise: Promise<void> | null = null;
+function loadYouTubeAPI(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.YT?.Player) return Promise.resolve();
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise((resolve) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      prev?.();
+      resolve();
+    };
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    script.async = true;
+    document.head.appendChild(script);
+  });
+  return ytApiPromise;
+}
 
 export function VideoShowcase() {
   const v = home.videoShowcase;
@@ -21,9 +67,15 @@ export function VideoShowcase() {
   const [thumbnailSrc, setThumbnailSrc] = useState(YT_THUMBNAIL_URL);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerRef = useRef<YTPlayer | null>(null);
+  const trackedPlayedRef = useRef(false);
+  const trackedUnmutedRef = useRef(false);
+  const trackedQuartilesRef = useRef<Set<number>>(new Set());
   const [reducedMotion, setReducedMotion] = useState(false);
   const [manuallyStarted, setManuallyStarted] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
   const [nearViewport, setNearViewport] = useState(
     () => typeof window !== "undefined" && !("IntersectionObserver" in window),
   );
@@ -71,6 +123,71 @@ export function VideoShowcase() {
     io.observe(container);
     return () => io.disconnect();
   }, []);
+
+  // Attach YT IFrame API to the existing <iframe> for engagement tracking.
+  // Pure telemetry — no UI changes, native YT controls keep working.
+  useEffect(() => {
+    if (!iframeLoaded) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    let cancelled = false;
+    loadYouTubeAPI().then(() => {
+      if (cancelled || !window.YT?.Player) return;
+      playerRef.current = new window.YT.Player(iframe, {
+        events: {
+          onReady: () => {
+            if (!cancelled) setPlayerReady(true);
+          },
+          onStateChange: (e) => {
+            if (e.data === 1 && !trackedPlayedRef.current) {
+              trackedPlayedRef.current = true;
+              track("demo_played", { video_id: YT_VIDEO_ID });
+            }
+          },
+        },
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      try {
+        playerRef.current?.destroy();
+      } catch {
+        /* no-op */
+      }
+      playerRef.current = null;
+    };
+  }, [iframeLoaded]);
+
+  // Poll for unmute + quartile progress while playing. YT IFrame API has no
+  // volume/mute event, so polling is the supported path.
+  useEffect(() => {
+    if (!playerReady) return;
+    const id = window.setInterval(() => {
+      const player = playerRef.current;
+      if (!player) return;
+      try {
+        if (!trackedUnmutedRef.current && player.isMuted() === false) {
+          trackedUnmutedRef.current = true;
+          track("demo_unmuted", { video_id: YT_VIDEO_ID });
+        }
+        if (player.getPlayerState() !== 1) return;
+        const duration = player.getDuration();
+        if (!duration) return;
+        const pct = (player.getCurrentTime() / duration) * 100;
+        for (const q of [25, 50, 75, 95] as const) {
+          if (pct >= q && !trackedQuartilesRef.current.has(q)) {
+            trackedQuartilesRef.current.add(q);
+            track("demo_progress", { video_id: YT_VIDEO_ID, quartile: q });
+          }
+        }
+      } catch {
+        /* postMessage race — try again next tick */
+      }
+    }, 2000);
+    return () => window.clearInterval(id);
+  }, [playerReady]);
 
   const startReducedMotionPlayback = useCallback(() => {
     setManuallyStarted(true);
@@ -150,6 +267,7 @@ export function VideoShowcase() {
           <div className="relative aspect-video overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_60px_120px_-30px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)]">
             {shouldMountIframe ? (
               <iframe
+                ref={iframeRef}
                 src={YT_EMBED_URL}
                 title={demo.ariaLabel}
                 allow="autoplay; encrypted-media; fullscreen; picture-in-picture; web-share"

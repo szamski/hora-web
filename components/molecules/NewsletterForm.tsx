@@ -6,7 +6,13 @@ import { Input } from "@/components/atoms/Input";
 import { Icon } from "@/components/atoms/Icon";
 import { site } from "@/content/site";
 import { home } from "@/content/home";
-import { CONVERSION_TAGS, track, trackConversion } from "@/lib/analytics";
+import {
+  CONVERSION_TAGS,
+  getAttribution,
+  identify,
+  track,
+  trackConversion,
+} from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -22,7 +28,8 @@ export function NewsletterForm({ className }: { className?: string }) {
 
     setStatus("submitting");
     setMessage("");
-    track("waitlist_submit", { method: "email" });
+    const attribution = getAttribution();
+    track("waitlist_submit", { method: "email", ...attribution });
 
     try {
       const res = await fetch(site.newsletter.endpoint, {
@@ -33,14 +40,19 @@ export function NewsletterForm({ className }: { className?: string }) {
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
       setMessage("You're in! We'll let you know when hora launches.");
-      track("waitlist_success", { method: "email" });
+      identify(email, {
+        email,
+        waitlist_joined_at: new Date().toISOString(),
+        ...attribution,
+      });
+      track("waitlist_success", { method: "email", ...attribution });
       trackConversion(CONVERSION_TAGS.waitlistSignup);
     } catch {
       setStatus("error");
       setMessage(
         `Something went wrong. Try again or email ${site.contactEmail}.`,
       );
-      track("waitlist_error", { method: "email" });
+      track("waitlist_error", { method: "email", ...attribution });
     }
   }
 

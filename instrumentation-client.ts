@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import posthog from "posthog-js";
+import { captureFirstTouch } from "@/lib/analytics";
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
@@ -28,3 +29,5 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   capture_exceptions: false,
   debug: process.env.NODE_ENV === "development",
 });
+
+captureFirstTouch();
