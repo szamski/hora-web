@@ -1,30 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import {
-  LuMaximize2,
-  LuMinimize2,
-  LuPlay,
-  LuVolume2,
-  LuVolumeX,
-} from "react-icons/lu";
+import { LuPlay } from "react-icons/lu";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
+const YT_VIDEO_ID = "ahVV5J25cYM";
+const YT_EMBED_URL =
+  `https://www.youtube.com/embed/${YT_VIDEO_ID}` +
+  `?autoplay=1&mute=1&loop=1&playlist=${YT_VIDEO_ID}` +
+  `&modestbranding=1&rel=0&playsinline=1`;
+const YT_THUMBNAIL_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/maxresdefault.jpg`;
+const YT_THUMBNAIL_FALLBACK_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/hqdefault.jpg`;
+
 export function VideoShowcase() {
   const v = home.videoShowcase;
   const demo = home.hero.demo;
+  const [thumbnailSrc, setThumbnailSrc] = useState(YT_THUMBNAIL_URL);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const frameRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [manuallyStarted, setManuallyStarted] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -52,131 +51,13 @@ export function VideoShowcase() {
     return () => io.disconnect();
   }, []);
 
-  // Muted autoplay when section enters viewport (skipped for reduced motion).
-  useEffect(() => {
-    if (reducedMotion && !manuallyStarted) return;
-    const video = videoRef.current;
-    const container = containerRef.current;
-    if (!video || !container) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry) return;
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(container);
-    return () => io.disconnect();
-  }, [reducedMotion, manuallyStarted]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    const onFsChange = () => {
-      const doc = document as Document & { webkitFullscreenElement?: Element | null };
-      const fsEl = doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
-      setIsFullscreen(fsEl === frameRef.current);
-    };
-    const onVideoFsBegin = () => setIsFullscreen(true);
-    const onVideoFsEnd = () => setIsFullscreen(false);
-    document.addEventListener("fullscreenchange", onFsChange);
-    document.addEventListener("webkitfullscreenchange", onFsChange);
-    video?.addEventListener("webkitbeginfullscreen", onVideoFsBegin);
-    video?.addEventListener("webkitendfullscreen", onVideoFsEnd);
-    return () => {
-      document.removeEventListener("fullscreenchange", onFsChange);
-      document.removeEventListener("webkitfullscreenchange", onFsChange);
-      video?.removeEventListener("webkitbeginfullscreen", onVideoFsBegin);
-      video?.removeEventListener("webkitendfullscreen", onVideoFsEnd);
-    };
-  }, []);
-
-  const toggleMute = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (isMuted) {
-      video.muted = false;
-      video.currentTime = 0;
-      video.play().catch(() => {});
-      setIsMuted(false);
-    } else {
-      video.muted = true;
-      setIsMuted(true);
-    }
-  }, [isMuted]);
-
-  const toggleFullscreen = useCallback(() => {
-    const el = frameRef.current as
-      | (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> | void })
-      | null;
-    const video = videoRef.current as
-      | (HTMLVideoElement & {
-          webkitEnterFullscreen?: () => void;
-          webkitExitFullscreen?: () => void;
-          webkitDisplayingFullscreen?: boolean;
-        })
-      | null;
-    const doc = document as Document & {
-      webkitFullscreenElement?: Element | null;
-      webkitExitFullscreen?: () => Promise<void> | void;
-    };
-
-    const isInFs =
-      !!(doc.fullscreenElement ?? doc.webkitFullscreenElement) ||
-      !!video?.webkitDisplayingFullscreen;
-
-    if (isInFs) {
-      if (typeof doc.exitFullscreen === "function") {
-        doc.exitFullscreen().catch(() => {});
-      } else if (typeof doc.webkitExitFullscreen === "function") {
-        doc.webkitExitFullscreen();
-      } else if (typeof video?.webkitExitFullscreen === "function") {
-        video.webkitExitFullscreen();
-      }
-      return;
-    }
-
-    if (el && typeof el.requestFullscreen === "function") {
-      el.requestFullscreen().catch(() => {});
-    } else if (el && typeof el.webkitRequestFullscreen === "function") {
-      const result = el.webkitRequestFullscreen();
-      if (result && typeof (result as Promise<void>).catch === "function") {
-        (result as Promise<void>).catch(() => {});
-      }
-    } else if (video && typeof video.webkitEnterFullscreen === "function") {
-      // iOS Safari: Fullscreen API is only available on <video>.
-      try {
-        video.webkitEnterFullscreen();
-      } catch {
-        /* no-op */
-      }
-    }
-  }, []);
-
-  const togglePlay = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }, []);
-
   const startReducedMotionPlayback = useCallback(() => {
     setManuallyStarted(true);
-    requestAnimationFrame(() => {
-      const video = videoRef.current;
-      if (!video) return;
-      video.play().catch(() => {});
-    });
   }, []);
 
-  const showReducedMotionPoster = reducedMotion && !manuallyStarted;
+  const showIframe = !reducedMotion || manuallyStarted;
+  const showPoster = !showIframe || !iframeLoaded;
+  const showReducedMotionPlayButton = reducedMotion && !manuallyStarted;
 
   return (
     <section id="watch" className="relative overflow-hidden py-24 md:py-32">
@@ -244,79 +125,55 @@ export function VideoShowcase() {
             }}
           />
 
-          <div
-            ref={frameRef}
-            className={cn(
-              "relative overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_60px_120px_-30px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)]",
-              isFullscreen && "flex h-full w-full items-center justify-center rounded-none",
-            )}
-          >
-              <video
-                ref={videoRef}
-                loop
-                muted={isMuted}
-                playsInline
-                preload="none"
-                poster={demo.videoPosterSrc}
-                controls={false}
-                onClick={showReducedMotionPoster ? undefined : togglePlay}
-                aria-label={demo.ariaLabel}
+          <div className="relative aspect-video overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_60px_120px_-30px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)]">
+            {showIframe ? (
+              <iframe
+                src={YT_EMBED_URL}
+                title={demo.ariaLabel}
+                allow="autoplay; encrypted-media; fullscreen; picture-in-picture; web-share"
+                allowFullScreen
+                onLoad={() => setIframeLoaded(true)}
                 className={cn(
-                  "block w-full cursor-pointer",
-                  isFullscreen ? "h-full max-h-full object-contain" : "h-auto",
-                  showReducedMotionPoster && "invisible",
+                  "absolute inset-0 h-full w-full border-0 transition-opacity duration-300",
+                  iframeLoaded ? "opacity-100" : "opacity-0",
                 )}
-              >
-                {demo.videoSources.map((source) => (
-                  <source key={source.src} src={source.src} type={source.type} />
-                ))}
-              </video>
+              />
+            ) : null}
 
-              {/* Reduced-motion fallback: poster + big play button */}
-              {showReducedMotionPoster ? (
-                <button
-                  type="button"
-                  onClick={startReducedMotionPlayback}
-                  aria-label="Play demo video"
-                  className="group absolute inset-0 flex items-center justify-center focus-visible:outline-none"
-                >
-                  <Image
-                    src={demo.posterSrc}
-                    alt="hora Calendar macOS app demo preview"
-                    fill
-                    sizes="(min-width: 1024px) 1152px, 100vw"
-                    className="object-cover"
-                  />
-                  <span className="pointer-events-none absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
-                  <span className="pointer-events-none relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_40px_rgba(255,56,60,0.45)]">
-                    <LuPlay size={24} aria-hidden />
-                  </span>
-                </button>
-              ) : (
-                <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={toggleFullscreen}
-                    aria-label={isFullscreen ? v.minimizeLabel : v.enlargeLabel}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_30px_-10px_rgba(0,0,0,0.65)] transition-colors hover:border-accent/60 hover:bg-black/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  >
-                    {isFullscreen ? (
-                      <LuMinimize2 size={14} aria-hidden />
-                    ) : (
-                      <LuMaximize2 size={14} aria-hidden />
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    aria-label={isMuted ? v.unmuteLabel : v.muteLabel}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_30px_-10px_rgba(0,0,0,0.65)] transition-colors hover:border-accent/60 hover:bg-black/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  >
-                    {isMuted ? <LuVolumeX size={14} /> : <LuVolume2 size={14} />}
-                    <span>{isMuted ? v.unmuteLabel : v.muteLabel}</span>
-                  </button>
-                </div>
-              )}
+            {/* Poster overlay — shown while iframe loads, or as reduced-motion fallback */}
+            {showPoster ? (
+              <button
+                type="button"
+                onClick={
+                  showReducedMotionPlayButton ? startReducedMotionPlayback : undefined
+                }
+                tabIndex={showReducedMotionPlayButton ? 0 : -1}
+                aria-label="Play demo video"
+                aria-hidden={!showReducedMotionPlayButton}
+                className="group absolute inset-0 flex items-center justify-center focus-visible:outline-none"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- external YT thumbnail, not worth wiring through next.config remotePatterns for a single asset */}
+                <img
+                  src={thumbnailSrc}
+                  alt="hora Calendar macOS app demo preview"
+                  onError={() => {
+                    if (thumbnailSrc !== YT_THUMBNAIL_FALLBACK_URL) {
+                      setThumbnailSrc(YT_THUMBNAIL_FALLBACK_URL);
+                    }
+                  }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                {showReducedMotionPlayButton ? (
+                  <>
+                    <span className="pointer-events-none absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
+                    <span className="pointer-events-none relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_40px_rgba(255,56,60,0.45)]">
+                      <LuPlay size={24} aria-hidden />
+                    </span>
+                  </>
+                ) : null}
+              </button>
+            ) : null}
           </div>
 
           {/* Highlights — what you're watching */}
