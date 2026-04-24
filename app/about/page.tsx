@@ -149,8 +149,8 @@ export default async function AboutPage() {
               <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                 {label}
               </dt>
-              <dd className="mt-2 font-brand text-3xl font-normal leading-none tracking-tight md:text-4xl">
-                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.12em] pl-[0.04em] text-transparent">
+              <dd className="mt-2 font-brand text-3xl font-normal leading-none md:text-4xl">
+                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.18em] pb-[0.12em] pl-[0.04em] tracking-[0.04em] text-transparent">
                   {value}
                 </span>
               </dd>
@@ -173,9 +173,10 @@ export default async function AboutPage() {
           />
           <blockquote className="relative">
             <p className="font-brand text-2xl leading-tight tracking-tight text-text md:text-[32px]">
-              “The Mac calendar Google never built —{" "}
+              “The Mac calendar Google never built.
+              <br />
               <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.12em] pl-[0.04em] text-transparent">
-                shipped by one person, in public, from Poland.
+                Shipped by one person, in public, from Poland.
               </span>
               ”
             </p>
