@@ -154,18 +154,24 @@ div#CybotCookiebotDialogHeader {
   pointer-events: none !important;
 }
 
-/* Default text sizes (readable, not huge) */
+/* Default text sizes — small enough that body content fits without scroll */
 #CybotCookiebotDialog *,
 #CybotCookiebotDialogBodyUnderlay * {
-  font-size: 0.875rem !important;
-  line-height: 1.45 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.4 !important;
 }
 
 #CybotCookiebotDialogBodyContentTitle {
-  font-size: 1.0625rem !important;
+  font-size: 0.9375rem !important;
   font-weight: 600 !important;
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0.4rem !important;
   color: #fafafa !important;
+}
+
+#CybotCookiebotDialogBodyContentText {
+  font-size: 0.75rem !important;
+  line-height: 1.45 !important;
+  color: #d1d5db !important;
 }
 
 /* Tabs */
@@ -235,12 +241,32 @@ div#CybotCookiebotDialogHeader {
   border-top: none !important;
 }
 
-/* Wipe any default Cookiebot internal dividers (hr, separator divs) */
+/* Wipe ALL default Cookiebot internal dividers — hr, table cells, separator
+   divs. These were drawing white horizontal/vertical lines between toggles
+   and around the body content. */
 #CybotCookiebotDialog hr,
 #CybotCookiebotDialogBodyLevelButtonsTable,
+#CybotCookiebotDialogBodyLevelButtonsTable tr,
+#CybotCookiebotDialogBodyLevelButtonsTable td,
+#CybotCookiebotDialogBodyLevelButtonsTable th,
 #CybotCookiebotDialogBodyLevelButtonsSelectPane,
-#CybotCookiebotDialogBodyLevelButtonsRow {
+#CybotCookiebotDialogBodyLevelButtonsRow,
+#CybotCookiebotDialogBodyContent,
+#CybotCookiebotDialogBodyContentControls {
   border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Nav (tabs) — kill the vertical separators Cookiebot puts between tab items */
+#CybotCookiebotDialogNav,
+#CybotCookiebotDialogNav ul,
+#CybotCookiebotDialogNav li,
+#CybotCookiebotDialogNavList,
+#CybotCookiebotDialogNavList li {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
   background: transparent !important;
 }
 
@@ -249,19 +275,19 @@ div#CybotCookiebotDialogHeader {
   font-weight: 500 !important;
 }
 
-/* Footer + buttons row */
+/* Footer + buttons row — always horizontal, no wrap, equal widths */
 #CybotCookiebotDialogFooter {
   padding: 0.875rem 1rem 1rem !important;
   border-top: none !important;
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap !important;
-  gap: 0.625rem !important;
+  flex-wrap: nowrap !important;
+  gap: 0.75rem !important;
   flex-shrink: 0 !important;
 }
 
 #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
-  flex: 1 1 30% !important;
+  flex: 1 1 0 !important;
   min-width: 0 !important;
   padding: 0.55rem 0.75rem !important;
   font-size: 0.8125rem !important;
@@ -272,6 +298,9 @@ div#CybotCookiebotDialogHeader {
   color: #fafafa !important;
   margin: 0 !important;
   cursor: pointer !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   transition: background-color 150ms, border-color 150ms !important;
 }
 
@@ -280,27 +309,36 @@ div#CybotCookiebotDialogHeader {
   border-color: rgba(255, 255, 255, 0.18) !important;
 }
 
-/* Primary "Allow all" — hora accent gradient */
-#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll,
-#CybotCookiebotDialogBodyLevelButtonAccept,
-#CybotCookiebotDialogBodyButtonAccept,
-#CybotCookiebotDialogBodyButtonAcceptAll {
+/* Primary "Allow all" — hora accent gradient. Specificity boosted with
+   id+id so it beats `#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton`. */
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyLevelButtonAccept,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyButtonAccept,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyButtonAcceptAll {
   background: linear-gradient(135deg, #ff383c, #ff736e) !important;
   border-color: transparent !important;
   color: #fff !important;
   font-weight: 600 !important;
 }
 
-#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll:hover,
-#CybotCookiebotDialogBodyLevelButtonAccept:hover,
-#CybotCookiebotDialogBodyButtonAccept:hover,
-#CybotCookiebotDialogBodyButtonAcceptAll:hover {
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll:hover,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyLevelButtonAccept:hover,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyButtonAccept:hover,
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyButtonAcceptAll:hover {
   filter: brightness(1.05) !important;
 }
 
-/* Focus rings — replace browser blue with hora accent */
+/* Focus rings — only on footer buttons. The earlier blanket rule was
+   painting a red rectangle around the active tab as soon as you clicked
+   it, which read as "full red border around tab". */
 #CybotCookiebotDialog *:focus,
 #CybotCookiebotDialog *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton:focus,
+#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton:focus-visible {
   outline: 2px solid #ff383c !important;
   outline-offset: 2px !important;
 }
