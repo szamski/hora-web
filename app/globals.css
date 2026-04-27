@@ -297,13 +297,16 @@ div#CybotCookiebotDialogHeader {
   display: none !important;
 }
 
-/* Actual buttons row — Hstack on every viewport including mobile S */
-#CybotCookiebotDialogBodyButtons {
+/* The real flex container is `#CybotCookiebotDialogBodyButtonsWrapper`
+   (Cookiebot defaults it to flex-direction: column). Force Hstack here. */
+#CybotCookiebotDialogBodyButtons,
+#CybotCookiebotDialogBodyButtonsWrapper {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   gap: 0.75rem !important;
   width: 100% !important;
+  align-items: stretch !important;
 }
 
 #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
