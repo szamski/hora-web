@@ -241,6 +241,7 @@ div#CybotCookiebotDialogHeader {
 }
 
 /* Primary "Allow all" — hora accent gradient */
+#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll,
 #CybotCookiebotDialogBodyLevelButtonAccept,
 #CybotCookiebotDialogBodyButtonAccept,
 #CybotCookiebotDialogBodyButtonAcceptAll {
@@ -250,10 +251,72 @@ div#CybotCookiebotDialogHeader {
   font-weight: 600 !important;
 }
 
+#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll:hover,
 #CybotCookiebotDialogBodyLevelButtonAccept:hover,
 #CybotCookiebotDialogBodyButtonAccept:hover,
 #CybotCookiebotDialogBodyButtonAcceptAll:hover {
   filter: brightness(1.05) !important;
+}
+
+/* Focus rings — replace browser blue with hora accent */
+#CybotCookiebotDialog *:focus,
+#CybotCookiebotDialog *:focus-visible {
+  outline: 2px solid #ff383c !important;
+  outline-offset: 2px !important;
+}
+
+/* Toggle switches: track + thumb. Cookiebot uses checkbox + sibling span.
+   Default ON state is blue — override to hora accent. */
+.CybotCookiebotDialogBodyLevelButtonSlider {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.CybotCookiebotDialogBodyLevelButton:checked
+  + .CybotCookiebotDialogBodyLevelButtonSlider {
+  background-color: #ff383c !important;
+}
+
+.CybotCookiebotDialogBodyLevelButton:focus
+  + .CybotCookiebotDialogBodyLevelButtonSlider {
+  box-shadow: 0 0 0 2px rgba(255, 56, 60, 0.45) !important;
+}
+
+/* The disabled "Necessary" toggle — keep accent but slightly muted */
+.CybotCookiebotDialogBodyLevelButtonDisabled
+  + .CybotCookiebotDialogBodyLevelButtonSlider,
+.CybotCookiebotDialogBodyLevelButtonDisabled:checked
+  + .CybotCookiebotDialogBodyLevelButtonSlider {
+  background-color: rgba(255, 56, 60, 0.6) !important;
+  cursor: not-allowed !important;
+}
+
+/* Detail-view category container buttons (Necessary/Preferences/etc rows
+   in the Details tab) — neutral dark surface */
+.CybotCookiebotDialogDetailBodyContentCookieContainerButton {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #fafafa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+
+.CybotCookiebotDialogDetailBodyContentCookieContainerButton:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Provider rows inside Details */
+.CybotCookiebotDialogDetailBodyContentCookieProvider {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: #d1d5db !important;
+}
+
+/* Selection / link colour inside dialog */
+#CybotCookiebotDialog a {
+  color: #ff736e !important;
+}
+
+#CybotCookiebotDialog ::selection {
+  background: rgba(255, 56, 60, 0.4) !important;
+  color: #fff !important;
 }
 
 /* Mobile: full-width bottom sheet */
