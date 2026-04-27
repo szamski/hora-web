@@ -96,3 +96,77 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Cookiebot dialog: shrink + reposition so hero element wins LCP.
+   Source: https://gist.github.com/famzah/c9f6d58256c6c5ddf8fdb88ac59cb963 */
+
+a#CybotCookiebotDialogPoweredbyCybot,
+div#CybotCookiebotDialogPoweredByText,
+div#CybotCookiebotDialogHeaderLogosWrapper,
+div#CybotCookiebotDialogHeader {
+  display: none !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
+  padding: 0.7rem 1.2rem !important;
+}
+
+@media screen and (max-width: 1279px) {
+  #CybotCookiebotDialog *,
+  #CybotCookiebotDialogBodyUnderlay * {
+    font-size: 1.2rem !important;
+  }
+
+  #CybotCookiebotDialog {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    top: auto !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    min-width: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
+    padding: 0.5rem 0.8rem !important;
+  }
+
+  #CybotCookiebotDialog.CybotEdge {
+    max-height: 35vh !important;
+  }
+
+  #CybotCookiebotDialogBodyContent {
+    max-height: 30vh !important;
+    overflow: auto !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  #CybotCookiebotDialog *,
+  #CybotCookiebotDialogBodyUnderlay * {
+    font-size: 1.4rem !important;
+  }
+
+  #CybotCookiebotDialog.CybotEdge {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 1.2rem 1.6rem !important;
+  }
+
+  #CybotCookiebotDialog.CybotEdge .CybotCookiebotDialogContentWrapper {
+    max-width: 100% !important;
+  }
+
+  #CybotCookiebotDialog.CybotEdge #CybotCookiebotDialogBodyButtons {
+    max-width: 200px !important;
+  }
+
+  #CybotCookiebotDialog.CybotEdge #CybotCookiebotDialogFooter
+    .CybotCookiebotDialogBodyButton {
+    width: 200px !important;
+  }
+}
