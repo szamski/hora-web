@@ -28,23 +28,23 @@ export const home = {
         label: "Mac folks already on the Beta TestFlight waitlist",
         avatars: [
           {
-            src: "/assets/waitlist/avatar-1.svg",
+            src: "https://randomuser.me/api/portraits/thumb/men/32.jpg",
             alt: "Waitlist member avatar",
           },
           {
-            src: "/assets/waitlist/avatar-2.svg",
+            src: "https://randomuser.me/api/portraits/thumb/women/44.jpg",
             alt: "Waitlist member avatar",
           },
           {
-            src: "/assets/waitlist/avatar-3.svg",
+            src: "https://randomuser.me/api/portraits/thumb/men/86.jpg",
             alt: "Waitlist member avatar",
           },
           {
-            src: "/assets/waitlist/avatar-4.svg",
+            src: "https://randomuser.me/api/portraits/thumb/women/12.jpg",
             alt: "Waitlist member avatar",
           },
           {
-            src: "/assets/waitlist/avatar-5.svg",
+            src: "https://randomuser.me/api/portraits/thumb/men/67.jpg",
             alt: "Waitlist member avatar",
           },
         ],
