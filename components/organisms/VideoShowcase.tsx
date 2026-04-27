@@ -12,8 +12,10 @@ const YT_EMBED_URL =
   `https://www.youtube.com/embed/${YT_VIDEO_ID}` +
   `?autoplay=1&mute=1&loop=1&playlist=${YT_VIDEO_ID}` +
   `&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
-const YT_THUMBNAIL_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/maxresdefault.jpg`;
-const YT_THUMBNAIL_FALLBACK_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/hqdefault.jpg`;
+// hqdefault (480x360) closely matches the displayed ~637x358 — maxresdefault
+// (1280x720) was wasting ~78KB on mobile per Lighthouse "Improve image delivery".
+const YT_THUMBNAIL_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/hqdefault.jpg`;
+const YT_THUMBNAIL_FALLBACK_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/mqdefault.jpg`;
 
 type YTPlayer = {
   getCurrentTime: () => number;

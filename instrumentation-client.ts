@@ -31,6 +31,24 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   defaults: "2026-01-30",
   capture_exceptions: false,
   debug: process.env.NODE_ENV === "development",
+  // Defer recorder.js (~95KB, ~200ms CPU) out of the critical path. We start
+  // the session manually below once the browser is idle.
+  disable_session_recording: true,
 });
 
 captureFirstTouch();
+
+if (typeof window !== "undefined") {
+  const startRecording = () => {
+    try {
+      posthog.startSessionRecording();
+    } catch {
+      /* posthog not ready yet — next visit will start it */
+    }
+  };
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(startRecording, { timeout: 4000 });
+  } else {
+    window.setTimeout(startRecording, 2500);
+  }
+}
