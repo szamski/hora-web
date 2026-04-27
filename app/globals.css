@@ -114,33 +114,47 @@ div#CybotCookiebotDialogHeader {
 @media screen and (max-width: 1279px) {
   #CybotCookiebotDialog *,
   #CybotCookiebotDialogBodyUnderlay * {
-    font-size: 1.2rem !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.4 !important;
   }
 
   #CybotCookiebotDialog {
     position: fixed !important;
     right: 0 !important;
     bottom: 0 !important;
-    left: auto !important;
+    left: 0 !important;
     top: auto !important;
-    width: 50% !important;
-    max-width: 50% !important;
+    width: 100% !important;
+    max-width: 100% !important;
     min-width: 0 !important;
     transform: none !important;
     margin: 0 !important;
+    border-radius: 12px 12px 0 0 !important;
   }
 
   #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
-    padding: 0.5rem 0.8rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8125rem !important;
   }
 
   #CybotCookiebotDialog.CybotEdge {
-    max-height: 35vh !important;
+    max-height: 40vh !important;
   }
 
   #CybotCookiebotDialogBodyContent {
-    max-height: 30vh !important;
+    max-height: 22vh !important;
     overflow: auto !important;
+  }
+
+  /* Title smaller too */
+  #CybotCookiebotDialogBodyContentTitle {
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Tabs (Consent / Details) tighter */
+  #CybotCookiebotDialogTabContent {
+    padding: 0.75rem !important;
   }
 }
 
