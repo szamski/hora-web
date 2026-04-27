@@ -4,12 +4,11 @@ import { site } from "@/content/site";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/" },
-      { userAgent: "GPTBot", allow: "/" },
-      { userAgent: "ClaudeBot", allow: "/" },
-      { userAgent: "PerplexityBot", allow: "/" },
+      { userAgent: "*", allow: "/", disallow: "" },
+      { userAgent: "GPTBot", allow: "/", disallow: "" },
+      { userAgent: "ClaudeBot", allow: "/", disallow: "" },
+      { userAgent: "PerplexityBot", allow: "/", disallow: "" },
     ],
     sitemap: `${site.url}/sitemap.xml`,
-    host: site.url,
   };
 }
