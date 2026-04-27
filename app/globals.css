@@ -252,10 +252,19 @@ div#CybotCookiebotDialogHeader {
 #CybotCookiebotDialogBodyLevelButtonsSelectPane,
 #CybotCookiebotDialogBodyLevelButtonsRow,
 #CybotCookiebotDialogBodyContent,
-#CybotCookiebotDialogBodyContentControls {
+#CybotCookiebotDialogBodyContentControls,
+.CybotCookiebotScrollContainer,
+.CybotCookiebotDialogGpcContainer,
+.CookieCard,
+.CybotCookiebotScrollAreaSide {
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+/* Footer specifically uses ScrollContainer class but we already styled it */
+#CybotCookiebotDialogFooter {
+  border: none !important;
 }
 
 /* Nav (tabs) — kill the vertical separators Cookiebot puts between tab items */
@@ -312,18 +321,22 @@ div#CybotCookiebotDialogHeader {
 #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
   flex: 1 1 0 !important;
   min-width: 0 !important;
-  padding: 0.55rem 0.75rem !important;
+  min-height: 38px !important;
+  padding: 0.5rem 0.75rem !important;
   font-size: 0.8125rem !important;
   font-weight: 500 !important;
+  line-height: 1.2 !important;
   border-radius: 9999px !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   background: rgba(255, 255, 255, 0.04) !important;
   color: #fafafa !important;
   margin: 0 !important;
   cursor: pointer !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  /* Allow text to wrap to 2 lines instead of being truncated to "Allow…" */
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: keep-all !important;
   transition: background-color 150ms, border-color 150ms !important;
 }
 
@@ -420,7 +433,7 @@ div#CybotCookiebotDialogHeader {
   color: #fff !important;
 }
 
-/* Mobile: full-width bottom sheet */
+/* Mobile: full-width bottom sheet — taller cap so tabs/title don't clip */
 @media screen and (max-width: 768px) {
   #CybotCookiebotDialog {
     right: 0 !important;
@@ -428,7 +441,7 @@ div#CybotCookiebotDialogHeader {
     left: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    max-height: 55vh !important;
+    max-height: 75vh !important;
     border-radius: 16px 16px 0 0 !important;
     border-left: none !important;
     border-right: none !important;
@@ -477,5 +490,14 @@ div#CybotCookiebotDialogHeader {
 
   #CybotCookiebotDialogTabContent {
     padding: 0.625rem 0.75rem !important;
+  }
+}
+
+/* Huge displays (≥1920px): scale dialog up so it doesn't look lost */
+@media screen and (min-width: 1920px) {
+  #CybotCookiebotDialog {
+    width: 480px !important;
+    right: 32px !important;
+    bottom: 32px !important;
   }
 }
