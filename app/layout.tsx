@@ -86,10 +86,8 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} ${bumbbled.variable}`}>
       <head>
         <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://consent.cookiebot.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://consentcdn.cookiebot.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://us.i.posthog.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://consent.cookiebot.com" />
+        <link rel="dns-prefetch" href="https://consentcdn.cookiebot.com" />
       </head>
       <body className="min-h-dvh flex flex-col text-text">
         <Script
@@ -116,12 +114,16 @@ export default function RootLayout({
           `}
         </Script>
 
+        {/* Cookiebot is moved to lazyOnload because its dialog markup was
+            being picked as the LCP element (2.4s render delay on mobile).
+            The default-denied gtag consent above keeps us compliant until
+            the banner finishes loading post window.load. */}
         <Script
           id="Cookiebot"
           src="https://consent.cookiebot.com/uc.js"
           data-cbid="93e42c2d-57e2-448f-9699-a65ce0fffdbd"
           data-blockingmode="auto"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
 
         <AmbientGlow />
