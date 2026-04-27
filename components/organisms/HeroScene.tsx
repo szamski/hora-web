@@ -17,7 +17,7 @@ function WordRise({
 }) {
   return (
     <span
-      className={`inline-block pr-[0.12em] pl-[0.04em] will-change-[transform,opacity,filter] motion-reduce:animate-none ${className ?? ""}`.trim()}
+      className={`inline-block pr-[0.12em] pl-[0.04em] will-change-[transform,opacity] md:will-change-[transform,opacity,filter] motion-reduce:animate-none ${className ?? ""}`.trim()}
       style={{
         animation: "letter-rise 1000ms cubic-bezier(0.22, 1, 0.36, 1) both",
         animationDelay: `${delay}ms`,

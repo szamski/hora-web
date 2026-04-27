@@ -9,6 +9,7 @@ import { PageTransition } from "@/components/molecules/PageTransition";
 import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
 import { SectionViewTracker } from "@/components/molecules/SectionViewTracker";
 import { SmoothAnchorScroll } from "@/components/molecules/SmoothAnchorScroll";
+import { DeferredMount } from "@/components/molecules/DeferredMount";
 import "./globals.css";
 
 const geist = Geist({
@@ -117,9 +118,11 @@ export default function RootLayout({
         />
 
         <AmbientGlow />
-        <ScrollProgressBar />
         <SmoothAnchorScroll />
-        <SectionViewTracker />
+        <DeferredMount>
+          <ScrollProgressBar />
+          <SectionViewTracker />
+        </DeferredMount>
         <Nav />
         <div className="flex-1">
           <PageTransition>{children}</PageTransition>

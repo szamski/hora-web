@@ -6,7 +6,10 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-    replaysOnErrorSampleRate: 1.0,
+    // Replay disabled — auto-bundles ~50-80KB gz of replay code into the
+    // eager client chunk and hurts mobile Lighthouse. Re-enable if we ever
+    // start using replays in triage.
+    replaysOnErrorSampleRate: 0,
     replaysSessionSampleRate: 0,
     enabled: process.env.NODE_ENV === "production",
     // Privacy-mode browsers (Brave shields, Firefox strict, sandboxed iframes,
