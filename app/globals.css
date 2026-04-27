@@ -275,15 +275,35 @@ div#CybotCookiebotDialogHeader {
   font-weight: 500 !important;
 }
 
-/* Footer + buttons row — always horizontal, no wrap, equal widths */
+/* Footer holds a Cookiebot ScrollArea wrapper which is the actual flex
+   container we need to control. */
 #CybotCookiebotDialogFooter {
   padding: 0.875rem 1rem 1rem !important;
   border-top: none !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotScrollArea {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotScrollbarContainer {
+  display: none !important;
+}
+
+/* Actual buttons row — Hstack on every viewport including mobile S */
+#CybotCookiebotDialogBodyButtons {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   gap: 0.75rem !important;
-  flex-shrink: 0 !important;
+  width: 100% !important;
 }
 
 #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
