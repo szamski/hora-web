@@ -178,27 +178,54 @@ div#CybotCookiebotDialogHeader {
   color: #9ca3af !important;
   padding: 0.65rem 1rem !important;
   font-weight: 500 !important;
+  border: 1px solid transparent !important;
   border-bottom: 2px solid transparent !important;
+  background: transparent !important;
 }
 
 .CybotCookiebotDialogNavItemLink.CybotCookiebotDialogActive {
   color: #ff383c !important;
-  border-bottom-color: #ff383c !important;
+  border: 1px solid transparent !important;
+  border-bottom: 2px solid #ff383c !important;
+  background: transparent !important;
 }
 
-/* Scrollable body — keeps overflow handling but hides the visible scrollbar */
+/* Scrollable body — keeps overflow handling but kills visible scrollbar
+   AND the white scroll-fade mask Cookiebot adds by default. */
+#CybotCookiebotDialogTabContent,
+#CybotCookiebotDialogBodyContent,
+#CybotCookiebotDialogDetailBodyContent {
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
 #CybotCookiebotDialogTabContent {
   flex: 1 1 auto !important;
   min-height: 0 !important;
   overflow-y: auto !important;
   padding: 0.875rem 1rem !important;
+}
+
+/* Hide all internal scrollbars across the dialog */
+#CybotCookiebotDialog,
+#CybotCookiebotDialog * {
   scrollbar-width: none !important;
 }
 
-#CybotCookiebotDialogTabContent::-webkit-scrollbar {
+#CybotCookiebotDialog::-webkit-scrollbar,
+#CybotCookiebotDialog *::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
   display: none !important;
+}
+
+/* Wipe any default Cookiebot scroll-fade pseudo overlays */
+#CybotCookiebotDialogTabContent::before,
+#CybotCookiebotDialogTabContent::after,
+#CybotCookiebotDialogBodyContent::before,
+#CybotCookiebotDialogBodyContent::after {
+  display: none !important;
+  background: transparent !important;
 }
 
 /* Toggle rows: tight + dark, no inter-row dividers */
