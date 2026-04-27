@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           title: "hora Calendar — a native macOS client for Google Calendar",
           thumbnail_loc: "https://i.ytimg.com/vi/ahVV5J25cYM/maxresdefault.jpg",
           description:
-            "A video tour of hora Calendar on macOS: day, week, and month views, drag & drop rescheduling, and native Google Calendar sync. No Electron, no CalDAV — just fast SwiftUI.",
+            "A video tour of hora Calendar on macOS: day, week, and month views, drag-and-drop rescheduling, and native Google Calendar sync. No Electron, no CalDAV — just fast SwiftUI.",
           player_loc: "https://www.youtube.com/embed/ahVV5J25cYM",
           content_loc: "https://www.youtube.com/watch?v=ahVV5J25cYM",
           publication_date: "2026-04-24T00:00:00+00:00",
