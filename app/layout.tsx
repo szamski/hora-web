@@ -84,6 +84,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable} ${bumbbled.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://consent.cookiebot.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://consentcdn.cookiebot.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://us.i.posthog.com" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-dvh flex flex-col text-text">
         <Script
           id="gads-consent"

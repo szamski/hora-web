@@ -34,6 +34,10 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   // Defer recorder.js (~95KB, ~200ms CPU) out of the critical path. We start
   // the session manually below once the browser is idle.
   disable_session_recording: true,
+  // We don't use surveys — drops surveys.js (~32KB transfer, 25KB unused).
+  disable_surveys: true,
+  // Dead-click autocapture adds ~33KB and noisy events. Off until we need it.
+  capture_dead_clicks: false,
 });
 
 captureFirstTouch();

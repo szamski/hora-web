@@ -97,8 +97,9 @@ body {
   }
 }
 
-/* Cookiebot dialog: shrink + reposition so hero element wins LCP.
-   Source: https://gist.github.com/famzah/c9f6d58256c6c5ddf8fdb88ac59cb963 */
+/* Cookiebot dialog: hora dark theme + size constraints.
+   Cookiebot renders as `.CybotMultilevel` on both mobile and desktop, so we
+   target `#CybotCookiebotDialog` directly (class-scoped rules don't fire). */
 
 a#CybotCookiebotDialogPoweredbyCybot,
 div#CybotCookiebotDialogPoweredByText,
@@ -107,80 +108,170 @@ div#CybotCookiebotDialogHeader {
   display: none !important;
 }
 
-#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
-  padding: 0.7rem 1.2rem !important;
+/* Backplate: dark surface matching hora */
+#CybotCookiebotDialog,
+#CybotCookiebotDialogBody,
+#CybotCookiebotDialogTabContent,
+#CybotCookiebotDialogNav,
+#CybotCookiebotDialogFooter,
+#CybotCookiebotDialogDetail,
+.CybotCookiebotDialogBodyLevelButtonWrapper {
+  background: #141414 !important;
+  color: #fafafa !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-@media screen and (max-width: 1279px) {
-  #CybotCookiebotDialog *,
-  #CybotCookiebotDialogBodyUnderlay * {
-    font-size: 0.8125rem !important;
-    line-height: 1.4 !important;
-  }
+#CybotCookiebotDialogBodyContentText,
+#CybotCookiebotDialogDetailBodyContentTextOverview {
+  color: #d1d5db !important;
+}
 
+/* Container — desktop default: floating bottom-right card, doesn't fill viewport */
+#CybotCookiebotDialog {
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  width: 420px !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: 70vh !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Underlay shouldn't dim the whole page — dialog is small, page stays usable */
+#CybotCookiebotDialogBodyUnderlay {
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+/* Default text sizes (readable, not huge) */
+#CybotCookiebotDialog *,
+#CybotCookiebotDialogBodyUnderlay * {
+  font-size: 0.875rem !important;
+  line-height: 1.45 !important;
+}
+
+#CybotCookiebotDialogBodyContentTitle {
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+  color: #fafafa !important;
+}
+
+/* Tabs */
+#CybotCookiebotDialogNav {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  flex-shrink: 0 !important;
+}
+
+.CybotCookiebotDialogNavItemLink {
+  color: #9ca3af !important;
+  padding: 0.65rem 1rem !important;
+  font-weight: 500 !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.CybotCookiebotDialogNavItemLink.CybotCookiebotDialogActive {
+  color: #ff383c !important;
+  border-bottom-color: #ff383c !important;
+}
+
+/* Scrollable body */
+#CybotCookiebotDialogTabContent {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  padding: 0.875rem 1rem !important;
+}
+
+/* Toggle rows: tight + dark */
+.CybotCookiebotDialogBodyLevelButtonWrapper {
+  padding: 0.5rem 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.CybotCookiebotDialogBodyLevelButtonWrapper:last-child {
+  border-bottom: none !important;
+}
+
+.CybotCookiebotDialogBodyLevelButtonDescription {
+  color: #fafafa !important;
+  font-weight: 500 !important;
+}
+
+/* Footer + buttons row */
+#CybotCookiebotDialogFooter {
+  padding: 0.75rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
+  flex: 1 1 30% !important;
+  min-width: 0 !important;
+  padding: 0.55rem 0.75rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #fafafa !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  transition: background-color 150ms, border-color 150ms !important;
+}
+
+#CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Primary "Allow all" — hora accent gradient */
+#CybotCookiebotDialogBodyLevelButtonAccept,
+#CybotCookiebotDialogBodyButtonAccept,
+#CybotCookiebotDialogBodyButtonAcceptAll {
+  background: linear-gradient(135deg, #ff383c, #ff736e) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+#CybotCookiebotDialogBodyLevelButtonAccept:hover,
+#CybotCookiebotDialogBodyButtonAccept:hover,
+#CybotCookiebotDialogBodyButtonAcceptAll:hover {
+  filter: brightness(1.05) !important;
+}
+
+/* Mobile: full-width bottom sheet */
+@media screen and (max-width: 768px) {
   #CybotCookiebotDialog {
-    position: fixed !important;
     right: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
-    top: auto !important;
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 0 !important;
-    transform: none !important;
-    margin: 0 !important;
-    border-radius: 12px 12px 0 0 !important;
+    max-height: 55vh !important;
+    border-radius: 16px 16px 0 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
   }
 
-  #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
-    padding: 0.5rem 0.75rem !important;
-    font-size: 0.8125rem !important;
-  }
-
-  #CybotCookiebotDialog.CybotEdge {
-    max-height: 40vh !important;
-  }
-
-  #CybotCookiebotDialogBodyContent {
-    max-height: 22vh !important;
-    overflow: auto !important;
-  }
-
-  /* Title smaller too */
   #CybotCookiebotDialogBodyContentTitle {
-    font-size: 1rem !important;
-    margin-bottom: 0.5rem !important;
-  }
-
-  /* Tabs (Consent / Details) tighter */
-  #CybotCookiebotDialogTabContent {
-    padding: 0.75rem !important;
-  }
-}
-
-@media screen and (min-width: 1280px) {
-  #CybotCookiebotDialog *,
-  #CybotCookiebotDialogBodyUnderlay * {
-    font-size: 1.4rem !important;
-  }
-
-  #CybotCookiebotDialog.CybotEdge {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 100vw !important;
-    padding: 1.2rem 1.6rem !important;
-  }
-
-  #CybotCookiebotDialog.CybotEdge .CybotCookiebotDialogContentWrapper {
-    max-width: 100% !important;
-  }
-
-  #CybotCookiebotDialog.CybotEdge #CybotCookiebotDialogBodyButtons {
-    max-width: 200px !important;
-  }
-
-  #CybotCookiebotDialog.CybotEdge #CybotCookiebotDialogFooter
-    .CybotCookiebotDialogBodyButton {
-    width: 200px !important;
+    font-size: 0.9375rem !important;
   }
 }
