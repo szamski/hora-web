@@ -170,7 +170,7 @@ div#CybotCookiebotDialogHeader {
 
 /* Tabs */
 #CybotCookiebotDialogNav {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
   flex-shrink: 0 !important;
 }
 
@@ -186,22 +186,35 @@ div#CybotCookiebotDialogHeader {
   border-bottom-color: #ff383c !important;
 }
 
-/* Scrollable body */
+/* Scrollable body — keeps overflow handling but hides the visible scrollbar */
 #CybotCookiebotDialogTabContent {
   flex: 1 1 auto !important;
   min-height: 0 !important;
   overflow-y: auto !important;
   padding: 0.875rem 1rem !important;
+  scrollbar-width: none !important;
 }
 
-/* Toggle rows: tight + dark */
+#CybotCookiebotDialogTabContent::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+/* Toggle rows: tight + dark, no inter-row dividers */
 .CybotCookiebotDialogBodyLevelButtonWrapper {
-  padding: 0.5rem 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding: 0.4rem 0 !important;
+  border-bottom: none !important;
+  border-top: none !important;
 }
 
-.CybotCookiebotDialogBodyLevelButtonWrapper:last-child {
-  border-bottom: none !important;
+/* Wipe any default Cookiebot internal dividers (hr, separator divs) */
+#CybotCookiebotDialog hr,
+#CybotCookiebotDialogBodyLevelButtonsTable,
+#CybotCookiebotDialogBodyLevelButtonsSelectPane,
+#CybotCookiebotDialogBodyLevelButtonsRow {
+  border: none !important;
+  background: transparent !important;
 }
 
 .CybotCookiebotDialogBodyLevelButtonDescription {
@@ -211,12 +224,12 @@ div#CybotCookiebotDialogHeader {
 
 /* Footer + buttons row */
 #CybotCookiebotDialogFooter {
-  padding: 0.75rem !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 0.875rem 1rem 1rem !important;
+  border-top: none !important;
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: wrap !important;
-  gap: 0.5rem !important;
+  gap: 0.625rem !important;
   flex-shrink: 0 !important;
 }
 
