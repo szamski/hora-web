@@ -438,4 +438,44 @@ div#CybotCookiebotDialogHeader {
   #CybotCookiebotDialogBodyContentTitle {
     font-size: 0.9375rem !important;
   }
+
+  /* Tighter button padding so all 3 labels fit on one line */
+  #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
+    padding: 0.5rem 0.4rem !important;
+    font-size: 0.75rem !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Smaller toggle switches: 40x22 with 16px thumb */
+  .CybotCookiebotDialogBodyLevelButtonSlider {
+    width: 40px !important;
+    height: 22px !important;
+    border-radius: 22px !important;
+  }
+  .CybotCookiebotDialogBodyLevelButtonSlider::before {
+    width: 16px !important;
+    height: 16px !important;
+    left: 3px !important;
+    top: 3px !important;
+  }
+  .CybotCookiebotDialogBodyLevelButton:checked
+    + .CybotCookiebotDialogBodyLevelButtonSlider::before {
+    transform: translateX(18px) !important;
+  }
+}
+
+/* Very small viewports (≤360px, e.g. iPhone SE 1st gen): shrink further */
+@media screen and (max-width: 360px) {
+  #CybotCookiebotDialogFooter .CybotCookiebotDialogBodyButton {
+    padding: 0.45rem 0.3rem !important;
+    font-size: 0.6875rem !important;
+  }
+
+  #CybotCookiebotDialogFooter {
+    padding: 0.625rem 0.625rem 0.75rem !important;
+  }
+
+  #CybotCookiebotDialogTabContent {
+    padding: 0.625rem 0.75rem !important;
+  }
 }
