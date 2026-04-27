@@ -126,10 +126,13 @@ export default function RootLayout({
         </div>
         <Footer />
 
-        <Script src={PLAUSIBLE_SRC} strategy="lazyOnload" />
-        <Script id="plausible-init" strategy="lazyOnload">
+        {/* Queue stub installed beforeInteractive so early track() calls
+            (SectionViewTracker on first scroll, etc.) get queued instead of
+            dropped. The actual CDN script stays lazy and drains the queue. */}
+        <Script id="plausible-init" strategy="beforeInteractive">
           {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
         </Script>
+        <Script src={PLAUSIBLE_SRC} strategy="lazyOnload" />
 
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}

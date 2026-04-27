@@ -12,8 +12,15 @@ export type EventProps = Record<string, string | number | boolean>;
 
 export function track(event: string, props?: EventProps) {
   if (typeof window === "undefined") return;
-  window.plausible?.(event, props ? { props } : undefined);
-  window.gtag?.("event", event, props);
+  // Guard with typeof, not optional chain: privacy extensions (Brave shields,
+  // uBlock, AdGuard) stub window.plausible / window.gtag as a non-callable
+  // object, which `?.()` does not protect against. SZA-236.
+  if (typeof window.plausible === "function") {
+    window.plausible(event, props ? { props } : undefined);
+  }
+  if (typeof window.gtag === "function") {
+    window.gtag("event", event, props);
+  }
   import("posthog-js").then(({ default: posthog }) => {
     posthog.capture(event, props);
   });
@@ -25,7 +32,9 @@ export const CONVERSION_TAGS = {
 
 export function trackConversion(sendTo: string) {
   if (typeof window === "undefined") return;
-  window.gtag?.("event", "conversion", { send_to: sendTo });
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "conversion", { send_to: sendTo });
+  }
 }
 
 export function identify(distinctId: string, props?: EventProps) {
