@@ -1,208 +1,15 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
-import { LuPlay } from "react-icons/lu";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
+import { VideoShowcaseMedia } from "@/components/organisms/VideoShowcaseMedia";
 import { home } from "@/content/home";
-import { track } from "@/lib/analytics";
-import { cn } from "@/lib/cn";
 
 const YT_VIDEO_ID = "ahVV5J25cYM";
-const YT_EMBED_URL =
-  `https://www.youtube.com/embed/${YT_VIDEO_ID}` +
-  `?autoplay=1&mute=1&loop=1&playlist=${YT_VIDEO_ID}` +
-  `&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
-// hqdefault (480x360) closely matches the displayed ~637x358 — maxresdefault
-// (1280x720) was wasting ~78KB on mobile per Lighthouse "Improve image delivery".
-const YT_THUMBNAIL_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/hqdefault.jpg`;
-const YT_THUMBNAIL_FALLBACK_URL = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/mqdefault.jpg`;
-
-type YTPlayer = {
-  getCurrentTime: () => number;
-  getDuration: () => number;
-  getPlayerState: () => number;
-  isMuted: () => boolean;
-  destroy: () => void;
-};
-
-type YTPlayerEvent = { target: YTPlayer; data?: number };
-
-type YTPlayerConstructor = new (
-  el: HTMLElement | string,
-  opts: {
-    events?: {
-      onReady?: (event: YTPlayerEvent) => void;
-      onStateChange?: (event: YTPlayerEvent) => void;
-    };
-  },
-) => YTPlayer;
-
-declare global {
-  interface Window {
-    YT?: { Player: YTPlayerConstructor };
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
-
-let ytApiPromise: Promise<void> | null = null;
-function loadYouTubeAPI(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve();
-  if (window.YT?.Player) return Promise.resolve();
-  if (ytApiPromise) return ytApiPromise;
-  ytApiPromise = new Promise((resolve) => {
-    const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prev?.();
-      resolve();
-    };
-    const script = document.createElement("script");
-    script.src = "https://www.youtube.com/iframe_api";
-    script.async = true;
-    document.head.appendChild(script);
-  });
-  return ytApiPromise;
-}
 
 export function VideoShowcase() {
   const v = home.videoShowcase;
   const demo = home.hero.demo;
-  const [thumbnailSrc, setThumbnailSrc] = useState(YT_THUMBNAIL_URL);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const playerRef = useRef<YTPlayer | null>(null);
-  const trackedPlayedRef = useRef(false);
-  const trackedUnmutedRef = useRef(false);
-  const trackedQuartilesRef = useRef<Set<number>>(new Set());
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [manuallyStarted, setManuallyStarted] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
-  const [nearViewport, setNearViewport] = useState(
-    () => typeof window !== "undefined" && !("IntersectionObserver" in window),
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !("IntersectionObserver" in window)) return;
-    let seen = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting && !seen) {
-          seen = true;
-          track("demo_viewed", { asset: "hero_gif" });
-          io.disconnect();
-        }
-      },
-      { threshold: 0.5 },
-    );
-    io.observe(container);
-    return () => io.disconnect();
-  }, []);
-
-  // Facade pattern: defer loading the YT iframe (and its ~500KB of JS) until the
-  // section is near the viewport. Saves LCP/TBT on initial page load.
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setNearViewport(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "200px 0px" },
-    );
-    io.observe(container);
-    return () => io.disconnect();
-  }, []);
-
-  // Attach YT IFrame API to the existing <iframe> for engagement tracking.
-  // Pure telemetry — no UI changes, native YT controls keep working.
-  useEffect(() => {
-    if (!iframeLoaded) return;
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-
-    let cancelled = false;
-    loadYouTubeAPI().then(() => {
-      if (cancelled || !window.YT?.Player) return;
-      playerRef.current = new window.YT.Player(iframe, {
-        events: {
-          onReady: () => {
-            if (!cancelled) setPlayerReady(true);
-          },
-          onStateChange: (e) => {
-            if (e.data === 1 && !trackedPlayedRef.current) {
-              trackedPlayedRef.current = true;
-              track("demo_played", { video_id: YT_VIDEO_ID });
-            }
-          },
-        },
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      try {
-        playerRef.current?.destroy();
-      } catch {
-        /* no-op */
-      }
-      playerRef.current = null;
-    };
-  }, [iframeLoaded]);
-
-  // Poll for unmute + quartile progress while playing. YT IFrame API has no
-  // volume/mute event, so polling is the supported path.
-  useEffect(() => {
-    if (!playerReady) return;
-    const id = window.setInterval(() => {
-      const player = playerRef.current;
-      if (!player) return;
-      try {
-        if (!trackedUnmutedRef.current && player.isMuted() === false) {
-          trackedUnmutedRef.current = true;
-          track("demo_unmuted", { video_id: YT_VIDEO_ID });
-        }
-        if (player.getPlayerState() !== 1) return;
-        const duration = player.getDuration();
-        if (!duration) return;
-        const pct = (player.getCurrentTime() / duration) * 100;
-        for (const q of [25, 50, 75, 95] as const) {
-          if (pct >= q && !trackedQuartilesRef.current.has(q)) {
-            trackedQuartilesRef.current.add(q);
-            track("demo_progress", { video_id: YT_VIDEO_ID, quartile: q });
-          }
-        }
-      } catch {
-        /* postMessage race — try again next tick */
-      }
-    }, 2000);
-    return () => window.clearInterval(id);
-  }, [playerReady]);
-
-  const startReducedMotionPlayback = useCallback(() => {
-    setManuallyStarted(true);
-  }, []);
-
-  const motionOk = !reducedMotion || manuallyStarted;
-  const shouldMountIframe = motionOk && nearViewport;
-  const showPoster = !motionOk || !iframeLoaded;
-  const showReducedMotionPlayButton = reducedMotion && !manuallyStarted;
 
   return (
     <section id="watch" className="relative overflow-hidden py-24 md:py-32">
-      {/* Ambient dot grid */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.4]"
@@ -215,7 +22,6 @@ export function VideoShowcase() {
         }}
       />
 
-      {/* Warm edge glows */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -227,7 +33,6 @@ export function VideoShowcase() {
       />
 
       <div className="relative mx-auto max-w-page px-6">
-        {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
             <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
@@ -241,12 +46,7 @@ export function VideoShowcase() {
           </p>
         </div>
 
-        {/* Frame */}
-        <div
-          ref={containerRef}
-          className="relative mx-auto mt-14 max-w-6xl md:mt-20"
-        >
-          {/* Warm halo — tight around frame, not to overpower section ambient */}
+        <div className="relative mx-auto mt-14 max-w-6xl md:mt-20">
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-6 rounded-[28px] blur-3xl md:-inset-10"
@@ -256,7 +56,6 @@ export function VideoShowcase() {
             }}
           />
 
-          {/* Floor reflection glow */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-16 -bottom-3 h-8 rounded-full blur-2xl"
@@ -266,59 +65,11 @@ export function VideoShowcase() {
             }}
           />
 
-          <div className="relative aspect-video overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_60px_120px_-30px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)]">
-            {shouldMountIframe ? (
-              <iframe
-                ref={iframeRef}
-                src={YT_EMBED_URL}
-                title={demo.ariaLabel}
-                allow="autoplay; encrypted-media; fullscreen; picture-in-picture; web-share"
-                allowFullScreen
-                onLoad={() => setIframeLoaded(true)}
-                className={cn(
-                  "absolute inset-0 h-full w-full border-0 transition-opacity duration-300",
-                  iframeLoaded ? "opacity-100" : "opacity-0",
-                )}
-              />
-            ) : null}
+          <VideoShowcaseMedia
+            videoId={YT_VIDEO_ID}
+            ariaLabel={demo.ariaLabel}
+          />
 
-            {/* Poster overlay — shown while iframe loads, or as reduced-motion fallback */}
-            {showPoster ? (
-              <button
-                type="button"
-                onClick={
-                  showReducedMotionPlayButton ? startReducedMotionPlayback : undefined
-                }
-                tabIndex={showReducedMotionPlayButton ? 0 : -1}
-                aria-label="Play demo video"
-                aria-hidden={!showReducedMotionPlayButton}
-                className="group absolute inset-0 flex items-center justify-center focus-visible:outline-none"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element -- external YT thumbnail, not worth wiring through next.config remotePatterns for a single asset */}
-                <img
-                  src={thumbnailSrc}
-                  alt="hora Calendar macOS app demo preview"
-                  onError={() => {
-                    if (thumbnailSrc !== YT_THUMBNAIL_FALLBACK_URL) {
-                      setThumbnailSrc(YT_THUMBNAIL_FALLBACK_URL);
-                    }
-                  }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
-                />
-                {showReducedMotionPlayButton ? (
-                  <>
-                    <span className="pointer-events-none absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
-                    <span className="pointer-events-none relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_40px_rgba(255,56,60,0.45)]">
-                      <LuPlay size={24} aria-hidden />
-                    </span>
-                  </>
-                ) : null}
-              </button>
-            ) : null}
-          </div>
-
-          {/* Highlights — what you're watching */}
           <ul className="mt-8 flex flex-wrap items-center justify-center gap-2 md:mt-10 md:gap-3">
             {v.highlights.map((h) => (
               <li

@@ -1,6 +1,4 @@
-"use client";
-
-import { track } from "@/lib/analytics";
+import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 function platformFromHref(href: string): string {
   if (href.startsWith("mailto:")) return "email";
@@ -26,7 +24,9 @@ export function AboutContactLink({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      onClick={() => track("contact_link_click", { platform: platformFromHref(href) })}
+      {...analyticsAttrs("contact_link_click", {
+        platform: platformFromHref(href),
+      })}
       className={className}
     >
       {children}

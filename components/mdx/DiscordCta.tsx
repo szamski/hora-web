@@ -1,6 +1,4 @@
-"use client";
-
-import { track } from "@/lib/analytics";
+import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 export function DiscordCta({
   href = "https://discord.gg/8JFz4FfBGQ",
@@ -39,14 +37,14 @@ export function DiscordCta({
           className="mx-auto mb-7 max-w-md text-[15px]"
           style={{ color: "#c9c9c9", lineHeight: 1.65 }}
         >
-          Discord is where feedback turns into fixes. That's where I'll be every
-          day for the next few weeks.
+          Discord is where feedback turns into fixes. That&apos;s where I&apos;ll
+          be every day for the next few weeks.
         </p>
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track("discord_click", { location: "blog_cta" })}
+          {...analyticsAttrs("discord_click", { location: "blog_cta" })}
           className="inline-block font-bold text-white no-underline transition hover:brightness-110"
           style={{
             background:

@@ -1,22 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
-import { NavLink } from "@/components/molecules/NavLink";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { track } from "@/lib/analytics";
+import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -59,15 +52,23 @@ export function MobileNav({ activePath }: { activePath?: string }) {
       </div>
       <div className="flex flex-col gap-2 p-6">
         {site.nav.map((item) => (
-          <NavLink
+          <Link
             key={item.href}
             href={item.href}
-            active={activePath === item.href}
             onClick={() => setOpen(false)}
-            className="border-b border-border py-3 text-lg"
+            {...analyticsAttrs("nav_click", {
+              link_text: item.label,
+              link_url: item.href,
+            })}
+            className={cn(
+              "border-b border-border py-3 text-lg transition-colors focus-visible:outline-none focus-visible:text-accent",
+              activePath === item.href
+                ? "text-text"
+                : "text-muted hover:text-text",
+            )}
           >
             {item.label}
-          </NavLink>
+          </Link>
         ))}
         <Link
           href={site.cta.primary.href}
@@ -80,10 +81,8 @@ export function MobileNav({ activePath }: { activePath?: string }) {
           href={site.community.discord.href}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => {
-            track("discord_click", { location: "mobile_menu" });
-            setOpen(false);
-          }}
+          onClick={() => setOpen(false)}
+          {...analyticsAttrs("discord_click", { location: "mobile_menu" })}
           className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-semibold text-text transition-colors hover:border-accent hover:text-accent"
         >
           <Icon name="discord" size={18} />
@@ -105,7 +104,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>
 
-      {mounted ? createPortal(panel, document.body) : null}
+      {panel}
     </>
   );
 }

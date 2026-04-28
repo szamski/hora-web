@@ -13,6 +13,7 @@ import {
   track,
   trackConversion,
 } from "@/lib/analytics";
+import { analyticsAttrs } from "@/lib/analyticsAttrs";
 import { cn } from "@/lib/cn";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -113,7 +114,7 @@ export function NewsletterForm({ className }: { className?: string }) {
           href={hero.githubHref}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track("github_star_click", { link_url: hero.githubHref })}
+          {...analyticsAttrs("github_star_click", { link_url: hero.githubHref })}
           className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
         >
           <Icon name="github" size={14} />

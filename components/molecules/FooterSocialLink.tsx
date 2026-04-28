@@ -1,7 +1,5 @@
-"use client";
-
 import { Icon, type IconName } from "@/components/atoms/Icon";
-import { track } from "@/lib/analytics";
+import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 function platformFromHref(href: string) {
   if (href.startsWith("mailto:")) return "email";
@@ -28,12 +26,10 @@ export function FooterSocialLink({
       aria-label={label}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      onClick={() =>
-        track("social_click", {
-          platform: platformFromHref(href),
-          action: "footer_click",
-        })
-      }
+      {...analyticsAttrs("social_click", {
+        platform: platformFromHref(href),
+        action: "footer_click",
+      })}
       className="text-muted transition-colors hover:text-text"
     >
       <Icon name={icon} size={18} />
