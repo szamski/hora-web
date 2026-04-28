@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import dynamic from "next/dynamic";
 import Script from "next/script";
 import localFont from "next/font/local";
 import { Geist } from "next/font/google";
 import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
+import { LayoutEnhancements } from "@/components/molecules/LayoutEnhancements";
 import "./globals.css";
 
 const geist = Geist({
@@ -74,13 +74,6 @@ export const viewport: Viewport = {
 const GA_MEASUREMENT_ID = "G-WQZ32S81FX";
 const GOOGLE_ADS_ID = "AW-18070613857";
 const PLAUSIBLE_SRC = "https://plausible.io/js/pa-K3DR1kRxwm1G-J9Q8KBme.js";
-const LayoutEnhancements = dynamic(
-  () =>
-    import("@/components/molecules/LayoutEnhancements").then(
-      (mod) => mod.LayoutEnhancements,
-    ),
-  { ssr: false },
-);
 
 export default function RootLayout({
   children,
