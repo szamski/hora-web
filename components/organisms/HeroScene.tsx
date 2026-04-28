@@ -1,32 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { LuChevronDown } from "react-icons/lu";
-import { ParallaxIcon } from "@/components/molecules/ParallaxIcon";
 import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { home } from "@/content/home";
-
-function WordRise({
-  children,
-  delay = 0,
-  className,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`inline-block pr-[0.12em] pl-[0.04em] will-change-[transform,opacity] md:will-change-[transform,opacity,filter] motion-reduce:animate-none ${className ?? ""}`.trim()}
-      style={{
-        animation: "letter-rise 1000ms cubic-bezier(0.22, 1, 0.36, 1) both",
-        animationDelay: `${delay}ms`,
-      }}
-    >
-      {children}
-    </span>
-  );
-}
 
 export function HeroScene({ liveCount }: { liveCount: number }) {
   const hero = home.hero;
@@ -64,26 +38,23 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
 
       {/* Foreground content */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-16 pt-10 text-center md:gap-6 md:pt-16">
-        <ParallaxIcon>
-          <Image
-            src={hero.iconSrc}
-            alt="hora Calendar icon"
-            width={88}
-            height={88}
-            className="rounded-2xl drop-shadow-[0_18px_36px_rgba(255,56,60,0.28)]"
-            priority
-          />
-        </ParallaxIcon>
+        <Image
+          src={hero.iconSrc}
+          alt="hora Calendar icon"
+          width={88}
+          height={88}
+          className="rounded-2xl drop-shadow-[0_18px_36px_rgba(255,56,60,0.28)]"
+          priority
+        />
 
         <h1 className="font-brand text-5xl font-normal leading-[1.2] tracking-tight md:text-[64px]">
-          <WordRise delay={0}>{hero.title.prefix}</WordRise>
+          <span className="inline-block pr-[0.12em] pl-[0.04em]">
+            {hero.title.prefix}
+          </span>
           <span aria-hidden>{"\u00A0"}</span>
-          <WordRise
-            delay={220}
-            className="bg-linear-to-br from-accent to-accent-glow bg-clip-text text-transparent"
-          >
+          <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pl-[0.04em] text-transparent">
             {hero.title.suffixGradient}
-          </WordRise>
+          </span>
         </h1>
 
         <p className="max-w-2xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text md:text-3xl">
@@ -97,6 +68,7 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
           socialLabel={socialProof.label}
           avatars={socialProof.avatars}
           variant="hero"
+          animatedCount={false}
           className="mt-4 max-w-xl md:mt-8"
         />
 
@@ -105,7 +77,20 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
           className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:border-accent/60 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <span>{newsletter.watchDemoCtaLabel}</span>
-          <LuChevronDown size={14} className="animate-bounce motion-reduce:animate-none" aria-hidden />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="md:animate-bounce"
+            aria-hidden
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
         </a>
       </div>
     </section>

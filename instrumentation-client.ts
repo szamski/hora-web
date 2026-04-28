@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import posthog from "posthog-js";
-import { captureFirstTouch } from "@/lib/analytics";
+import { captureFirstTouch, initPostHog } from "@/lib/analytics";
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
@@ -25,30 +24,21 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
 
-posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
-  api_host: "/ingest",
-  ui_host: "https://us.posthog.com",
-  defaults: "2026-01-30",
-  capture_exceptions: false,
-  debug: process.env.NODE_ENV === "development",
-  // Defer recorder.js (~95KB, ~200ms CPU) out of the critical path. We start
-  // the session manually below once the browser is idle.
-  disable_session_recording: true,
-  // We don't use surveys — drops surveys.js (~32KB transfer, 25KB unused).
-  disable_surveys: true,
-  // Dead-click autocapture adds ~33KB and noisy events. Off until we need it.
-  capture_dead_clicks: false,
-});
-
 captureFirstTouch();
 
 if (typeof window !== "undefined") {
   const startRecording = () => {
-    try {
-      posthog.startSessionRecording();
-    } catch {
-      /* posthog not ready yet — next visit will start it */
-    }
+    void initPostHog()
+      .then((posthog) => {
+        try {
+          posthog.startSessionRecording();
+        } catch {
+          /* posthog not ready yet — next visit will start it */
+        }
+      })
+      .catch(() => {
+        /* network blocker / privacy extension — analytics already degrade gracefully */
+      });
   };
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(startRecording, { timeout: 4000 });

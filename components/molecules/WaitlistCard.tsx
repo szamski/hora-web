@@ -15,6 +15,7 @@ type Props = {
   avatars: readonly Avatar[];
   className?: string;
   variant?: "default" | "hero";
+  animatedCount?: boolean;
   style?: React.CSSProperties;
 };
 
@@ -29,6 +30,7 @@ export function WaitlistCard({
   avatars,
   className,
   variant = "default",
+  animatedCount = true,
   style,
 }: Props) {
   const isHero = variant === "hero";
@@ -37,7 +39,7 @@ export function WaitlistCard({
       id={id}
       style={style}
       className={cn(
-        "relative w-full overflow-hidden rounded-3xl border border-white/10 p-5 text-left backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_60px_-20px_rgba(0,0,0,0.65)] md:p-6",
+        "relative w-full overflow-hidden rounded-3xl border border-white/10 p-5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_60px_-20px_rgba(0,0,0,0.65)] md:p-6 md:backdrop-blur-2xl",
         isHero ? "bg-white/8" : "bg-white/4",
         id && "scroll-mt-24",
         className,
@@ -102,7 +104,12 @@ export function WaitlistCard({
         </div>
         <p className="text-xs leading-snug text-muted md:text-sm">
           <span className="font-semibold text-text">
-            <AnimatedCount value={liveCount} />+
+            {animatedCount ? (
+              <AnimatedCount value={liveCount} />
+            ) : (
+              liveCount.toLocaleString()
+            )}
+            +
           </span>{" "}
           {socialLabel}
         </p>

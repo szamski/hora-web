@@ -10,6 +10,15 @@ declare global {
 
 export type EventProps = Record<string, string | number | boolean>;
 
+let posthogPromise: Promise<typeof import("posthog-js").default> | null = null;
+
+function loadPostHog() {
+  if (!posthogPromise) {
+    posthogPromise = import("posthog-js").then((mod) => mod.default);
+  }
+  return posthogPromise;
+}
+
 export function track(event: string, props?: EventProps) {
   if (typeof window === "undefined") return;
   // Guard with typeof, not optional chain: privacy extensions (Brave shields,
@@ -21,7 +30,7 @@ export function track(event: string, props?: EventProps) {
   if (typeof window.gtag === "function") {
     window.gtag("event", event, props);
   }
-  import("posthog-js").then(({ default: posthog }) => {
+  loadPostHog().then((posthog) => {
     posthog.capture(event, props);
   });
 }
@@ -39,7 +48,7 @@ export function trackConversion(sendTo: string) {
 
 export function identify(distinctId: string, props?: EventProps) {
   if (typeof window === "undefined" || !distinctId) return;
-  import("posthog-js").then(({ default: posthog }) => {
+  loadPostHog().then((posthog) => {
     posthog.identify(distinctId, props);
   });
 }
@@ -108,4 +117,23 @@ export function getAttribution(): EventProps {
   if (ft.landing_page) props.first_touch_landing_page = ft.landing_page;
   props.first_touch_at = ft.at;
   return props;
+}
+
+export async function initPostHog() {
+  const posthog = await loadPostHog();
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
+    api_host: "/ingest",
+    ui_host: "https://us.posthog.com",
+    defaults: "2026-01-30",
+    capture_exceptions: false,
+    debug: process.env.NODE_ENV === "development",
+    // Defer recorder.js (~95KB, ~200ms CPU) out of the critical path. We start
+    // the session manually below once the browser is idle.
+    disable_session_recording: true,
+    // We don't use surveys — drops surveys.js (~32KB transfer, 25KB unused).
+    disable_surveys: true,
+    // Dead-click autocapture adds ~33KB and noisy events. Off until we need it.
+    capture_dead_clicks: false,
+  });
+  return posthog;
 }
