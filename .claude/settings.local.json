@@ -1,6 +1,16 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(grep -i posthog echo \"---\" find node_modules -name \"module.d.ts\" -path \"*posthog*\")",
+      "Bash(xargs -I {} ls -lt {})",
+      "Bash(/bin/ls -lt ~/Pictures/Screenshots/)",
+      "Bash(kill bk3xsgcc0 *)",
+      "Bash(pkill -f \"until curl\")",
+      "Bash(kill bcbh9vkyn *)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "mempalace"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

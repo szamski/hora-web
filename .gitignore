@@ -51,3 +51,5 @@ posthog-setup-report.md
 
 # Claude Code local config (skills, settings)
 .claude/
+.agents/
+AGENTS.md
