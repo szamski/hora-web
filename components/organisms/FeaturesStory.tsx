@@ -9,7 +9,6 @@ import {
   LuShieldCheck,
 } from "react-icons/lu";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
-import { ScrollReveal } from "@/components/molecules/ScrollReveal";
 import { home } from "@/content/home";
 
 type FeatureIconKey =
@@ -74,13 +73,11 @@ export function FeaturesStory() {
         </div>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 md:gap-6 lg:grid-cols-3">
-          {f.items.map((item, i) => {
+          {f.items.map((item) => {
             const IconComponent = iconMap[item.icon];
             return (
-              <ScrollReveal
+              <article
                 key={item.title}
-                as="article"
-                delay={i * 60}
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/4 p-6 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_24px_60px_-30px_rgba(0,0,0,0.65)] transition-[transform,border-color,background-color] duration-500 hover:-translate-y-1 hover:border-accent/40 hover:bg-white/6 md:p-7"
               >
                 {/* Per-tile warm halo */}
@@ -103,7 +100,7 @@ export function FeaturesStory() {
                 <p className="relative mt-2 text-sm leading-relaxed text-muted md:text-[15px]">
                   {item.body}
                 </p>
-              </ScrollReveal>
+              </article>
             );
           })}
         </div>

@@ -1,15 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import dynamic from "next/dynamic";
 import Script from "next/script";
 import localFont from "next/font/local";
 import { Geist } from "next/font/google";
 import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
-import { PageTransition } from "@/components/molecules/PageTransition";
-import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
-import { SectionViewTracker } from "@/components/molecules/SectionViewTracker";
-import { SmoothAnchorScroll } from "@/components/molecules/SmoothAnchorScroll";
-import { DeferredMount } from "@/components/molecules/DeferredMount";
 import "./globals.css";
 
 const geist = Geist({
@@ -78,6 +74,13 @@ export const viewport: Viewport = {
 const GA_MEASUREMENT_ID = "G-WQZ32S81FX";
 const GOOGLE_ADS_ID = "AW-18070613857";
 const PLAUSIBLE_SRC = "https://plausible.io/js/pa-K3DR1kRxwm1G-J9Q8KBme.js";
+const LayoutEnhancements = dynamic(
+  () =>
+    import("@/components/molecules/LayoutEnhancements").then(
+      (mod) => mod.LayoutEnhancements,
+    ),
+  { ssr: false },
+);
 
 export default function RootLayout({
   children,
@@ -127,15 +130,9 @@ export default function RootLayout({
         />
 
         <AmbientGlow />
-        <SmoothAnchorScroll />
-        <DeferredMount>
-          <ScrollProgressBar />
-          <SectionViewTracker />
-        </DeferredMount>
+        <LayoutEnhancements />
         <Nav />
-        <div className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </div>
+        <div className="flex-1">{children}</div>
         <Footer />
 
         {/* Queue stub installed beforeInteractive so early track() calls

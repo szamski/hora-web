@@ -8,6 +8,8 @@ export function ScrollProgressBar() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    if (!mq.matches) return;
     let raf = 0;
     const update = () => {
       raf = 0;
@@ -32,7 +34,7 @@ export function ScrollProgressBar() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px]"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[60] hidden h-[2px] md:block"
     >
       <div
         ref={ref}

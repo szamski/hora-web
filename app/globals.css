@@ -21,6 +21,7 @@
 html {
   background: var(--color-bg);
   color: var(--color-text);
+  scroll-behavior: smooth;
   scrollbar-gutter: stable;
 }
 
