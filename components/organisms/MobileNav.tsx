@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
@@ -10,6 +11,11 @@ import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -104,7 +110,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>
 
-      {panel}
+      {mounted ? createPortal(panel, document.body) : null}
     </>
   );
 }
