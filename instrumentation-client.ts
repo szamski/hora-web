@@ -27,7 +27,11 @@ export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
 captureFirstTouch();
 
 if (typeof window !== "undefined") {
+  let started = false;
   const startRecording = () => {
+    if (started) return;
+    started = true;
+    cleanup();
     void initPostHog()
       .then((posthog) => {
         try {
@@ -40,9 +44,33 @@ if (typeof window !== "undefined") {
         /* network blocker / privacy extension — analytics already degrade gracefully */
       });
   };
-  if (typeof window.requestIdleCallback === "function") {
-    window.requestIdleCallback(startRecording, { timeout: 4000 });
-  } else {
-    window.setTimeout(startRecording, 2500);
+  const events: Array<keyof WindowEventMap> = [
+    "pointerdown",
+    "keydown",
+    "scroll",
+    "touchstart",
+  ];
+  const onFirstInteraction = () => startRecording();
+  const cleanup = () => {
+    for (const event of events) {
+      window.removeEventListener(event, onFirstInteraction, listenerOptions);
+    }
+    document.removeEventListener("visibilitychange", onVisibilityChange);
+    if (fallbackId !== null) {
+      window.clearTimeout(fallbackId);
+    }
+  };
+  const onVisibilityChange = () => {
+    if (document.visibilityState === "visible") {
+      startRecording();
+    }
+  };
+  const listenerOptions = { once: true, passive: true } as const;
+  for (const event of events) {
+    window.addEventListener(event, onFirstInteraction, listenerOptions);
   }
+  document.addEventListener("visibilitychange", onVisibilityChange, {
+    passive: true,
+  });
+  const fallbackId = window.setTimeout(startRecording, 15000);
 }

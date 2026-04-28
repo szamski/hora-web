@@ -19,7 +19,9 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
           alt="hora Calendar macOS app interface"
           fill
           priority
-          sizes="100vw"
+          fetchPriority="high"
+          quality={60}
+          sizes="(min-width: 1536px) 1455px, 100vw"
           className="object-cover opacity-[0.22]"
         />
 
