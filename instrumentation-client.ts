@@ -53,7 +53,7 @@ if (typeof window !== "undefined") {
   const onFirstInteraction = () => startRecording();
   const cleanup = () => {
     for (const event of events) {
-      window.removeEventListener(event, onFirstInteraction, listenerOptions);
+      window.removeEventListener(event, onFirstInteraction);
     }
     document.removeEventListener("visibilitychange", onVisibilityChange);
     if (fallbackId !== null) {
