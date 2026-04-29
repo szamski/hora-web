@@ -17,7 +17,7 @@ export const home = {
       button: "Sign up for TestFlight",
       hint: "Support this project on GitHub",
       githubLabel: "Star on GitHub",
-      githubHref: "https://github.com/szamski/hora-web",
+      githubHref: "https://github.com/szamowski-dev/hora-web",
       eyebrow: "Worth the click",
       headline: "Get in before launch.",
       subheadline:
