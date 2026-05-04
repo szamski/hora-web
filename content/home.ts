@@ -73,6 +73,13 @@ export const home = {
         width: 202,
         height: 54,
       },
+      {
+        href: "https://ufind.best",
+        src: "/assets/ufind-badge.svg",
+        alt: "hora Calendar — Featured on ufind.best",
+        width: 140.8,
+        height: 40,
+      },
     ],
   },
 
