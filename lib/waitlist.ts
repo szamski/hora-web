@@ -27,7 +27,7 @@ async function fetchOnce(
       return null;
     }
     const contacts = res.data.data;
-    count += contacts.filter((c) => !c.unsubscribed).length;
+    count += contacts.length;
     if (!res.data.has_more || contacts.length === 0) break;
     after = contacts[contacts.length - 1]!.id;
   }
