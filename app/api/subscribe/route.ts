@@ -2,8 +2,6 @@ import { type NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
-import { render } from "@react-email/render";
-import { WelcomeEmail } from "@/emails/WelcomeEmail";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getPostHogClient } from "@/lib/posthog-server";
 
@@ -88,31 +86,6 @@ export async function POST(req: NextRequest) {
       { error: contact.error.message },
       { status: 500, headers },
     );
-  }
-
-  const baseUrl = new URL(req.url).origin;
-  const unsubscribeUrl = `${baseUrl}/unsubscribe?token=${encodeURIComponent(
-    Buffer.from(email).toString("base64"),
-  )}`;
-
-  const html = await render(WelcomeEmail({ unsubscribeUrl }));
-  const text = await render(WelcomeEmail({ unsubscribeUrl }), {
-    plainText: true,
-  });
-
-  const emailRes = await resend.emails.send({
-    from: "hora Calendar <hello@horacal.app>",
-    to: email,
-    subject: "Hey — you're on the hora waitlist",
-    html,
-    text,
-    headers: {
-      "List-Unsubscribe": `<${unsubscribeUrl}>`,
-      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-    },
-  });
-  if (emailRes.error) {
-    console.error("Resend emails.send failed", emailRes.error);
   }
 
   after(async () => {
