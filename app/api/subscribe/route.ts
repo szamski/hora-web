@@ -8,6 +8,7 @@ import { getPostHogClient } from "@/lib/posthog-server";
 export const runtime = "nodejs";
 
 const bodySchema = z.object({ email: z.string().email().max(254) });
+const RESEND_WAITLIST_EVENT = "hora Calendar Waitlist";
 
 const ALLOWED_ORIGINS = new Set([
   "https://horacal.app",
@@ -84,6 +85,21 @@ export async function POST(req: NextRequest) {
     console.error("Resend contacts.create failed", contact.error);
     return NextResponse.json(
       { error: contact.error.message },
+      { status: 500, headers },
+    );
+  }
+
+  const event = await resend.events.send({
+    event: RESEND_WAITLIST_EVENT,
+    email,
+    payload: {
+      source: "website_waitlist",
+    },
+  });
+  if (event.error) {
+    console.error("Resend events.send failed", event.error);
+    return NextResponse.json(
+      { error: event.error.message },
       { status: 500, headers },
     );
   }
