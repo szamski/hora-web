@@ -62,13 +62,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${base}/privacy/`,
-      lastModified: "2026-03-25",
+      lastModified: "2026-05-13",
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${base}/terms/`,
-      lastModified: "2026-03-25",
+      lastModified: "2026-05-13",
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/zoom-guide/`,
+      lastModified: "2026-05-13",
       changeFrequency: "yearly",
       priority: 0.3,
     },

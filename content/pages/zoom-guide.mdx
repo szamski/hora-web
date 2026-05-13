@@ -1,0 +1,58 @@
+---
+title: "Zoom Integration Guide"
+description: "How to add, use, and remove Zoom integration in hora Calendar."
+lastUpdated: "May 13, 2026"
+---
+
+This guide explains how to connect, use, and disconnect Zoom in hora Calendar on macOS.
+
+## Before You Start
+
+- You need a signed-in Google account in hora Calendar.
+- Zoom connection is optional and is only needed if you want hora to manage Zoom meetings for your events.
+
+## Add Zoom to hora Calendar
+
+1. Open **Settings** in hora Calendar.
+2. Go to **Accounts**.
+3. In the **Zoom** section, click **Connect Zoom** next to the account you want to use.
+4. You will be redirected to Zoom authorization.
+5. Review the requested permissions and click **Allow**.
+6. Return to hora Calendar. The account will show as connected.
+
+## Use Zoom in Events
+
+1. Create a new event or edit an existing one.
+2. In **Video call**, choose **Zoom**.
+3. Save the event.
+
+hora Calendar will create and link a Zoom meeting for that event. When you edit event title/time, hora updates the linked Zoom meeting. When you delete the event, hora deletes/cancels the linked Zoom meeting.
+
+If Zoom is not connected, you can still save the event and add a Zoom link manually.
+
+## Remove Zoom from hora Calendar
+
+1. Open **Settings** in hora Calendar.
+2. Go to **Accounts**.
+3. In the **Zoom** section, click **Disconnect** for the connected account.
+
+This removes local Zoom tokens from your macOS Keychain and stops Zoom API actions from hora Calendar.
+
+## Revoke Access in Zoom (Optional)
+
+You can also revoke access directly from Zoom:
+
+- [https://marketplace.zoom.us/user/authorized_apps](https://marketplace.zoom.us/user/authorized_apps)
+
+## Data and Security
+
+- hora Calendar stores OAuth tokens in macOS Keychain.
+- Event and meeting metadata is stored locally in the app sandbox.
+- API communication with Zoom uses HTTPS (TLS).
+- For details, see our [Privacy Policy](https://horacal.app/privacy/) and [Terms of Service](https://horacal.app/terms/).
+
+## Support
+
+If you need help with Zoom integration, contact:
+
+- [hello@horacal.app](mailto:hello@horacal.app)
