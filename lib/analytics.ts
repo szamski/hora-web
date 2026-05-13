@@ -1,3 +1,5 @@
+import { normalizeEmail } from "@/lib/identity";
+
 declare global {
   interface Window {
     plausible?: (
@@ -48,8 +50,10 @@ export function trackConversion(sendTo: string) {
 
 export function identify(distinctId: string, props?: EventProps) {
   if (typeof window === "undefined" || !distinctId) return;
+  const normalizedDistinctId = normalizeEmail(distinctId);
+  if (!normalizedDistinctId) return;
   loadPostHog().then((posthog) => {
-    posthog.identify(distinctId, props);
+    posthog.identify(normalizedDistinctId, props);
   });
 }
 
@@ -125,7 +129,7 @@ export async function initPostHog() {
     api_host: "https://i.horacal.app",
     ui_host: "https://us.posthog.com",
     defaults: "2026-01-30",
-    capture_exceptions: false,
+    capture_exceptions: true,
     debug: process.env.NODE_ENV === "development",
     // Defer recorder.js (~95KB, ~200ms CPU) out of the critical path. We start
     // the session manually below once the browser is idle.
@@ -136,4 +140,62 @@ export async function initPostHog() {
     capture_dead_clicks: false,
   });
   return posthog;
+}
+
+const REDACTED = "[redacted]";
+const LOG_THROTTLE_WINDOW_MS = 10_000;
+const LOG_THROTTLE_LIMIT = 20;
+let logWindowStart = 0;
+let logWindowCount = 0;
+
+function scrubSecrets(input: string): string {
+  return input
+    .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, REDACTED)
+    .replace(/\b(Bearer\s+)?[A-Za-z0-9_-]{20,}\b/g, REDACTED);
+}
+
+function allowLogCapture(): boolean {
+  const now = Date.now();
+  if (now - logWindowStart > LOG_THROTTLE_WINDOW_MS) {
+    logWindowStart = now;
+    logWindowCount = 0;
+  }
+  if (logWindowCount >= LOG_THROTTLE_LIMIT) return false;
+  logWindowCount += 1;
+  return true;
+}
+
+function serializeLogArgs(args: unknown[]): string {
+  const text = args
+    .map((arg) => {
+      if (typeof arg === "string") return arg;
+      try {
+        return JSON.stringify(arg);
+      } catch {
+        return String(arg);
+      }
+    })
+    .join(" ");
+  return scrubSecrets(text).slice(0, 2000);
+}
+
+export function installPostHogLogBridge() {
+  if (typeof window === "undefined") return;
+  loadPostHog().then((posthog) => {
+    const patch = (level: "error" | "warn" | "info") => {
+      const original = console[level];
+      console[level] = (...args: unknown[]) => {
+        original.apply(console, args);
+        if (!allowLogCapture()) return;
+        posthog.capture("$log_entry", {
+          level,
+          message: serializeLogArgs(args),
+          source: "hora-web",
+        });
+      };
+    };
+    patch("error");
+    patch("warn");
+    patch("info");
+  });
 }

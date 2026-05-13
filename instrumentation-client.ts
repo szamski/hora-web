@@ -1,36 +1,11 @@
-import * as Sentry from "@sentry/nextjs";
-import { captureFirstTouch, initPostHog } from "@/lib/analytics";
-
-if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  Sentry.init({
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-    // Replay disabled — auto-bundles ~50-80KB gz of replay code into the
-    // eager client chunk and hurts mobile Lighthouse. Re-enable if we ever
-    // start using replays in triage.
-    replaysOnErrorSampleRate: 0,
-    replaysSessionSampleRate: 0,
-    enabled: process.env.NODE_ENV === "production",
-    // Privacy-mode browsers (Brave shields, Firefox strict, sandboxed iframes,
-    // Safari ITP) return null for window.localStorage / sessionStorage. Sentry's
-    // own feedback async loader and a few core utilities access storage without
-    // a null guard and surface as unactionable noise. SZA-112.
-    // SZA-314: Sentry's own browserMetrics WeakMap crashes inside iOS WKWebView
-    // (in-app browsers) — third-party SDK bug, no actionable code on our side.
-    // SZA-317: WebExtensions runtime.sendMessage rejection from a user's Safari
-    // extension bubbles into our onunhandledrejection handler — not our code.
-    ignoreErrors: [
-      /Cannot read propert(?:y|ies) of null \(reading '(?:getItem|setItem|removeItem|removeEventListener|addEventListener)'\)/,
-      /null is not an object \(evaluating '.*\.(?:getItem|setItem|removeItem|removeEventListener|addEventListener)'\)/,
-      /WeakMap keys must be objects or non-registered symbols/,
-      /Invalid call to runtime\.sendMessage\(\)/,
-    ],
-  });
-}
-
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+import {
+  captureFirstTouch,
+  initPostHog,
+  installPostHogLogBridge,
+} from "@/lib/analytics";
 
 captureFirstTouch();
+installPostHogLogBridge();
 
 if (typeof window !== "undefined") {
   let started = false;

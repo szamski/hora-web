@@ -15,6 +15,7 @@ import {
 } from "@/lib/analytics";
 import { analyticsAttrs } from "@/lib/analyticsAttrs";
 import { cn } from "@/lib/cn";
+import { normalizeEmail } from "@/lib/identity";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -26,6 +27,7 @@ export function NewsletterForm({ className }: { className?: string }) {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email.includes("@")) return;
+    const normalizedEmail = normalizeEmail(email);
 
     setStatus("submitting");
     setMessage("");
@@ -36,13 +38,13 @@ export function NewsletterForm({ className }: { className?: string }) {
       const res = await fetch(site.newsletter.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: normalizedEmail }),
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
       setMessage("You're in! We'll let you know when hora launches.");
-      identify(email, {
-        email,
+      identify(normalizedEmail, {
+        email: normalizedEmail,
         waitlist_joined_at: new Date().toISOString(),
         ...attribution,
       });

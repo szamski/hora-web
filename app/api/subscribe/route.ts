@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { normalizeEmail } from "@/lib/identity";
 
 export const runtime = "nodejs";
 
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { email } = parsed.data;
+  const email = normalizeEmail(parsed.data.email);
   const apiKey = process.env.RESEND_API_KEY;
   const audienceId = process.env.RESEND_AUDIENCE_ID;
   if (!apiKey || !audienceId) {

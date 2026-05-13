@@ -6,7 +6,12 @@
       "Bash(/bin/ls -lt ~/Pictures/Screenshots/)",
       "Bash(kill bk3xsgcc0 *)",
       "Bash(pkill -f \"until curl\")",
-      "Bash(kill bcbh9vkyn *)"
+      "Bash(kill bcbh9vkyn *)",
+      "WebFetch(domain:flexibits.com)",
+      "WebSearch",
+      "WebFetch(domain:get-alfred.ai)",
+      "WebFetch(domain:www.usecarly.com)",
+      "WebFetch(domain:www.morgen.so)"
     ]
   },
   "enableAllProjectMcpServers": true,
