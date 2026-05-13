@@ -4,7 +4,14 @@ import { site } from "@/content/site";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: "" },
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: [
+          "/_next/",
+          "/*?dpl=*",
+        ],
+      },
       { userAgent: "GPTBot", allow: "/", disallow: "" },
       { userAgent: "ClaudeBot", allow: "/", disallow: "" },
       { userAgent: "PerplexityBot", allow: "/", disallow: "" },
