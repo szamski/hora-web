@@ -138,6 +138,11 @@ export async function initPostHog() {
     disable_surveys: true,
     // Dead-click autocapture adds ~33KB and noisy events. Off until we need it.
     capture_dead_clicks: false,
+    logs: {
+      captureConsoleLogs: true,
+      serviceName: "hora-web",
+      environment: process.env.NODE_ENV,
+    },
   });
   return posthog;
 }
@@ -187,10 +192,12 @@ export function installPostHogLogBridge() {
       console[level] = (...args: unknown[]) => {
         original.apply(console, args);
         if (!allowLogCapture()) return;
-        posthog.capture("$log_entry", {
+        posthog.captureLog({
           level,
-          message: serializeLogArgs(args),
-          source: "hora-web",
+          body: serializeLogArgs(args),
+          attributes: {
+            source: "hora-web",
+          },
         });
       };
     };
