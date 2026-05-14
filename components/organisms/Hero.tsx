@@ -3,6 +3,8 @@ import { getWaitlistCount } from "@/lib/waitlist";
 import { HeroScene } from "./HeroScene";
 
 export async function Hero() {
-  const liveCount = await getWaitlistCount(home.hero.newsletter.socialProof.count);
+  const socialProof = home.hero.newsletter.socialProof;
+  const liveCount = await getWaitlistCount(socialProof.count);
+
   return <HeroScene liveCount={liveCount} />;
 }

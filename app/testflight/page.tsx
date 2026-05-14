@@ -81,7 +81,7 @@ export default async function TestFlightPage() {
         <h1 className="max-w-3xl text-balance font-brand text-4xl font-normal leading-[1.2] tracking-tight text-text md:text-6xl">
           You’ve just been put on{" "}
           <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pl-[0.04em] text-transparent">
-            hora Calendar's
+            hora Calendar&apos;s
           </span>{" "}
           radar.
         </h1>
@@ -104,7 +104,10 @@ export default async function TestFlightPage() {
 
       <WaitlistCard
         id="newsletter"
+        eyebrow={newsletter.eyebrow}
         headline={newsletter.headline}
+        subheadline={newsletter.subheadline}
+        subheadlineMobile={newsletter.subheadlineMobile}
         liveCount={liveCount}
         socialLabel={socialProof.label}
         avatars={socialProof.avatars}

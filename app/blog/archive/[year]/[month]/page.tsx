@@ -1,0 +1,90 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { BlogListingPage } from "@/components/templates/BlogListingPage";
+import {
+  getBlogTags,
+  getMonthlyArchives,
+  getPostsByMonth,
+  postToCard,
+} from "@/lib/blog";
+import { breadcrumbList } from "@/lib/jsonld";
+import { getAllPosts } from "@/lib/mdx";
+import { defaultOg } from "@/lib/og";
+
+type Params = { year: string; month: string };
+
+export const revalidate = 600;
+
+export async function generateStaticParams(): Promise<Params[]> {
+  const posts = await getAllPosts();
+  return getMonthlyArchives(posts).map((archive) => ({
+    year: archive.year,
+    month: archive.month,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { year, month } = await params;
+  const posts = await getAllPosts();
+  const archive = getMonthlyArchives(posts).find(
+    (item) => item.year === year && item.month === month,
+  );
+  if (!archive) return {};
+
+  const canonical = `/blog/archive/${year}/${month}/`;
+  return {
+    title: `${archive.label} Blog Archive`,
+    description: `hora Calendar blog posts from ${archive.label}.`,
+    alternates: { canonical },
+    openGraph: defaultOg({
+      title: `${archive.label} - hora Calendar Blog Archive`,
+      description: `hora Calendar blog posts from ${archive.label}.`,
+      url: `https://horacal.app${canonical}`,
+    }),
+  };
+}
+
+export default async function BlogMonthlyArchivePage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { year, month } = await params;
+  const posts = await getAllPosts();
+  const archives = getMonthlyArchives(posts);
+  const archive = archives.find(
+    (item) => item.year === year && item.month === month,
+  );
+  if (!archive) notFound();
+
+  const archivePosts = getPostsByMonth(posts, year, month);
+  const url = `https://horacal.app/blog/archive/${year}/${month}/`;
+  const breadcrumbs = breadcrumbList([
+    { name: "Home", url: "https://horacal.app/" },
+    { name: "Blog", url: "https://horacal.app/blog/" },
+    { name: "Archive", url: "https://horacal.app/blog/archive/" },
+    { name: archive.label, url },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
+      <BlogListingPage
+        eyebrow="Monthly archive"
+        title={archive.label}
+        subtitle={`hora Calendar blog posts from ${archive.label}.`}
+        posts={archivePosts.map(postToCard)}
+        tags={getBlogTags(posts)}
+        archives={archives}
+        activeArchive={archive.slug}
+      />
+    </>
+  );
+}

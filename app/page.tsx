@@ -1,6 +1,7 @@
 import { Hero } from "@/components/organisms/Hero";
 import { FeaturedOn } from "@/components/organisms/FeaturedOn";
 import { VideoShowcase } from "@/components/organisms/VideoShowcase";
+import { UserProof } from "@/components/organisms/UserProof";
 import { FeaturesStory } from "@/components/organisms/FeaturesStory";
 import { WhyHora } from "@/components/organisms/WhyHora";
 import { BetaCta } from "@/components/organisms/BetaCta";
@@ -82,6 +83,7 @@ export default async function Home() {
       <Hero />
       <FeaturedOn />
       <VideoShowcase />
+      <UserProof />
       <FeaturesStory />
       <WhyHora />
       <BetaCta />

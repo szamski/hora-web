@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LuArrowRight } from "react-icons/lu";
+import { Icon } from "@/components/atoms/Icon";
 import { Prose } from "@/components/atoms/Prose";
 import { Tag } from "@/components/atoms/Tag";
 import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
@@ -104,10 +104,10 @@ export function BlogPostLayout({
                 Calendar in public from Poland.
               </p>
             </div>
-            <LuArrowRight
+            <Icon
+              name="arrow-right"
               size={20}
               className="shrink-0 text-muted transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent"
-              aria-hidden
             />
           </Link>
         </aside>

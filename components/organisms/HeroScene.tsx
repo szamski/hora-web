@@ -65,17 +65,20 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
 
         <WaitlistCard
           id="newsletter"
+          eyebrow={newsletter.eyebrow}
           headline={newsletter.headline}
+          subheadline={newsletter.subheadline}
+          subheadlineMobile={newsletter.subheadlineMobile}
           liveCount={liveCount}
           socialLabel={socialProof.label}
           avatars={socialProof.avatars}
           variant="hero"
-          animatedCount={false}
-          className="mt-4 max-w-xl md:mt-8"
+          className="mt-4 max-w-xl scroll-mt-24 md:mt-8"
         />
 
         <a
-          href="#watch"
+          href="#watch-demo"
+          data-scroll-align="center"
           className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:border-accent/60 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <span>{newsletter.watchDemoCtaLabel}</span>

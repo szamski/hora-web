@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { FaXTwitter, FaBluesky, FaGithub } from "react-icons/fa6";
-import { LuMail } from "react-icons/lu";
+import { Icon, type IconName } from "@/components/atoms/Icon";
 import { getPageMdx } from "@/lib/mdx";
 import { Prose } from "@/components/atoms/Prose";
 import { defaultOg } from "@/lib/og";
@@ -33,18 +32,18 @@ const stats: ReadonlyArray<{ value: string; label: string; sub: string }> = [
 const contacts: ReadonlyArray<{
   href: string;
   label: string;
-  Icon: React.ComponentType<{ size?: number; "aria-hidden"?: boolean }>;
+  icon: IconName;
   external?: boolean;
 }> = [
-  { href: `mailto:${site.contactEmail}`, label: site.contactEmail, Icon: LuMail },
-  { href: "https://x.com/moto_szama", label: "@moto_szama", Icon: FaXTwitter, external: true },
+  { href: `mailto:${site.contactEmail}`, label: site.contactEmail, icon: "mail" },
+  { href: "https://x.com/moto_szama", label: "@moto_szama", icon: "x", external: true },
   {
     href: "https://bsky.app/profile/szamski.bsky.social",
     label: "@szamski.bsky.social",
-    Icon: FaBluesky,
+    icon: "bluesky",
     external: true,
   },
-  { href: "https://github.com/szamski", label: "@szamski", Icon: FaGithub, external: true },
+  { href: "https://github.com/szamski", label: "@szamski", icon: "github", external: true },
 ];
 
 export default async function AboutPage() {
@@ -121,14 +120,14 @@ export default async function AboutPage() {
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
-                {contacts.map(({ href, label, Icon, external }) => (
+                {contacts.map(({ href, label, icon, external }) => (
                   <AboutContactLink
                     key={label}
                     href={href}
                     external={external}
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:border-accent/40 hover:bg-white/6 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
-                    <Icon size={12} aria-hidden />
+                    <Icon name={icon} size={12} />
                     {label}
                   </AboutContactLink>
                 ))}

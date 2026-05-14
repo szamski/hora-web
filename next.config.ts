@@ -9,12 +9,6 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   pageExtensions: ["ts", "tsx", "mdx"],
-  experimental: {
-    // react-icons re-exports thousands of icons through barrel files;
-    // optimizePackageImports rewrites our `import { LuFoo } from "react-icons/lu"`
-    // into per-file imports so the unused ones get tree-shaken.
-    optimizePackageImports: ["react-icons", "react-icons/lu"],
-  },
   async redirects() {
     return [
       {

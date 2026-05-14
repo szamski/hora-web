@@ -30,6 +30,27 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.discord-cta-button {
+  background: #4752c4;
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 18px -14px rgba(88, 101, 242, 0.35);
+}
+
+.discord-cta-button:hover {
+  background: #5865f2;
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 12px 26px -12px rgba(88, 101, 242, 0.72),
+    0 0 18px rgba(88, 101, 242, 0.18);
+}
+
+.blog-tag-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -95,5 +116,23 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes waitlist-avatar-cycle {
+  0% {
+    opacity: 0;
+    transform: scale(1.03);
+    filter: blur(2px);
+  }
+  4%, 16% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  24%, 100% {
+    opacity: 0;
+    transform: scale(1.03);
+    filter: blur(2px);
   }
 }

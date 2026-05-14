@@ -1,25 +1,28 @@
-import type { IconType } from "react-icons";
-import {
-  FaApple,
-  FaBluesky,
-  FaDiscord,
-  FaGithub,
-  FaXTwitter,
-} from "react-icons/fa6";
-import {
-  FiCalendar,
-  FiCheck,
-  FiChevronRight,
-  FiEdit2,
-  FiMail,
-  FiMenu,
-  FiRefreshCw,
-  FiSend,
-  FiUsers,
-  FiVideo,
-  FiX,
-} from "react-icons/fi";
-import { LuKeyboard, LuShieldCheck } from "react-icons/lu";
+"use client";
+
+import type { ComponentType } from "react";
+import AppleBrandLogo from "@/components/ui/apple-brand-logo";
+import CheckedIcon from "@/components/ui/checked-icon";
+import ClockIcon from "@/components/ui/clock-icon";
+import DialpadIcon from "@/components/ui/dialpad-icon";
+import DiscordIcon from "@/components/ui/discord-icon";
+import GithubIcon from "@/components/ui/github-icon";
+import BrandZoomIcon from "@/components/ui/brand-zoom-icon";
+import FilledBellIcon from "@/components/ui/filled-bell-icon";
+import HandHeartIcon from "@/components/ui/hand-heart-icon";
+import LayoutDashboardIcon from "@/components/ui/layout-dashboard-icon";
+import MailFilledIcon from "@/components/ui/mail-filled-icon";
+import PenIcon from "@/components/ui/pen-icon";
+import RefreshIcon from "@/components/ui/refresh-icon";
+import RightChevron from "@/components/ui/right-chevron";
+import SendIcon from "@/components/ui/send-icon";
+import ShieldCheck from "@/components/ui/shield-check";
+import TwitterXIcon from "@/components/ui/twitter-x-icon";
+import UnorderedListIcon from "@/components/ui/unordered-list-icon";
+import UsersIcon from "@/components/ui/users-icon";
+import WorldIcon from "@/components/ui/world-icon";
+import XIcon from "@/components/ui/x-icon";
+import type { AnimatedIconProps } from "@/components/ui/types";
 import { cn } from "@/lib/cn";
 
 export type IconName =
@@ -40,32 +43,42 @@ export type IconName =
   | "arrow-right"
   | "check"
   | "menu"
-  | "close";
+  | "close"
+  | "app-window"
+  | "bell"
+  | "command"
+  | "hand-heart";
 
-const iconMap: Record<IconName, IconType> = {
-  calendar: FiCalendar,
-  edit: FiEdit2,
-  meet: FiVideo,
-  keyboard: LuKeyboard,
-  sync: FiRefreshCw,
-  users: FiUsers,
-  mail: FiMail,
-  github: FaGithub,
-  x: FaXTwitter,
-  bluesky: FaBluesky,
-  discord: FaDiscord,
-  apple: FaApple,
-  testflight: FiSend,
-  shield: LuShieldCheck,
-  "arrow-right": FiChevronRight,
-  check: FiCheck,
-  menu: FiMenu,
-  close: FiX,
+type AnimatedIconComponent = ComponentType<AnimatedIconProps>;
+
+const iconMap: Record<IconName, AnimatedIconComponent> = {
+  calendar: ClockIcon,
+  edit: PenIcon,
+  meet: BrandZoomIcon,
+  keyboard: DialpadIcon,
+  sync: RefreshIcon,
+  users: UsersIcon,
+  mail: MailFilledIcon,
+  github: GithubIcon,
+  x: TwitterXIcon,
+  bluesky: WorldIcon,
+  discord: DiscordIcon,
+  apple: AppleBrandLogo,
+  testflight: SendIcon,
+  shield: ShieldCheck,
+  "arrow-right": RightChevron,
+  check: CheckedIcon,
+  menu: UnorderedListIcon,
+  close: XIcon,
+  "app-window": LayoutDashboardIcon,
+  bell: FilledBellIcon,
+  command: DialpadIcon,
+  "hand-heart": HandHeartIcon,
 };
 
-type Props = React.SVGProps<SVGSVGElement> & {
+type Props = AnimatedIconProps & {
   name: IconName;
-  size?: number;
+  size?: number | string;
 };
 
 export function Icon({ name, size = 24, className, ...rest }: Props) {

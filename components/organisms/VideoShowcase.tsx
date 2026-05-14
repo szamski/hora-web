@@ -65,10 +65,12 @@ export function VideoShowcase() {
             }}
           />
 
-          <VideoShowcaseMedia
-            videoId={YT_VIDEO_ID}
-            ariaLabel={demo.ariaLabel}
-          />
+          <div id="watch-demo">
+            <VideoShowcaseMedia
+              videoId={YT_VIDEO_ID}
+              ariaLabel={demo.ariaLabel}
+            />
+          </div>
 
           <ul className="mt-8 flex flex-wrap items-center justify-center gap-2 md:mt-10 md:gap-3">
             {v.highlights.map((h) => (

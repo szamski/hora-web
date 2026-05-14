@@ -15,17 +15,15 @@ export const home = {
     newsletter: {
       placeholder: "you@email.com",
       button: "Sign up for TestFlight",
-      hint: "Support this project on GitHub",
-      githubLabel: "Star on GitHub",
-      githubHref: "https://github.com/szamowski-dev/hora-web",
-      eyebrow: "Worth the click",
-      headline: "Get in before launch.",
+      eyebrow: "Beta access",
+      headline: "Join the Mac beta.",
       subheadline:
-        "When hora goes live, you'll get the invite — and a founding‑user discount — before anyone else.",
+        "Get TestFlight access, try early builds, and help shape the beta before launch.",
+      subheadlineMobile: "Try early builds. Shape the beta.",
       watchDemoCtaLabel: "Watch the demo",
       socialProof: {
         count: 240,
-        label: "Mac folks already on the Beta TestFlight waitlist",
+        label: "Mac users are already testing hora on TestFlight",
         avatars: [
           {
             src: "https://randomuser.me/api/portraits/thumb/men/32.jpg",
@@ -97,6 +95,25 @@ export const home = {
     muteLabel: "Mute sound",
     enlargeLabel: "Enlarge",
     minimizeLabel: "Exit fullscreen",
+  },
+
+  userProof: {
+    eyebrow: "Already testing",
+    heading: { prefix: "Already in", suffixGradient: "real Mac calendars" },
+    description:
+      "hora is already running in real schedules, with feedback coming from Mac users who live in Google Calendar every day.",
+    stat: {
+      count: 200,
+      value: "200+",
+      label: "Mac users are already testing hora on TestFlight",
+    },
+    quote: {
+      text: "Finally an app that does not ship a whole browser alongside it.",
+      author: "Ivor",
+      handle: "@ivorisnoob",
+      href: "https://x.com/ivorisnoob",
+      avatarSrc: "https://unavatar.io/x/ivorisnoob",
+    },
   },
 
   features: {

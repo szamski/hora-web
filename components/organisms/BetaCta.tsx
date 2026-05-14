@@ -4,8 +4,7 @@ import { getWaitlistCount } from "@/lib/waitlist";
 
 export async function BetaCta() {
   const cta = home.betaCta;
-  const hero = home.hero.newsletter;
-  const socialProof = hero.socialProof;
+  const socialProof = home.hero.newsletter.socialProof;
   const liveCount = await getWaitlistCount(socialProof.count);
 
   return (

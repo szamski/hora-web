@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Icon } from "@/components/atoms/Icon";
@@ -13,16 +13,17 @@ import {
   track,
   trackConversion,
 } from "@/lib/analytics";
-import { analyticsAttrs } from "@/lib/analyticsAttrs";
 import { cn } from "@/lib/cn";
 import { normalizeEmail } from "@/lib/identity";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 export function NewsletterForm({ className }: { className?: string }) {
+  const emailId = useId();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [shareState, setShareState] = useState<"idle" | "copied">("idle");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,7 +43,7 @@ export function NewsletterForm({ className }: { className?: string }) {
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
-      setMessage("You're in! We'll let you know when hora launches.");
+      setMessage(site.newsletter.afterSignup.title);
       identify(normalizedEmail, {
         email: normalizedEmail,
         waitlist_joined_at: new Date().toISOString(),
@@ -59,31 +60,72 @@ export function NewsletterForm({ className }: { className?: string }) {
     }
   }
 
+  async function onShare() {
+    const { shareText, shareUrl } = site.newsletter.afterSignup;
+    const attribution = getAttribution();
+    track("post_signup_share_click", { method: "native_or_clipboard", ...attribution });
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "hora Calendar beta",
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        return;
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+      setShareState("copied");
+      window.setTimeout(() => setShareState("idle"), 2200);
+    } catch {
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    }
+  }
+
+  function onDiscordClick() {
+    track("post_signup_discord_click", {
+      method: "success_panel",
+      ...getAttribution(),
+    });
+  }
+
   const hero = home.hero.newsletter;
+  const afterSignup = site.newsletter.afterSignup;
 
   return (
     <div className={cn("w-full max-w-md", className)}>
       {status !== "success" ? (
         <form
           onSubmit={onSubmit}
-          className="flex flex-col gap-2 sm:flex-row sm:items-center"
+          className="flex flex-col gap-3 sm:flex-row sm:items-center"
           noValidate
         >
+          <label htmlFor={emailId} className="sr-only">
+            Email address
+          </label>
           <Input
+            id={emailId}
             type="email"
+            inputMode="email"
+            autoComplete="email"
             name="email"
             required
             placeholder={hero.placeholder}
-            aria-label="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === "submitting"}
+            className="h-14 border-white/10 bg-bg/85 text-base shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus-visible:border-white/30 focus-visible:ring-white/20"
           />
           <Button
             type="submit"
             size="lg"
             disabled={status === "submitting"}
-            className="shrink-0"
+            className="h-14 w-full shrink-0 px-7 text-base font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_16px_36px_-10px_rgba(255,56,60,0.85)] sm:w-auto sm:min-w-[15rem]"
           >
             {status === "submitting" ? (
               "Sending…"
@@ -97,33 +139,60 @@ export function NewsletterForm({ className }: { className?: string }) {
         </form>
       ) : null}
 
-      <div
-        role="status"
-        aria-live="polite"
-        className={cn(
-          "text-sm",
-          message && "mt-3 min-h-5",
-          status === "success" && "text-green-400",
-          status === "error" && "text-accent",
-        )}
-      >
-        {message}
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-4 text-xs text-muted">
-        <span>{hero.hint}</span>
-        <a
-          href={hero.githubHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          {...analyticsAttrs("github_star_click", { link_url: hero.githubHref })}
-          className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:text-text"
+      {status === "success" ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-2xl border border-emerald-400/20 bg-emerald-400/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
         >
-          <Icon name="github" size={14} />
-          <span>{hero.githubLabel}</span>
-          <Icon name="arrow-right" size={12} className="opacity-70" />
-        </a>
-      </div>
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-emerald-300/25 bg-emerald-300/10 text-emerald-300">
+              <Icon name="check" size={16} />
+            </span>
+            <div className="min-w-0">
+              <p className="font-semibold text-text">{message}</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted">
+                {afterSignup.message}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto]">
+            <Button
+              href={site.community.discord.href}
+              external
+              onClick={onDiscordClick}
+              variant="ghost"
+              size="md"
+              className="discord-cta-button h-11 focus-visible:ring-[#5865F2]"
+            >
+              <Icon name="discord" size={16} />
+              {afterSignup.discordLabel}
+            </Button>
+            <button
+              type="button"
+              onClick={onShare}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/12 px-4 text-sm font-medium text-text transition-colors hover:border-white/24 hover:bg-white/6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              <Icon name="hand-heart" size={16} />
+              {shareState === "copied"
+                ? afterSignup.copiedLabel
+                : afterSignup.shareLabel}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div
+          role="status"
+          aria-live="polite"
+          className={cn(
+            "text-sm",
+            message && "mt-3 min-h-5",
+            status === "error" && "text-accent",
+          )}
+        >
+          {message}
+        </div>
+      )}
     </div>
   );
 }

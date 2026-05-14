@@ -1,13 +1,5 @@
 import Link from "next/link";
-import type { IconType } from "react-icons";
-import {
-  LuAppWindow,
-  LuBell,
-  LuCalendarRange,
-  LuCommand,
-  LuRefreshCw,
-  LuShieldCheck,
-} from "react-icons/lu";
+import { Icon, type IconName } from "@/components/atoms/Icon";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 
@@ -19,13 +11,13 @@ type FeatureIconKey =
   | "command"
   | "shield";
 
-const iconMap: Record<FeatureIconKey, IconType> = {
-  "app-window": LuAppWindow,
-  calendar: LuCalendarRange,
-  bell: LuBell,
-  sync: LuRefreshCw,
-  command: LuCommand,
-  shield: LuShieldCheck,
+const iconMap: Record<FeatureIconKey, IconName> = {
+  "app-window": "app-window",
+  calendar: "calendar",
+  bell: "bell",
+  sync: "sync",
+  command: "command",
+  shield: "shield",
 };
 
 export function FeaturesStory() {
@@ -74,7 +66,7 @@ export function FeaturesStory() {
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 md:gap-6 lg:grid-cols-3">
           {f.items.map((item) => {
-            const IconComponent = iconMap[item.icon];
+            const icon = iconMap[item.icon];
             return (
               <article
                 key={item.title}
@@ -91,7 +83,7 @@ export function FeaturesStory() {
                 />
 
                 <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_0_24px_rgba(255,56,60,0.25)]">
-                  <IconComponent size={20} aria-hidden />
+                  <Icon name={icon} size={20} />
                 </span>
 
                 <h3 className="relative mt-5 text-lg font-semibold leading-tight tracking-tight text-text md:text-xl">

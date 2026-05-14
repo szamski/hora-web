@@ -81,6 +81,21 @@ export function PostCard({
         >
           {post.title}
         </h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          {post.description}
+        </p>
+        {post.tags && post.tags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {post.tags.slice(0, isHero ? 6 : 4).map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
         <div
           className={cn(
             "mt-auto flex items-center gap-1.5 pt-4 text-xs font-semibold uppercase tracking-[0.18em] text-muted transition-colors group-hover:text-accent",

@@ -19,7 +19,7 @@ export const site = {
     { label: "About", href: "/about/" },
   ],
   cta: {
-    primary: { label: "Sign up for TestFlight", href: "/testflight/" },
+    primary: { label: "Sign up for TestFlight", href: "/#newsletter" },
   },
   community: {
     discord: {
@@ -47,6 +47,18 @@ export const site = {
   contactEmail: "hello@horacal.app",
   newsletter: {
     endpoint: "/api/subscribe",
+    afterSignup: {
+      title: "You're in.",
+      message:
+        "I'll send the TestFlight invite by email. If you want the useful part between builds, join Discord for beta notes and quick feedback.",
+      discordLabel: "Join Discord",
+      shareLabel: "Share with one Mac friend",
+      shareUrl:
+        "https://horacal.app/testflight/?utm_source=post_signup&utm_medium=share&utm_campaign=beta_loop",
+      shareText:
+        "I joined the hora Calendar beta. If you use Google Calendar on Mac, this might be worth trying:",
+      copiedLabel: "Link copied",
+    },
   },
 } as const;
 

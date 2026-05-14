@@ -19,6 +19,7 @@ export function SmoothAnchorScroll() {
 
       let hashId: string | null = null;
       let scrollToTop = false;
+      const scrollAlign = anchor.dataset.scrollAlign;
 
       if (href.startsWith("#")) {
         hashId = href.slice(1) || null;
@@ -43,7 +44,12 @@ export function SmoothAnchorScroll() {
       if (hashId) {
         const el = document.getElementById(hashId);
         if (!el) return;
-        top = window.scrollY + el.getBoundingClientRect().top - NAV_OFFSET;
+        const rect = el.getBoundingClientRect();
+        if (scrollAlign === "center") {
+          top = window.scrollY + rect.top - (window.innerHeight - rect.height) / 2;
+        } else {
+          top = window.scrollY + rect.top - NAV_OFFSET;
+        }
       } else if (!scrollToTop) {
         return;
       }
