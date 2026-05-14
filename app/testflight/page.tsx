@@ -5,7 +5,7 @@ import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { home } from "@/content/home";
 import { getWaitlistCount } from "@/lib/waitlist";
 
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 const title = "I’ve joined the TestFlight for a new calendar app on macOS";
 const description =
