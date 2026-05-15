@@ -1,90 +1,206 @@
-import { SectionHeading } from "@/components/atoms/SectionHeading";
-import { VideoShowcaseMedia } from "@/components/organisms/VideoShowcaseMedia";
+import { Icon } from "@/components/atoms/Icon";
 import { home } from "@/content/home";
 
-const YT_VIDEO_ID = "ahVV5J25cYM";
+const actionCards = [
+  {
+    title: "Focus Time Scheduling",
+    body: "Block deep work without breaking your week.",
+    mediaKind: "media" as const,
+    panel: (
+      <LoopingVideo
+        src="/assets/redesign/focus_time.webm"
+        fallbackSrc="/assets/redesign_raw/focus_time.mp4"
+        label="hora Calendar focus time scheduling demo"
+      />
+    ),
+  },
+  {
+    title: "NLP Quick add",
+    body: "Type like you talk. Hora handles the rest.",
+    mediaKind: "media" as const,
+    panel: (
+      <LoopingVideo
+        src="/assets/redesign/hora_quick_add.webm"
+        fallbackSrc="/assets/redesign_raw/hora_quick_add.mp4"
+        label="hora Calendar natural language quick add demo"
+      />
+    ),
+  },
+  {
+    title: "Menu bar",
+    body: "Stay on top of your day without losing focus.",
+    mediaKind: "media" as const,
+    panel: (
+      <MediaImage
+        src="/assets/redesign/hora_menu_bar.webp"
+        alt="hora Calendar menu bar popover"
+      />
+    ),
+  },
+  {
+    title: "Powerful shortcuts",
+    body: "Jump views, add events, and find dates without leaving the keyboard.",
+    mediaKind: "custom" as const,
+    panel: <ShortcutPanel />,
+  },
+];
 
 export function VideoShowcase() {
   const v = home.videoShowcase;
   const demo = home.hero.demo;
 
   return (
-    <section id="watch" className="relative overflow-hidden py-24 md:py-32">
+    <section id="watch-demo" className="relative overflow-hidden py-20 md:py-28">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.4]"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
-          maskImage:
-            "radial-gradient(ellipse 75% 60% at 50% 50%, black 40%, transparent 90%)",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(760px_420px_at_20%_0%,rgba(255,56,60,0.13),transparent_68%),radial-gradient(760px_460px_at_84%_70%,rgba(131,199,255,0.08),transparent_70%)]"
       />
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 700px 400px at 8% 0%, rgba(255,56,60,0.18), transparent 65%)," +
-            "radial-gradient(ellipse 800px 500px at 92% 100%, rgba(255,115,110,0.14), transparent 65%)",
-        }}
-      />
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <h2 className="text-4xl font-semibold tracking-tight text-text md:text-5xl">
+          See hora <span className="text-accent">in action.</span>
+        </h2>
 
-      <div className="relative mx-auto max-w-page px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {v.eyebrow}
-          </span>
-          <div className="mt-5">
-            <SectionHeading heading={v.heading} />
-          </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {v.description}
-          </p>
+        <div className="mt-10 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_40px_120px_-70px_rgba(255,56,60,0.8)]">
+          <video
+            className="aspect-video w-full bg-black object-cover"
+            autoPlay
+            controls
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={demo.demoPosterSrc}
+            aria-label={demo.ariaLabel}
+          >
+            {demo.videoSources.map((source) => (
+              <source key={source.src} src={source.src} type={source.type} />
+            ))}
+            {demo.captionsSrc ? (
+              <track
+                src={demo.captionsSrc}
+                kind="captions"
+                srcLang="en"
+                label="English"
+              />
+            ) : null}
+          </video>
         </div>
 
-        <div className="relative mx-auto mt-14 max-w-6xl md:mt-20">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -inset-6 rounded-[28px] blur-3xl md:-inset-10"
-            style={{
-              background:
-                "radial-gradient(ellipse 65% 55% at 50% 55%, rgba(255,56,60,0.2), transparent 70%)",
-            }}
-          />
+        <div className="mt-12 grid gap-5 md:grid-cols-4">
+          {actionCards.map((card, index) => (
+            <article key={card.title} className="group">
+              <div className="relative flex h-[13.5rem] items-center overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] transition-colors group-hover:border-accent/35 group-hover:bg-white/[0.055]">
+                {index === 0 ? (
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-[radial-gradient(300px_180px_at_16%_10%,rgba(255,56,60,0.20),transparent_68%)]"
+                  />
+                ) : null}
+                <div
+                  className={
+                    card.mediaKind === "media"
+                      ? "absolute inset-0"
+                      : "relative h-full w-full p-3"
+                  }
+                >
+                  {card.panel}
+                </div>
+              </div>
+              <h3 className="mt-4 text-center text-base font-semibold tracking-tight text-text">
+                {card.title}
+              </h3>
+              <p className="mx-auto mt-1 max-w-[13rem] text-center text-sm leading-6 text-muted">
+                {card.body}
+              </p>
+            </article>
+          ))}
+        </div>
 
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-16 -bottom-3 h-8 rounded-full blur-2xl"
-            style={{
-              background:
-                "radial-gradient(ellipse, rgba(255,56,60,0.4) 0%, transparent 70%)",
-            }}
-          />
-
-          <div id="watch-demo">
-            <VideoShowcaseMedia
-              videoId={YT_VIDEO_ID}
-              ariaLabel={demo.ariaLabel}
-            />
-          </div>
-
-          <ul className="mt-8 flex flex-wrap items-center justify-center gap-2 md:mt-10 md:gap-3">
-            {v.highlights.map((h) => (
-              <li
-                key={h}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-3.5 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] md:text-sm"
-              >
-                <span className="h-1 w-1 rounded-full bg-accent shadow-[0_0_8px_rgba(255,56,60,0.85)]" />
-                {h}
-              </li>
-            ))}
-          </ul>
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
+          {v.highlights.map((h) => (
+            <span
+              key={h}
+              className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs text-muted"
+            >
+              {h}
+            </span>
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function LoopingVideo({
+  src,
+  fallbackSrc,
+  label,
+}: {
+  src: string;
+  fallbackSrc: string;
+  label: string;
+}) {
+  return (
+    <video
+      className="h-full w-full bg-black object-cover"
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      aria-label={label}
+    >
+      <source src={src} type="video/webm" />
+      <source src={fallbackSrc} type="video/mp4" />
+    </video>
+  );
+}
+
+function MediaImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className="h-full w-full bg-black object-cover"
+    />
+  );
+}
+
+function ShortcutPanel() {
+  const shortcuts = [
+    ["Today", "T"],
+    ["Search", "/"],
+  ];
+
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-md bg-[radial-gradient(220px_160px_at_50%_18%,rgba(255,56,60,0.18),transparent_70%),rgba(0,0,0,0.22)] p-5">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_18px_45px_-26px_rgba(255,56,60,0.9)]">
+        <Icon name="keyboard" size={34} />
+      </div>
+      <div className="grid w-full max-w-[14rem] gap-2">
+        {shortcuts.map(([label, ...keys]) => (
+          <div
+            key={label}
+            className="flex items-center justify-between gap-3 rounded-md bg-white/[0.045] px-3 py-2 text-xs"
+          >
+            <span className="truncate text-muted">{label}</span>
+            <span className="flex shrink-0 gap-1">
+              {keys.map((key) => (
+                <kbd
+                  key={key}
+                  className="min-w-6 rounded bg-white/[0.075] px-1.5 py-1 text-center font-sans text-[11px] font-semibold leading-none text-text/80"
+                >
+                  {key}
+                </kbd>
+              ))}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

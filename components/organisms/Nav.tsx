@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Button } from "@/components/atoms/Button";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
 import { site } from "@/content/site";
@@ -8,8 +7,8 @@ import { MobileNav } from "./MobileNav";
 
 export function Nav({ activePath }: { activePath?: string }) {
   return (
-    <nav className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-[960px] items-center justify-between px-6">
+    <nav className="sticky top-0 z-40 border-b border-white/10 bg-[#090a0c]/82 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 max-w-[1180px] items-center justify-between px-6">
         <Logo />
         <div className="hidden items-center gap-6 md:flex">
           {site.nav.map((item) => (
@@ -39,9 +38,13 @@ export function Nav({ activePath }: { activePath?: string }) {
           >
             <Icon name="discord" size={20} />
           </a>
-          <Button href={site.cta.primary.href} size="sm">
+          <Link
+            href={site.cta.primary.href}
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-accent px-4 text-sm font-semibold text-white shadow-[0_16px_40px_-18px_rgba(255,56,60,0.9),inset_0_1px_0_rgba(255,255,255,0.22)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          >
             {site.cta.primary.label}
-          </Button>
+            <span aria-hidden>→</span>
+          </Link>
         </div>
         <div className="flex items-center gap-1 md:hidden">
           <a

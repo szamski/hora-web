@@ -19,7 +19,7 @@ export function FaqItem({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-300",
+        "relative overflow-hidden rounded-md border backdrop-blur-xl transition-all duration-300",
         open
           ? "border-accent/35 bg-white/6 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_24px_48px_-24px_rgba(255,56,60,0.3)]"
           : "border-white/10 bg-white/4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_16px_40px_-28px_rgba(0,0,0,0.55)] hover:border-white/20 hover:bg-white/6",
@@ -39,13 +39,13 @@ export function FaqItem({
           setOpen(next);
           if (next) track("faq_expand", { question: question.slice(0, 60) });
         }}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-medium text-text md:px-6 md:py-5 md:text-lg"
+        className="flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left text-sm font-medium text-text md:px-5 md:py-4"
       >
         <span className="flex-1 text-balance">{question}</span>
         <span
           aria-hidden
           className={cn(
-            "relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300",
+            "relative flex h-7 w-7 shrink-0 items-center justify-center rounded-md border text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300",
             open
               ? "rotate-45 border-accent/60 bg-accent/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(255,56,60,0.35)]"
               : "border-white/10 bg-white/5",

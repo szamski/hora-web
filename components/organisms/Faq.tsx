@@ -15,46 +15,32 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="relative overflow-hidden py-24 md:py-32">
-      {/* Ambient glow */}
+    <section id="faq" className="relative overflow-hidden py-20 md:py-28">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 700px 400px at 15% 0%, rgba(255,56,60,0.09), transparent 65%)," +
-            "radial-gradient(ellipse 800px 500px at 85% 100%, rgba(255,115,110,0.06), transparent 65%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.28]"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
-          maskImage:
-            "radial-gradient(ellipse 60% 55% at 50% 50%, black 30%, transparent 85%)",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(720px_420px_at_15%_0%,rgba(255,56,60,0.09),transparent_68%)]"
       />
 
-      <div className="relative mx-auto max-w-3xl px-6">
-        {/* Header */}
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {faq.eyebrow}
-          </span>
-          <div className="mt-5">
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
             <SectionHeading heading={faq.heading} />
+            <p className="mt-4 max-w-xl text-base text-muted">
+              {faq.subtitle}
+            </p>
           </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {faq.subtitle}
-          </p>
+          <div className="text-sm text-muted">
+            Still have questions?{" "}
+            <a
+              href="mailto:hello@horacal.app"
+              className="text-accent underline decoration-accent/40 underline-offset-4 hover:text-text"
+            >
+              Contact us
+            </a>
+          </div>
         </div>
 
-        {/* Items */}
-        <div className="mt-14 space-y-3 md:mt-20 md:space-y-4">
+        <div className="mt-10 grid gap-3 md:grid-cols-2">
           {faq.items.map((item) => (
             <FaqItem key={item.q} question={item.q} answer={item.a} />
           ))}

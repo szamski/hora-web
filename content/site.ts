@@ -13,13 +13,14 @@ export const site = {
     github: "https://github.com/szamski",
   },
   nav: [
-    { label: "Features", href: "/features/" },
+    { label: "Features", href: "/#features" },
     { label: "Roadmap", href: "/#roadmap" },
+    { label: "FAQ", href: "/#faq" },
     { label: "Blog", href: "/blog/" },
     { label: "About", href: "/about/" },
   ],
   cta: {
-    primary: { label: "Sign up for TestFlight", href: "/#newsletter" },
+    primary: { label: "Join Waitlist", href: "/#newsletter" },
   },
   community: {
     discord: {

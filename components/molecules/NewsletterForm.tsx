@@ -125,7 +125,7 @@ export function NewsletterForm({ className }: { className?: string }) {
             type="submit"
             size="lg"
             disabled={status === "submitting"}
-            className="h-14 w-full shrink-0 px-7 text-base font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_16px_36px_-10px_rgba(255,56,60,0.85)] sm:w-auto sm:min-w-[15rem]"
+            className="h-14 w-full shrink-0 rounded-md bg-accent px-7 text-base font-semibold text-white shadow-[0_16px_40px_-18px_rgba(255,56,60,0.9),inset_0_1px_0_rgba(255,255,255,0.22)] transition-colors hover:bg-accent-hover sm:w-auto sm:min-w-[15rem]"
           >
             {status === "submitting" ? (
               "Sending…"
@@ -180,7 +180,7 @@ export function NewsletterForm({ className }: { className?: string }) {
             </button>
           </div>
         </div>
-      ) : (
+      ) : message ? (
         <div
           role="status"
           aria-live="polite"
@@ -192,7 +192,7 @@ export function NewsletterForm({ className }: { className?: string }) {
         >
           {message}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

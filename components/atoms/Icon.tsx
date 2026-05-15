@@ -9,12 +9,16 @@ import DiscordIcon from "@/components/ui/discord-icon";
 import GithubIcon from "@/components/ui/github-icon";
 import BrandZoomIcon from "@/components/ui/brand-zoom-icon";
 import FilledBellIcon from "@/components/ui/filled-bell-icon";
+import GaugeIcon from "@/components/ui/gauge-icon";
 import HandHeartIcon from "@/components/ui/hand-heart-icon";
 import LayoutDashboardIcon from "@/components/ui/layout-dashboard-icon";
+import LikeIcon from "@/components/ui/like-icon";
 import MailFilledIcon from "@/components/ui/mail-filled-icon";
+import PartyPopperIcon from "@/components/ui/party-popper-icon";
 import PenIcon from "@/components/ui/pen-icon";
 import RefreshIcon from "@/components/ui/refresh-icon";
 import RightChevron from "@/components/ui/right-chevron";
+import RocketIcon from "@/components/ui/rocket-icon";
 import SendIcon from "@/components/ui/send-icon";
 import ShieldCheck from "@/components/ui/shield-check";
 import TwitterXIcon from "@/components/ui/twitter-x-icon";
@@ -47,7 +51,11 @@ export type IconName =
   | "app-window"
   | "bell"
   | "command"
-  | "hand-heart";
+  | "hand-heart"
+  | "gauge"
+  | "rocket"
+  | "like"
+  | "party-popper";
 
 type AnimatedIconComponent = ComponentType<AnimatedIconProps>;
 
@@ -74,6 +82,10 @@ const iconMap: Record<IconName, AnimatedIconComponent> = {
   bell: FilledBellIcon,
   command: DialpadIcon,
   "hand-heart": HandHeartIcon,
+  gauge: GaugeIcon,
+  rocket: RocketIcon,
+  like: LikeIcon,
+  "party-popper": PartyPopperIcon,
 };
 
 type Props = AnimatedIconProps & {

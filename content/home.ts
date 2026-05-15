@@ -50,10 +50,11 @@ export const home = {
     },
     demo: {
       videoSources: [
-        { src: "/assets/horus_demo_new.webm", type: "video/webm" },
-        { src: "/assets/hora_demo_new.mp4", type: "video/mp4" },
+        { src: "/assets/redesign/hora_demo.webm", type: "video/webm" },
+        { src: "/assets/redesign_raw/hora_demo.mp4", type: "video/mp4" },
       ],
-      posterSrc: "/assets/hero_image.webp",
+      posterSrc: "/assets/redesign/hora_hero_screenshot.webp",
+      demoPosterSrc: "/assets/redesign/hora_demo_poster.webp",
       videoPosterSrc: "/assets/hero_image_poster.webp",
       captionsSrc: "/assets/hora-demo.vtt",
       ariaLabel:
@@ -101,7 +102,7 @@ export const home = {
     eyebrow: "Already testing",
     heading: { prefix: "Already in", suffixGradient: "real Mac calendars" },
     description:
-      "hora is already running in real schedules, with feedback coming from Mac users who live in Google Calendar every day.",
+      "Mac users are already trying hora in their daily Google Calendar workflows.",
     stat: {
       count: 200,
       value: "200+",
@@ -118,9 +119,9 @@ export const home = {
 
   features: {
     eyebrow: "Built for Mac",
-    heading: { prefix: "Native macOS Calendar", suffixGradient: "Features" },
+    heading: { prefix: "Built for how you work", suffixGradient: "on Mac." },
     description:
-      "Six things nobody else quite gets right on macOS. Here's how hora does them.",
+      "hora brings Google Calendar to macOS the way it should have always been.",
     items: [
       {
         icon: "app-window" as const,
@@ -138,12 +139,12 @@ export const home = {
         body: "See what's coming up from the menu bar and join it in one click. No app switching.",
       },
       {
-        icon: "sync" as const,
+        icon: "check" as const,
         title: "Google Calendar, done right",
         body: "Multiple accounts, color-coded calendars, and native Meet, Zoom, and Teams links.",
       },
       {
-        icon: "command" as const,
+        icon: "gauge" as const,
         title: "Built for speed",
         body: "Familiar Google Calendar-style shortcuts. Stay in flow without reaching for the mouse.",
       },
@@ -195,9 +196,9 @@ export const home = {
     heading: "Want to try it early?",
     subtitle: "Join the beta and help shape the product.",
     note: "Early access via TestFlight.",
-    cardHeadline: "Be a founding user.",
+    cardHeadline: "Join the Mac beta.",
     cardSubheadline:
-      "Drop your email, get the invite, and help shape the first cut of hora.",
+      "Get TestFlight access, try early builds, and help shape the beta before launch.",
     footnote:
       "If you've ever felt like your calendar is either too simple or too complex, you'll probably understand why hora exists.",
   },

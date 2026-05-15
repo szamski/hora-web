@@ -3,12 +3,12 @@
 
 @theme {
   --color-bg: #0a0a0a;
-  --color-surface: #141414;
-  --color-border: #222222;
+  --color-surface: #101114;
+  --color-border: #27292f;
   --color-text: #fafafa;
-  --color-muted: #9ca3af;
+  --color-muted: #a4abb8;
   --color-accent: #ff383c;
-  --color-accent-glow: #ff736e;
+  --color-accent-glow: #83c7ff;
   --color-accent-hover: #e6322f;
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
