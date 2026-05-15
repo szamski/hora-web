@@ -11,11 +11,6 @@ import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -112,7 +107,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>
 
-      {mounted ? createPortal(panel, document.body) : null}
+      {typeof document !== "undefined" ? createPortal(panel, document.body) : null}
     </>
   );
 }

@@ -13,17 +13,26 @@ export function ParallaxImage({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [y, setY] = useState(0);
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(
+    () =>
+      !(
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ),
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateEnabled = () => setEnabled(!mq.matches);
+    mq.addEventListener("change", updateEnabled);
     if (mq.matches) {
-      setEnabled(false);
-      return;
+      return () => mq.removeEventListener("change", updateEnabled);
     }
 
     const el = ref.current;
-    if (!el) return;
+    if (!el) {
+      return () => mq.removeEventListener("change", updateEnabled);
+    }
 
     let raf = 0;
     const update = () => {
@@ -42,6 +51,7 @@ export function ParallaxImage({
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      mq.removeEventListener("change", updateEnabled);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (raf !== 0) cancelAnimationFrame(raf);

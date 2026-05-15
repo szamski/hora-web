@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 
 export function ParallaxIcon({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
     const update = () => setReducedMotion(mq.matches);
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);

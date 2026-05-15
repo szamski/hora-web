@@ -27,7 +27,7 @@ export function ScrollReveal({
     const rect = el.getBoundingClientRect();
     const belowFold = rect.top > window.innerHeight;
     if (!belowFold) return;
-    setVisible(false);
+    const hideRaf = requestAnimationFrame(() => setVisible(false));
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return;
@@ -39,6 +39,7 @@ export function ScrollReveal({
     io.observe(el);
     const fallback = setTimeout(() => setVisible(true), 1500);
     return () => {
+      cancelAnimationFrame(hideRaf);
       io.disconnect();
       clearTimeout(fallback);
     };
