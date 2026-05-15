@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Icon } from "@/components/atoms/Icon";
 import { Logo } from "@/components/atoms/Logo";
@@ -8,8 +9,25 @@ import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { analyticsAttrs } from "@/lib/analyticsAttrs";
 
+function subscribeToClientMount() {
+  return () => {};
+}
+
+function getClientSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 export function MobileNav({ activePath }: { activePath?: string }) {
   const [open, setOpen] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribeToClientMount,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -106,7 +124,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>
 
-      {panel}
+      {mounted ? createPortal(panel, document.body) : null}
     </>
   );
 }
