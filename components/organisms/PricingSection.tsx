@@ -117,7 +117,7 @@ export function PricingSection() {
             >
               <Image
                 src="/assets/redesign_raw/app-store.svg"
-                alt=""
+                alt="Mac App Store icon"
                 width={18}
                 height={18}
                 className="h-[18px] w-[18px]"

@@ -11,7 +11,7 @@ export function Footer() {
           {site.footer.copyright}. Developed by{" "}
           <a
             href={site.footer.developedBy.href}
-            className="text-muted underline transition-colors hover:text-text"
+            className="inline-flex min-h-12 items-center text-muted underline transition-colors hover:text-text"
           >
             {site.footer.developedBy.label}
           </a>
@@ -21,7 +21,7 @@ export function Footer() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-muted transition-colors hover:text-text"
+              className="inline-flex min-h-12 items-center text-sm text-muted transition-colors hover:text-text"
             >
               {link.label}
             </Link>

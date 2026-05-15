@@ -81,7 +81,7 @@ export async function UserProof() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Open ${proof.quote.author} on X`}
-                  className="mt-1 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:text-accent"
+                  className="mt-1 inline-flex min-h-12 items-center gap-1.5 text-sm text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:text-accent"
                 >
                   <Icon name="x" size={13} />
                   {proof.quote.handle}

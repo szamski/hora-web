@@ -57,13 +57,13 @@ export function MobileNav({ activePath }: { activePath?: string }) {
       aria-modal="true"
       aria-label="Menu"
     >
-      <div className="flex h-14 items-center justify-between border-b border-border px-6">
-        <Logo />
+      <div className="flex h-16 items-center justify-between border-b border-border px-6">
+        <Logo className="min-h-12" />
         <button
           type="button"
           aria-label="Close menu"
           onClick={() => setOpen(false)}
-          className="p-2 text-text"
+          className="inline-flex h-12 w-12 items-center justify-center text-text"
         >
           <Icon name="close" size={24} />
         </button>
@@ -119,7 +119,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="p-2 text-text md:hidden"
+        className="inline-flex h-12 w-12 items-center justify-center text-text md:hidden"
       >
         <Icon name={open ? "close" : "menu"} size={24} />
       </button>

@@ -52,11 +52,10 @@ export function WhyHora() {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 bg-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
                   <Image
                     src={item.iconSrc}
-                    alt=""
+                    alt={`${item.name} logo`}
                     width={22}
                     height={22}
                     className="h-[1.35rem] w-[1.35rem] object-contain"
-                    aria-hidden
                   />
                 </div>
                 <div className="min-w-0">
@@ -97,7 +96,7 @@ export function WhyHora() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={author.twitterLabel}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/12 bg-white/[0.045] text-muted transition-colors hover:text-text"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-md border border-white/12 bg-white/[0.045] text-muted transition-colors hover:text-text"
               >
                 <Icon name="x" size={14} />
               </a>
@@ -106,7 +105,7 @@ export function WhyHora() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={author.blueskyLabel}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/12 bg-white/[0.045] text-muted transition-colors hover:text-text"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-md border border-white/12 bg-white/[0.045] text-muted transition-colors hover:text-text"
               >
                 <Icon name="bluesky" size={14} />
               </a>

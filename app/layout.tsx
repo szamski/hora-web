@@ -32,6 +32,11 @@ export const metadata: Metadata = {
   applicationName: "hora Calendar",
   authors: [{ name: "Maciej Szamowski", url: "https://szamowski.dev" }],
   creator: "Maciej Szamowski",
+  manifest: "/manifest.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/assets/hora-favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -123,8 +128,10 @@ export default function RootLayout({
 
         <AmbientGlow />
         <LayoutEnhancements />
-        <Nav />
-        <div className="flex-1">{children}</div>
+        <header>
+          <Nav />
+        </header>
+        <main className="flex-1">{children}</main>
         <Footer />
 
         <Script

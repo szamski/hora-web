@@ -5,7 +5,6 @@ import {
 } from "@/lib/analytics";
 
 captureFirstTouch();
-installPostHogLogBridge();
 
 if (typeof window !== "undefined") {
   let started = false;
@@ -15,6 +14,7 @@ if (typeof window !== "undefined") {
     cleanup();
     void initPostHog()
       .then((posthog) => {
+        installPostHogLogBridge();
         try {
           posthog.startSessionRecording();
         } catch {

@@ -46,7 +46,7 @@ export default async function TestFlightPage() {
   const liveCount = await getWaitlistCount(socialProof.count);
 
   return (
-    <main className="relative flex min-h-[calc(100svh-80px)] w-full flex-col overflow-hidden">
+    <section className="relative flex min-h-[calc(100svh-80px)] w-full flex-col overflow-hidden">
       {/* Background: dimmed poster + warm red tints + fade — same recipe as HeroScene */}
       <div
         aria-hidden
@@ -121,6 +121,6 @@ export default async function TestFlightPage() {
         Or see what hora is about first
       </Link>
       </div>
-    </main>
+    </section>
   );
 }

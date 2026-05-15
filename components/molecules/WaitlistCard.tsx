@@ -124,13 +124,12 @@ function AvatarTicker({ avatars }: { avatars?: readonly Avatar[] }) {
 
   return (
     <span
-      aria-hidden
       className="relative inline-flex h-9 w-9 shrink-0 overflow-hidden rounded-xl border border-white/18 bg-bg/70 shadow-[0_0_18px_rgba(255,56,60,0.18)]"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={visibleAvatars[0].src}
-        alt=""
+        alt={visibleAvatars[0].alt}
         className="absolute inset-0 h-full w-full object-cover motion-safe:opacity-0"
         loading="lazy"
         decoding="async"
@@ -140,7 +139,7 @@ function AvatarTicker({ avatars }: { avatars?: readonly Avatar[] }) {
         <img
           key={avatar.src}
           src={avatar.src}
-          alt=""
+          alt={avatar.alt}
           className="absolute inset-0 h-full w-full object-cover opacity-0 [animation:waitlist-avatar-cycle_15s_ease-in-out_infinite_both] motion-reduce:hidden"
           style={{ animationDelay: `${index * 3}s` }}
           loading="lazy"
