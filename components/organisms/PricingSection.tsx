@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon } from "@/components/atoms/Icon";
+import Image from "next/image";
 import { home } from "@/content/home";
 
 export function PricingSection() {
@@ -32,8 +32,8 @@ export function PricingSection() {
       />
 
       <div className="relative mx-auto max-w-[1180px] px-6">
-        <div className="grid gap-6 rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] md:grid-cols-[0.9fr_1.1fr] md:items-center md:p-8">
-          <div>
+        <div className="grid gap-6 rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] md:grid-cols-[0.88fr_1.12fr] md:p-8">
+          <div className="flex h-full flex-col">
             <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
               {pricing.heading.prefix}{" "}
               <span className="text-accent">{pricing.heading.suffixGradient}</span>
@@ -44,19 +44,20 @@ export function PricingSection() {
             <p className="mt-3 text-sm font-medium text-muted">
               {pricing.crossPlatform}
             </p>
+            <p className="mt-6 rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-muted">
+              At launch: <span className="font-semibold text-text">$49 one-time</span>{" "}
+              or <span className="font-semibold text-text">$30/year</span>. Family
+              Sharing included.
+            </p>
             <Link
               href={pricing.comparisonCta.href}
-              className="mt-4 inline-flex h-10 items-center rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm text-muted transition-colors hover:border-accent/40 hover:bg-white/[0.07] hover:text-text"
+              className="mt-4 inline-flex h-10 w-fit items-center rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm text-muted transition-colors hover:border-accent/40 hover:bg-white/[0.07] hover:text-text"
             >
               {pricing.comparisonCta.label}
             </Link>
           </div>
 
           <div className="grid gap-3">
-            <div className="inline-flex h-11 w-fit items-center gap-2 rounded-md border border-white/14 bg-white/[0.06] px-4 text-sm font-semibold text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
-              <Icon name="apple" size={18} className="text-accent" />
-              {pricing.appStoreLabel}
-            </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-md border border-white/10 bg-white/[0.03] p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
@@ -75,20 +76,54 @@ export function PricingSection() {
                 </p>
               </div>
             </div>
-            <div className="grid gap-2 rounded-md border border-white/10 bg-white/[0.02] p-4">
-              {pricing.comparison.map((item) => (
+            <div className="rounded-md border border-white/10 bg-white/[0.02] p-4">
+              <div className="mb-3 grid grid-cols-[1.2fr_auto] border-b border-white/8 pb-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                <p>Alternative</p>
+                <p>Price</p>
+              </div>
+              {pricing.comparison.map((item) => {
+                const isHora = item.name.toLowerCase().includes("hora");
+                return (
                 <div
                   key={item.name}
-                  className="grid gap-1 border-b border-white/8 pb-2 last:border-b-0 last:pb-0 md:grid-cols-[0.95fr_1.05fr]"
+                  className={`grid grid-cols-[1.2fr_auto] gap-x-3 gap-y-1 border-b py-2 last:border-b-0 last:pb-0 ${
+                    isHora
+                      ? "rounded-sm border-accent/30 bg-accent/[0.08] px-2"
+                      : "border-white/8"
+                  }`}
                 >
-                  <p className="text-sm font-semibold text-text">{item.name}</p>
-                  <p className="text-sm text-muted">{item.price}</p>
-                  <p className="text-xs text-muted md:col-span-2">
+                  <p className="text-sm font-semibold text-text">
+                    {item.name}
+                    {isHora ? (
+                      <span className="ml-2 inline-flex rounded-sm border border-accent/35 bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
+                        Best for Mac
+                      </span>
+                    ) : null}
+                  </p>
+                  <p className={`text-sm font-medium ${isHora ? "text-accent" : "text-text"}`}>
+                    {item.price}
+                  </p>
+                  <p className={`col-span-2 text-xs ${isHora ? "text-text/90" : "text-muted"}`}>
                     {item.detail}
                   </p>
                 </div>
-              ))}
+                );
+              })}
             </div>
+            <button
+              type="button"
+              className="inline-flex h-11 w-fit items-center gap-2 rounded-md border border-accent/40 bg-accent/12 px-4 text-sm font-semibold text-accent"
+              aria-label={pricing.appStoreLabel}
+            >
+              <Image
+                src="/assets/redesign_raw/app-store.svg"
+                alt=""
+                width={18}
+                height={18}
+                className="h-[18px] w-[18px]"
+              />
+              {pricing.appStoreLabel}
+            </button>
           </div>
         </div>
       </div>

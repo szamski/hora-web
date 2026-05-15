@@ -57,7 +57,7 @@ export function Faq() {
             href="mailto:hello@horacal.app"
             className="text-accent underline decoration-accent/40 underline-offset-4 hover:text-text"
           >
-            Contact us
+            Contact me
           </a>
         </div>
       </div>

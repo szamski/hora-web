@@ -80,9 +80,10 @@ export function MobileNav({ activePath }: { activePath?: string }) {
           href={site.cta.primary.href}
           data-scroll-align="center"
           onClick={() => setOpen(false)}
-          className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-linear-to-br from-accent to-accent-glow px-6 text-sm font-semibold text-white"
+          className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-sm font-semibold text-white shadow-[0_16px_40px_-18px_rgba(255,56,60,0.9),inset_0_1px_0_rgba(255,255,255,0.22)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           {site.cta.primary.label}
+          <span aria-hidden>→</span>
         </Link>
         <a
           href={site.community.discord.href}
@@ -90,7 +91,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
           rel="noopener noreferrer"
           onClick={() => setOpen(false)}
           {...analyticsAttrs("discord_click", { location: "mobile_menu" })}
-          className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-semibold text-text transition-colors hover:border-accent hover:text-accent"
+          className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-md border border-white/12 bg-white/[0.02] px-6 text-sm font-semibold text-text transition-colors hover:border-accent/40 hover:bg-white/[0.05] hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           <Icon name="discord" size={18} />
           {site.community.discord.label}

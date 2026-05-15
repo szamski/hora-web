@@ -10,7 +10,7 @@ const heroPills: { key: string; label: React.ReactNode; icon: IconName }[] = [
       <>
         <abbr
           title="Natural Language Processing"
-          className="cursor-help decoration-dotted underline underline-offset-4"
+          className="cursor-help border-b border-dotted border-current/70 pb-px no-underline"
         >
           NLP
         </abbr>{" "}

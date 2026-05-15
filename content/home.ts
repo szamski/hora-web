@@ -79,6 +79,13 @@ export const home = {
         width: 140.8,
         height: 40,
       },
+      {
+        href: "https://microlaunch.net/p/horacalendar?utm_source=badge-winner-microlaunch&utm_medium=badge",
+        src: "https://wild-dust-0517.microlaunch.workers.dev/microlaunch-challenger-badges/ml_challenger_v5.svg",
+        alt: "Microlaunch - Launch, get feedback, exposure and first customers over a month",
+        width: 306,
+        height: 96,
+      },
     ],
   },
 
@@ -204,12 +211,12 @@ export const home = {
   },
 
   pricing: {
-    heading: { prefix: "Pricing", suffixGradient: "Soon" },
-    appStoreLabel: "Download on App Store Soon",
+    heading: { prefix: "Simple pricing", suffixGradient: "rules forever." },
+    appStoreLabel: "Download on the App Store (Soon)",
     oneTime: "$49 one-time",
     yearly: "$30 / year",
     body:
-      "At launch there's a limited-time one-time purchase for $49, or a $30/year subscription — both include Family Sharing. The TestFlight beta is free to join.",
+      "Pick a one-time purchase or a lower annual plan. Both include Family Sharing. TestFlight access stays free during beta.",
     crossPlatform:
       "Shared across macOS and iOS/iPad apps (coming soon).",
     comparison: [
@@ -230,7 +237,7 @@ export const home = {
       },
     ],
     comparisonCta: {
-      label: "See full Fantastical comparison →",
+      label: "Compare against Fantastical in detail →",
       href: "/blog/2026-05-06-fantastical-alternative-google-calendar/",
     },
   },
