@@ -93,7 +93,7 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
             </a>
           </div>
 
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <div className="flex -space-x-2" aria-hidden>
               {socialProof.avatars.slice(0, 5).map((avatar) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -109,7 +109,7 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
                 />
               ))}
             </div>
-            <p className="max-w-[17rem] text-sm leading-snug text-muted">
+            <p className="max-w-[19rem] text-sm leading-snug text-muted sm:max-w-[17rem]">
               <span className="font-semibold text-text">
                 {liveCount.toLocaleString()}+ Mac users
               </span>{" "}

@@ -72,8 +72,8 @@ export function WhyHora() {
           </div>
         </div>
 
-        <figure className="mt-14 rounded-lg border border-white/10 bg-white/[0.035] p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] md:mt-16 md:p-8">
-          <blockquote className="space-y-2 text-[1.95rem] font-semibold leading-[1.2] tracking-tight text-text/95 md:text-[2.15rem]">
+        <figure className="mt-14 rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] sm:p-7 md:mt-16 md:p-8">
+          <blockquote className="space-y-3 text-[1.45rem] font-semibold leading-[1.28] tracking-tight text-text/95 sm:text-[1.7rem] md:space-y-2 md:text-[2.15rem] md:leading-[1.2]">
             {w.personalNote.map((line) => (
               <p key={line}>{line}</p>
             ))}

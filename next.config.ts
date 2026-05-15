@@ -8,6 +8,9 @@ const withMDX = createMDX({
 const nextConfig: NextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
+  images: {
+    qualities: [60, 75, 90],
+  },
   pageExtensions: ["ts", "tsx", "mdx"],
   async redirects() {
     return [
