@@ -1,5 +1,8 @@
 import { Icon } from "@/components/atoms/Icon";
+import { VideoShowcaseNativeVideo } from "@/components/organisms/VideoShowcaseNativeVideo";
 import { home } from "@/content/home";
+
+const DEMO_VIDEO_ID = "ahVV5J25cYM";
 
 const actionCards = [
   {
@@ -62,29 +65,12 @@ export function VideoShowcase() {
         </h2>
 
         <div className="mt-10 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_40px_120px_-70px_rgba(255,56,60,0.8)]">
-          <video
-            className="aspect-video w-full bg-black object-cover"
-            autoPlay
-            controls
-            loop
-            muted
-            playsInline
-            preload="metadata"
+          <VideoShowcaseNativeVideo
+            ariaLabel={demo.ariaLabel}
             poster={demo.demoPosterSrc}
-            aria-label={demo.ariaLabel}
-          >
-            {demo.videoSources.map((source) => (
-              <source key={source.src} src={source.src} type={source.type} />
-            ))}
-            {demo.captionsSrc ? (
-              <track
-                src={demo.captionsSrc}
-                kind="captions"
-                srcLang="en"
-                label="English"
-              />
-            ) : null}
-          </video>
+            sources={demo.videoSources}
+            videoId={DEMO_VIDEO_ID}
+          />
         </div>
 
         <div className="mt-12 grid gap-5 md:grid-cols-4">
