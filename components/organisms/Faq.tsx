@@ -1,9 +1,10 @@
 import { FaqItem } from "@/components/molecules/FaqItem";
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 
 export function Faq() {
   const faq = home.faq;
+  const leftColumnItems = faq.items.filter((_, index) => index % 2 === 0);
+  const rightColumnItems = faq.items.filter((_, index) => index % 2 === 1);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -15,35 +16,49 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="relative overflow-hidden py-20 md:py-28">
+    <section
+      id="faq"
+      className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(720px_420px_at_15%_0%,rgba(255,56,60,0.09),transparent_68%)]"
       />
 
       <div className="relative mx-auto max-w-[1180px] px-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-5xl">
           <div>
-            <SectionHeading heading={faq.heading} />
-            <p className="mt-4 max-w-xl text-base text-muted">
+            <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+              {faq.heading.prefix}
+              <span className="text-accent"> {faq.heading.suffixGradient}</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-muted md:text-lg md:leading-8">
               {faq.subtitle}
             </p>
           </div>
-          <div className="text-sm text-muted">
-            Still have questions?{" "}
-            <a
-              href="mailto:hello@horacal.app"
-              className="text-accent underline decoration-accent/40 underline-offset-4 hover:text-text"
-            >
-              Contact us
-            </a>
+        </div>
+
+        <div className="mt-12 grid gap-3 md:mt-14 md:grid-cols-2 md:gap-4">
+          <div className="space-y-3 md:space-y-4">
+            {leftColumnItems.map((item) => (
+              <FaqItem key={item.q} question={item.q} answer={item.a} />
+            ))}
+          </div>
+          <div className="space-y-3 md:space-y-4">
+            {rightColumnItems.map((item) => (
+              <FaqItem key={item.q} question={item.q} answer={item.a} />
+            ))}
           </div>
         </div>
 
-        <div className="mt-10 grid gap-3 md:grid-cols-2">
-          {faq.items.map((item) => (
-            <FaqItem key={item.q} question={item.q} answer={item.a} />
-          ))}
+        <div className="mt-6 text-sm text-muted">
+          Still have questions?{" "}
+          <a
+            href="mailto:hello@horacal.app"
+            className="text-accent underline decoration-accent/40 underline-offset-4 hover:text-text"
+          >
+            Contact us
+          </a>
         </div>
       </div>
       <script

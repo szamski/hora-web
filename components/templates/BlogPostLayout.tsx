@@ -33,7 +33,7 @@ export function BlogPostLayout({
 
   return (
     <>
-      <article className="mx-auto max-w-page px-6 py-12 md:py-16">
+      <article className="mx-auto max-w-[1180px] px-6 py-12 md:py-16">
         <Link
           href="/blog/"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text"
@@ -41,7 +41,7 @@ export function BlogPostLayout({
           ← All posts
         </Link>
 
-        <h1 className="text-3xl font-bold leading-tight tracking-tight text-text md:text-4xl">
+        <h1 className="text-3xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
           {frontmatter.title}
         </h1>
 
@@ -65,7 +65,7 @@ export function BlogPostLayout({
           <span aria-hidden className="text-muted">
             ·
           </span>
-          <time dateTime={dateIso} className="text-sm text-muted">
+          <time dateTime={dateIso} className="text-sm font-medium text-muted">
             {formatDate(frontmatter.date)}
           </time>
         </div>
@@ -83,7 +83,7 @@ export function BlogPostLayout({
         <aside className="mt-16 border-t border-border pt-8">
           <Link
             href="/about/"
-            className="group flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/4 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-white/6 sm:flex-row sm:items-center sm:gap-6"
+            className="group flex flex-col gap-5 rounded-lg border border-white/10 bg-white/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-accent/30 hover:bg-white/[0.06] sm:flex-row sm:items-center sm:gap-6"
           >
             <Image
               src="/assets/maciej_szamowski.jpg"
@@ -120,7 +120,7 @@ export function BlogPostLayout({
             {previous ? (
               <Link
                 href={`/blog/${previous.slug}/`}
-                className="group rounded-xl border border-border bg-white/2 p-5 transition-colors hover:border-accent/40 hover:bg-white/4"
+                className="group rounded-md border border-border bg-white/2 p-5 transition-colors hover:border-accent/40 hover:bg-white/4"
               >
                 <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
                   ← Previous
@@ -135,7 +135,7 @@ export function BlogPostLayout({
             {next ? (
               <Link
                 href={`/blog/${next.slug}/`}
-                className="group rounded-xl border border-border bg-white/2 p-5 text-right transition-colors hover:border-accent/40 hover:bg-white/4 sm:text-right"
+                className="group rounded-md border border-border bg-white/2 p-5 text-right transition-colors hover:border-accent/40 hover:bg-white/4 sm:text-right"
               >
                 <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
                   Next →

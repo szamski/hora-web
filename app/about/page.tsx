@@ -81,12 +81,7 @@ export default async function AboutPage() {
         />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-b from-transparent to-bg" />
 
-        <div className="relative mx-auto max-w-page px-6 pt-16 pb-10 md:pt-24 md:pb-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            About
-          </span>
-
+        <div className="relative mx-auto max-w-[1180px] px-6 pt-16 pb-10 md:pt-24 md:pb-16">
           <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-center md:gap-10">
             <div className="relative shrink-0">
               <div
@@ -108,11 +103,8 @@ export default async function AboutPage() {
             </div>
 
             <div>
-              <h1 className="font-brand text-4xl font-normal leading-[1.2] tracking-tight md:text-[56px]">
-                Maciej{" "}
-                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.18em] pl-[0.04em] text-transparent">
-                  Szamowski
-                </span>
+              <h1 className="text-5xl font-semibold leading-[1.08] tracking-tight text-text md:text-[64px]">
+                Maciej <span className="text-accent">Szamowski</span>
               </h1>
               <p className="mt-3 max-w-xl text-lg text-muted md:text-xl">
                 Marketer of 16 years. Solo developer of one. Building hora
@@ -125,7 +117,7 @@ export default async function AboutPage() {
                     key={label}
                     href={href}
                     external={external}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:border-accent/40 hover:bg-white/6 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:border-accent/40 hover:bg-white/6 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
                     <Icon name={icon} size={12} />
                     {label}
@@ -138,20 +130,18 @@ export default async function AboutPage() {
       </section>
 
       {/* STATS */}
-      <section className="mx-auto max-w-page px-6 pb-12 md:pb-16">
+      <section className="mx-auto max-w-[1180px] px-6 pb-12 md:pb-16">
         <dl className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {stats.map(({ value, label, sub }) => (
             <div
               key={label}
-              className="group relative rounded-2xl border border-white/10 bg-white/4 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_40px_-28px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:bg-white/6 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_28px_52px_-22px_rgba(255,56,60,0.28)]"
+              className="group relative rounded-lg border border-white/10 bg-white/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_40px_-28px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-accent/30 hover:bg-white/[0.06] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_28px_52px_-22px_rgba(255,56,60,0.28)]"
             >
               <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                 {label}
               </dt>
-              <dd className="mt-2 font-brand text-3xl font-normal leading-none md:text-4xl">
-                <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.18em] pb-[0.12em] pl-[0.04em] tracking-[0.04em] text-transparent">
-                  {value}
-                </span>
+              <dd className="mt-2 text-3xl font-semibold leading-none tracking-tight text-accent md:text-4xl">
+                {value}
               </dd>
               <p className="mt-2 text-xs text-muted">{sub}</p>
             </div>
@@ -160,8 +150,8 @@ export default async function AboutPage() {
       </section>
 
       {/* PULL QUOTE */}
-      <section className="mx-auto max-w-page px-6 pb-12 md:pb-16">
-        <figure className="relative overflow-hidden rounded-3xl border border-accent/20 p-8 md:p-12">
+      <section className="mx-auto max-w-[1180px] px-6 pb-12 md:pb-16">
+        <figure className="relative overflow-hidden rounded-lg border border-accent/20 p-8 md:p-12">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -171,10 +161,10 @@ export default async function AboutPage() {
             }}
           />
           <blockquote className="relative">
-            <p className="font-brand text-2xl leading-tight tracking-tight text-text md:text-[32px]">
+            <p className="text-2xl font-semibold leading-tight tracking-tight text-text md:text-[32px]">
               “The Mac calendar Google never built.
               <br />
-              <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pb-[0.12em] pl-[0.04em] text-transparent">
+              <span className="text-accent">
                 Shipped by one person, in public, from Poland.
               </span>
               ”
@@ -184,7 +174,7 @@ export default async function AboutPage() {
       </section>
 
       {/* BODY */}
-      <article className="mx-auto max-w-page px-6 pb-12 md:pb-16">
+      <article className="mx-auto max-w-[1180px] px-6 pb-12 md:pb-16">
         <Prose>{content}</Prose>
       </article>
 

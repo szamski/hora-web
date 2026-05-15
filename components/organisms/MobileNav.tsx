@@ -78,6 +78,7 @@ export function MobileNav({ activePath }: { activePath?: string }) {
         ))}
         <Link
           href={site.cta.primary.href}
+          data-scroll-align="center"
           onClick={() => setOpen(false)}
           className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-linear-to-br from-accent to-accent-glow px-6 text-sm font-semibold text-white"
         >

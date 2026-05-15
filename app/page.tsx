@@ -4,6 +4,7 @@ import { VideoShowcase } from "@/components/organisms/VideoShowcase";
 import { UserProof } from "@/components/organisms/UserProof";
 import { FeaturesStory } from "@/components/organisms/FeaturesStory";
 import { WhyHora } from "@/components/organisms/WhyHora";
+import { PricingSection } from "@/components/organisms/PricingSection";
 import { BetaCta } from "@/components/organisms/BetaCta";
 import { Roadmap } from "@/components/organisms/Roadmap";
 import { Faq } from "@/components/organisms/Faq";
@@ -86,6 +87,7 @@ export default async function Home() {
       <UserProof />
       <FeaturesStory />
       <WhyHora />
+      <PricingSection />
       <BetaCta />
       <Roadmap />
       <Faq />

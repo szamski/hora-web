@@ -37,7 +37,7 @@ export function WhyHora() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(720px_420px_at_18%_8%,rgba(255,56,60,0.10),transparent_68%),radial-gradient(760px_460px_at_90%_84%,rgba(131,199,255,0.08),transparent_70%)]"
       />
 
-      <div className="relative mx-auto max-w-[1320px] px-6">
+      <div className="relative mx-auto max-w-[1180px] px-6">
         <div className="grid gap-10 border-y border-white/10 py-12 md:grid-cols-[0.38fr_1.62fr] md:items-start">
           <h2 className="max-w-[10ch] text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
             Works with <span className="text-accent">your world.</span>

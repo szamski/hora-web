@@ -203,6 +203,38 @@ export const home = {
       "If you've ever felt like your calendar is either too simple or too complex, you'll probably understand why hora exists.",
   },
 
+  pricing: {
+    heading: { prefix: "Pricing", suffixGradient: "Soon" },
+    appStoreLabel: "Download on App Store Soon",
+    oneTime: "$49 one-time",
+    yearly: "$30 / year",
+    body:
+      "At launch there's a limited-time one-time purchase for $49, or a $30/year subscription — both include Family Sharing. The TestFlight beta is free to join.",
+    crossPlatform:
+      "Shared across macOS and iOS/iPad apps (coming soon).",
+    comparison: [
+      {
+        name: "hora Calendar",
+        price: "$49 lifetime or $30/year",
+        detail: "Native, Google-focused, Family Sharing included.",
+      },
+      {
+        name: "Fantastical",
+        price: "$57–$84/year",
+        detail: "Broader suite, higher annual cost for Google-only use.",
+      },
+      {
+        name: "Notion Calendar",
+        price: "Free",
+        detail: "Good free option, but web-tech based and less native.",
+      },
+    ],
+    comparisonCta: {
+      label: "See full Fantastical comparison →",
+      href: "/blog/2026-05-06-fantastical-alternative-google-calendar/",
+    },
+  },
+
   roadmap: {
     eyebrow: "The roadmap",
     heading: { prefix: "What's", suffixGradient: "Next" },

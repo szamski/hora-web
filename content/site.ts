@@ -14,6 +14,7 @@ export const site = {
   },
   nav: [
     { label: "Features", href: "/#features" },
+    { label: "Pricing", href: "/#pricing" },
     { label: "Roadmap", href: "/#roadmap" },
     { label: "FAQ", href: "/#faq" },
     { label: "Blog", href: "/blog/" },

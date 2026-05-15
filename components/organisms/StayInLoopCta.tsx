@@ -1,4 +1,3 @@
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { WaitlistCard } from "@/components/molecules/WaitlistCard";
 import { blog } from "@/content/blog";
 import { home } from "@/content/home";
@@ -10,51 +9,47 @@ export async function StayInLoopCta() {
   const liveCount = await getWaitlistCount(socialProof.count);
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-28">
-      {/* Ambient glow */}
+    <section className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 700px 400px at 15% 0%, rgba(255,56,60,0.10), transparent 65%)," +
-            "radial-gradient(ellipse 800px 500px at 85% 100%, rgba(255,115,110,0.07), transparent 65%)",
+            "radial-gradient(ellipse 700px 400px at 15% 0%, rgba(255,56,60,0.10), transparent 64%)," +
+            "radial-gradient(ellipse 760px 460px at 85% 100%, rgba(131,199,255,0.08), transparent 70%)",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.28]"
+        className="pointer-events-none absolute inset-0 opacity-[0.16]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
           maskImage:
-            "radial-gradient(ellipse 60% 55% at 50% 50%, black 30%, transparent 85%)",
+            "linear-gradient(to bottom, transparent 0%, black 20%, black 82%, transparent 100%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-2xl px-6">
-        {/* Header */}
+      <div className="relative mx-auto max-w-[1180px] px-6">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
+          <span className="inline-flex items-center rounded-md border border-accent/35 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
             {cta.eyebrow}
           </span>
-          <div className="mt-5">
-            <SectionHeading heading={cta.heading} />
-          </div>
-          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted md:text-lg">
+          <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            {cta.heading}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted md:text-lg md:leading-8">
             {cta.subtitle}
           </p>
         </div>
 
-        {/* Waitlist card */}
-        <div className="mt-10 md:mt-12">
+        <div className="mx-auto mt-10 max-w-[780px] md:mt-12">
           <WaitlistCard
             headline={cta.cardHeadline}
             subheadline={cta.cardSubheadline}
             liveCount={liveCount}
-            socialLabel={socialProof.label}
+            socialLabel="Mac users are already testing hora on TestFlight"
             avatars={socialProof.avatars}
             variant="hero"
           />

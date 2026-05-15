@@ -95,7 +95,7 @@ export function FeaturesStory() {
         <div className="mt-16 text-center md:mt-20">
           <Link
             href={f.allFeaturesLink.href}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-muted backdrop-blur-xl transition-all hover:border-accent/60 hover:bg-white/8 hover:text-text hover:shadow-[0_0_30px_rgba(255,56,60,0.25)]"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm text-muted transition-colors hover:border-accent/40 hover:bg-white/[0.07] hover:text-text"
           >
             {f.allFeaturesLink.label}
           </Link>

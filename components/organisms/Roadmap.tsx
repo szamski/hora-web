@@ -1,4 +1,3 @@
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 import { cn } from "@/lib/cn";
 
@@ -35,52 +34,45 @@ export function Roadmap() {
   const items = r.items;
 
   return (
-    <section id="roadmap" className="relative overflow-hidden py-24 md:py-32">
-      {/* Ambient glow */}
+    <section
+      id="roadmap"
+      className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 700px 400px at 80% 0%, rgba(255,56,60,0.10), transparent 65%)," +
-            "radial-gradient(ellipse 800px 500px at 20% 100%, rgba(255,115,110,0.07), transparent 65%)",
+            "radial-gradient(ellipse 700px 400px at 80% 0%, rgba(255,56,60,0.10), transparent 64%)," +
+            "radial-gradient(ellipse 780px 460px at 22% 88%, rgba(131,199,255,0.08), transparent 68%)",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.3]"
+        className="pointer-events-none absolute inset-0 opacity-[0.15]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
           maskImage:
-            "radial-gradient(ellipse 65% 55% at 50% 50%, black 30%, transparent 85%)",
+            "linear-gradient(to bottom, transparent 0%, black 20%, black 82%, transparent 100%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-3xl px-6">
-        {/* Header */}
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {r.eyebrow}
-          </span>
-          <div className="mt-5">
-            <SectionHeading heading={r.heading} />
-          </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {r.subtitle}
-          </p>
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <div className="max-w-5xl">
+          <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            {r.heading.prefix}
+            <span className="text-accent"> {r.heading.suffixGradient}</span>
+          </h2>
         </div>
 
-        {/* Timeline */}
-        <ol className="mt-16 space-y-6 md:mt-20 md:space-y-8">
+        <ol className="mt-12 space-y-4 md:mt-14 md:space-y-5">
           {items.map((item, i) => {
             const styles = statusStyles[item.status];
             const isLast = i === items.length - 1;
             return (
-              <li key={item.title} className="relative flex gap-5 md:gap-7">
-                {/* Rail: dot + connector */}
+              <li key={item.title} className="relative flex gap-4 md:gap-5">
                 <div className="relative flex shrink-0 flex-col items-center">
                   <span
                     className={cn(
@@ -99,15 +91,14 @@ export function Roadmap() {
                   ) : null}
                 </div>
 
-                {/* Card */}
-                <div className="relative flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/4 p-5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_24px_48px_-32px_rgba(0,0,0,0.6)] md:p-6">
+                <div className="relative flex-1 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] md:p-6">
                   {item.status === "Open Beta Tests" ? (
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full blur-3xl"
+                      className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 opacity-90 blur-3xl"
                       style={{
                         background:
-                          "radial-gradient(circle, rgba(255,56,60,0.4) 0%, transparent 70%)",
+                          "radial-gradient(circle, rgba(255,56,60,0.24) 0%, transparent 70%)",
                       }}
                     />
                   ) : null}
@@ -116,20 +107,9 @@ export function Roadmap() {
                     className="pointer-events-none absolute inset-x-4 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent"
                   />
 
-                  {/* Giant numeral */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute right-5 top-4 font-brand text-5xl leading-none tracking-tight text-transparent md:text-[64px]"
-                    style={{
-                      WebkitTextStroke: "1px rgba(255,56,60,0.25)",
-                    }}
-                  >
-                    {String(item.n).padStart(2, "0")}
-                  </span>
-
                   <span
                     className={cn(
-                      "relative inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] backdrop-blur-xl",
+                      "relative inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] backdrop-blur-xl",
                       styles.pill,
                     )}
                   >
@@ -142,7 +122,7 @@ export function Roadmap() {
                     {item.status}
                   </span>
 
-                  <h3 className="relative mt-4 text-xl font-semibold tracking-tight text-text md:text-2xl">
+                  <h3 className="relative mt-3 text-xl font-semibold tracking-tight text-text md:text-2xl">
                     {item.title}
                   </h3>
                   <p className="relative mt-2 max-w-xl text-sm leading-relaxed text-muted md:text-base">

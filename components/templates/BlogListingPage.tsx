@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { BlogTagSearch } from "@/components/molecules/BlogTagSearch";
 import { PostCard, type PostCardData } from "@/components/molecules/PostCard";
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { StayInLoopCta } from "@/components/organisms/StayInLoopCta";
 import { blog } from "@/content/blog";
 import type { BlogArchive, BlogTag } from "@/lib/blog";
@@ -28,7 +27,6 @@ type Props = {
 };
 
 export function BlogListingPage({
-  eyebrow = blog.eyebrow,
   heading = blog.heading,
   title,
   subtitle = blog.subtitle,
@@ -44,28 +42,23 @@ export function BlogListingPage({
 
   return (
     <>
-      <section className="mx-auto max-w-page px-6 pt-16 md:pt-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {eyebrow}
-          </span>
-          <div className="mt-5">
-            {title ? (
-              <h1 className="font-brand text-4xl font-normal leading-tight tracking-tight md:text-6xl">
-                {title}
-              </h1>
-            ) : (
-              <SectionHeading heading={heading} as="h1" />
+      <section className="mx-auto max-w-[1180px] px-6 pt-16 md:pt-24">
+        <div>
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            {title ?? (
+              <>
+                {heading.prefix}
+                <span className="text-accent"> {heading.suffixGradient}</span>
+              </>
             )}
-          </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted md:text-lg md:leading-8">
             {subtitle}
           </p>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-page gap-8 px-6 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <section className="mx-auto grid max-w-[1180px] gap-8 px-6 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div>
           {posts.length === 0 ? (
             <p className="text-center text-muted">{emptyMessage}</p>
@@ -97,7 +90,7 @@ export function BlogListingPage({
                   key={archive.slug}
                   href={archive.href}
                   className={cn(
-                    "flex items-center justify-between rounded-xl border px-3 py-2 text-sm transition-colors",
+                    "flex items-center justify-between rounded-md border px-3 py-2 text-sm transition-colors",
                     activeArchive === archive.slug
                       ? "border-accent/45 bg-accent/12 text-text"
                       : "border-white/8 bg-white/4 text-muted hover:border-white/16 hover:text-text",
@@ -131,7 +124,7 @@ function BlogTaxonomyCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/4 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+    <section className="rounded-lg border border-white/10 bg-white/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
       <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-text">
         {title}
       </h2>
@@ -156,7 +149,7 @@ function BlogPagination({ pagination }: { pagination: Pagination }) {
       {currentPage > 1 ? (
         <Link
           href={previousHref}
-          className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-accent/35 hover:text-text"
+          className="rounded-md border border-white/12 px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-accent/35 hover:text-text"
         >
           Newer posts
         </Link>
@@ -169,7 +162,7 @@ function BlogPagination({ pagination }: { pagination: Pagination }) {
       {currentPage < totalPages ? (
         <Link
           href={nextHref}
-          className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-accent/35 hover:text-text"
+          className="rounded-md border border-white/12 px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-accent/35 hover:text-text"
         >
           Older posts
         </Link>
