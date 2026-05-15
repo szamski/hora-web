@@ -1,5 +1,4 @@
 import { Icon } from "@/components/atoms/Icon";
-import { GradientText } from "@/components/atoms/GradientText";
 import { home } from "@/content/home";
 import { getWaitlistCount } from "@/lib/waitlist";
 
@@ -9,84 +8,56 @@ export async function UserProof() {
   const liveCount = await getWaitlistCount(waitlistProof.count);
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-28">
+    <section className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 720px 420px at 20% 10%, rgba(255,56,60,0.12), transparent 65%)," +
-            "radial-gradient(ellipse 780px 460px at 85% 90%, rgba(255,115,110,0.08), transparent 65%)",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(760px_420px_at_18%_10%,rgba(255,56,60,0.10),transparent_70%),radial-gradient(760px_460px_at_86%_82%,rgba(131,199,255,0.07),transparent_72%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.25]"
+        className="pointer-events-none absolute inset-0 opacity-[0.12]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
           maskImage:
-            "radial-gradient(ellipse 70% 55% at 50% 50%, black 30%, transparent 85%)",
+            "linear-gradient(to bottom, transparent 0%, black 20%, black 82%, transparent 100%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-page px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {proof.eyebrow}
-          </span>
-          <h2 className="mt-5 font-brand text-4xl font-normal leading-tight tracking-tight text-text md:text-5xl">
-            {proof.heading.prefix}{" "}
-            <GradientText>{proof.heading.suffixGradient}</GradientText>
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <div className="max-w-5xl">
+          <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            Already in <span className="text-accent">real Mac calendars.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted md:text-lg">
-            {proof.description}
-          </p>
         </div>
 
-        <div className="mt-12 grid gap-4 md:mt-16 md:grid-cols-[0.85fr_1.15fr] md:items-stretch md:gap-6">
-          <div className="relative flex min-h-[18rem] flex-col overflow-hidden rounded-2xl border border-accent/25 bg-white/5 p-7 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_32px_60px_-30px_rgba(255,56,60,0.45)] md:p-8">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-24 -right-20 h-56 w-56 rounded-full blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(255,56,60,0.45) 0%, transparent 70%)",
-              }}
-            />
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
-              <Icon name="users" size={24} />
+        <div className="mt-12 grid gap-5 md:mt-14 md:grid-cols-[0.72fr_1.28fr] md:items-stretch">
+          <div className="relative flex min-h-[15rem] flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_28px_80px_-58px_rgba(255,56,60,0.7)]">
+            <div className="flex items-center">
+              <div className="flex h-11 w-11 items-center justify-center rounded-md border border-accent/25 bg-accent/10 text-accent">
+                <Icon name="users" size={22} />
+              </div>
             </div>
-            <div className="relative mt-auto">
-            <p className="font-brand text-6xl font-normal leading-none tracking-tight text-accent md:text-7xl">
+            <div className="mt-auto">
+              <p className="text-6xl font-semibold leading-none tracking-tight text-accent md:text-7xl">
                 {liveCount.toLocaleString()}+
               </p>
-              <p className="mt-4 max-w-sm text-balance text-lg font-semibold leading-snug text-text md:text-xl">
+              <p className="mt-4 max-w-sm text-balance text-base font-semibold leading-snug text-text md:text-lg">
                 {waitlistProof.label}
               </p>
             </div>
           </div>
 
-          <figure className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/4 px-7 py-8 text-left backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_32px_60px_-30px_rgba(0,0,0,0.6)] md:px-9 md:py-8">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-20 -right-16 h-52 w-52 rounded-full blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(255,56,60,0.45) 0%, transparent 70%)",
-              }}
-            />
+          <figure className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] px-7 py-8 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] md:px-9 md:py-8">
             <span
               aria-hidden
-              className="pointer-events-none absolute left-7 top-5 font-brand text-6xl leading-none text-accent md:left-9"
-              style={{ textShadow: "0 0 24px rgba(255,56,60,0.55)" }}
+              className="pointer-events-none absolute left-7 top-5 text-5xl font-semibold leading-none text-accent md:left-9"
             >
               &ldquo;
             </span>
 
-            <blockquote className="relative max-w-2xl pt-8 text-balance font-serif text-2xl italic leading-tight text-text/95 md:text-4xl md:leading-[1.15]">
+            <blockquote className="relative max-w-2xl pt-8 text-balance text-2xl font-semibold leading-tight tracking-tight text-text/95 md:text-4xl md:leading-[1.14]">
               {proof.quote.text}
             </blockquote>
 

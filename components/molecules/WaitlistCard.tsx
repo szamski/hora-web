@@ -42,9 +42,9 @@ export function WaitlistCard({
       id={id}
       style={style}
       className={cn(
-        "relative w-full overflow-hidden rounded-3xl border p-5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_24px_60px_-20px_rgba(0,0,0,0.72)] md:p-7 md:backdrop-blur-2xl",
+        "relative w-full overflow-hidden rounded-lg border p-5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_24px_60px_-20px_rgba(0,0,0,0.72)] md:p-6 md:backdrop-blur-2xl",
         isHero
-          ? "border-white/12 bg-bg/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_28px_80px_-24px_rgba(255,56,60,0.42)]"
+          ? "border-white/12 bg-[#101114]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_24px_70px_-28px_rgba(0,0,0,0.9)]"
           : "border-white/10 bg-white/4",
         id && "scroll-mt-24",
         className,
@@ -52,10 +52,10 @@ export function WaitlistCard({
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-28 -right-28 h-56 w-56 rounded-full"
+        className="pointer-events-none absolute -top-28 -right-28 h-56 w-56"
         style={{
           background:
-            "radial-gradient(circle, rgba(255,56,60,0.30) 0%, transparent 68%)",
+            "radial-gradient(circle, rgba(131,199,255,0.20) 0%, transparent 68%)",
         }}
       />
       <div
@@ -94,7 +94,7 @@ export function WaitlistCard({
         <p className="relative mt-1 text-xs text-muted/80">{note}</p>
       ) : null}
 
-      <div className="relative mt-5 flex items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_24px_rgba(255,56,60,0.10)]">
+      <div className="relative mt-5 flex items-center gap-3 rounded-md border border-white/12 bg-white/[0.045] px-4 py-3 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
         <AvatarTicker avatars={avatars} />
         <p className="min-w-0 text-sm leading-snug text-muted">
           <span className="mr-1.5 text-base font-semibold tabular-nums text-text">

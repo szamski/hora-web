@@ -146,7 +146,7 @@ szamowski.dev https://szamowski.dev?utm_source=email&utm_medium=welcome&utm_camp
 `;
 }
 
-export default {
+const worker = {
 	async fetch(request, env) {
 		const url = new URL(request.url);
 		const baseUrl = url.origin;
@@ -242,6 +242,8 @@ export default {
 		return new Response(JSON.stringify({ error }), { status: res.status, headers: cors });
 	},
 };
+
+export default worker;
 
 async function handleUnsubscribe(request, env, url) {
 	const token = url.searchParams.get('token');

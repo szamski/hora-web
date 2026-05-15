@@ -12,6 +12,8 @@ const UnorderedListIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     const [scope, animate] = useAnimate();
 
     const start = useCallback(async () => {
+      if (!scope.current) return;
+
       // Lines extend from left to right
       animate(
         ".list-line-1",
@@ -59,9 +61,11 @@ const UnorderedListIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           ease: "easeInOut",
         },
       );
-    }, [animate]);
+    }, [animate, scope]);
 
     const stop = useCallback(async () => {
+      if (!scope.current) return;
+
       animate(
         ".list-line-1",
         {
@@ -105,7 +109,7 @@ const UnorderedListIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           ease: "easeInOut",
         },
       );
-    }, [animate]);
+    }, [animate, scope]);
 
     useImperativeHandle(ref, () => ({
       startAnimation: start,

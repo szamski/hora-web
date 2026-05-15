@@ -119,13 +119,13 @@ export function NewsletterForm({ className }: { className?: string }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === "submitting"}
-            className="h-14 border-white/10 bg-bg/85 text-base shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus-visible:border-white/30 focus-visible:ring-white/20"
+            className="h-14 rounded-md border-white/10 bg-bg/85 text-base shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus-visible:border-white/30 focus-visible:ring-white/20"
           />
           <Button
             type="submit"
             size="lg"
             disabled={status === "submitting"}
-            className="h-14 w-full shrink-0 px-7 text-base font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_16px_36px_-10px_rgba(255,56,60,0.85)] sm:w-auto sm:min-w-[15rem]"
+            className="h-14 w-full shrink-0 rounded-md bg-accent px-7 text-base font-semibold text-white shadow-[0_16px_40px_-18px_rgba(255,56,60,0.9),inset_0_1px_0_rgba(255,255,255,0.22)] transition-colors hover:bg-accent-hover sm:w-auto sm:min-w-[15rem]"
           >
             {status === "submitting" ? (
               "Sending…"
@@ -163,7 +163,7 @@ export function NewsletterForm({ className }: { className?: string }) {
               onClick={onDiscordClick}
               variant="ghost"
               size="md"
-              className="discord-cta-button h-11 focus-visible:ring-[#5865F2]"
+              className="discord-cta-button h-11 rounded-md border border-[#5865F2]/45 bg-[#5865F2]/12 px-5 text-[#cfd3ff] transition-colors hover:bg-[#5865F2]/18 hover:text-white focus-visible:ring-[#5865F2]"
             >
               <Icon name="discord" size={16} />
               {afterSignup.discordLabel}
@@ -171,7 +171,7 @@ export function NewsletterForm({ className }: { className?: string }) {
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/12 px-4 text-sm font-medium text-text transition-colors hover:border-white/24 hover:bg-white/6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-white/12 px-4 text-sm font-medium text-text transition-colors hover:border-white/24 hover:bg-white/6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               <Icon name="hand-heart" size={16} />
               {shareState === "copied"
@@ -180,7 +180,7 @@ export function NewsletterForm({ className }: { className?: string }) {
             </button>
           </div>
         </div>
-      ) : (
+      ) : message ? (
         <div
           role="status"
           aria-live="polite"
@@ -192,7 +192,7 @@ export function NewsletterForm({ className }: { className?: string }) {
         >
           {message}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

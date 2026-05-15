@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { PostCard, type PostCardData } from "@/components/molecules/PostCard";
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 
 export function BlogPreview({ posts }: { posts: readonly PostCardData[] }) {
@@ -8,56 +7,53 @@ export function BlogPreview({ posts }: { posts: readonly PostCardData[] }) {
   const b = home.blogPreview;
 
   return (
-    <section id="blog" className="relative overflow-hidden py-24 md:py-32">
-      {/* Ambient glow */}
+    <section
+      id="blog"
+      className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 700px 400px at 80% 0%, rgba(255,56,60,0.10), transparent 65%)," +
-            "radial-gradient(ellipse 800px 500px at 20% 100%, rgba(255,115,110,0.07), transparent 65%)",
+            "radial-gradient(ellipse 700px 400px at 80% 0%, rgba(255,56,60,0.10), transparent 64%)," +
+            "radial-gradient(ellipse 780px 460px at 20% 92%, rgba(131,199,255,0.08), transparent 70%)",
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.28]"
+        className="pointer-events-none absolute inset-0 opacity-[0.16]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
           maskImage:
-            "radial-gradient(ellipse 70% 55% at 50% 50%, black 30%, transparent 85%)",
+            "linear-gradient(to bottom, transparent 0%, black 20%, black 82%, transparent 100%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-page px-6">
-        {/* Header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {b.eyebrow}
-          </span>
-          <div className="mt-5">
-            <SectionHeading heading={b.heading} />
-          </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {b.subtitle}
-          </p>
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <div className="flex max-w-5xl flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-10">
+          <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            {b.heading.prefix}
+            <span className="text-accent"> {b.heading.suffixGradient}</span>
+          </h2>
         </div>
 
-        {/* Cards */}
-        <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-3 md:gap-6">
+        <div className="mt-12 grid gap-4 md:mt-14 md:grid-cols-3">
           {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <PostCard
+              key={post.slug}
+              post={post}
+              className="rounded-lg border-white/10 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.10)]"
+            />
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-14 text-center md:mt-16">
+        <div className="mt-12 text-center md:mt-14">
           <Link
             href={b.allPostsLink.href}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-muted backdrop-blur-xl transition-all hover:border-accent/60 hover:bg-white/8 hover:text-text hover:shadow-[0_0_30px_rgba(255,56,60,0.25)]"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm text-muted transition-colors hover:border-accent/40 hover:bg-white/[0.07] hover:text-text"
           >
             {b.allPostsLink.label}
           </Link>

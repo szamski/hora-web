@@ -1,6 +1,27 @@
 import Image from "next/image";
-import { WaitlistCard } from "@/components/molecules/WaitlistCard";
+import { Icon, type IconName } from "@/components/atoms/Icon";
 import { home } from "@/content/home";
+
+const heroPills: { key: string; label: React.ReactNode; icon: IconName }[] = [
+  { key: "macos-native", label: "macOS Native", icon: "apple" },
+  {
+    key: "nlp-quick-add",
+    label: (
+      <>
+        <abbr
+          title="Natural Language Processing"
+          className="cursor-help border-b border-dotted border-current/70 pb-px no-underline"
+        >
+          NLP
+        </abbr>{" "}
+        Quick add
+      </>
+    ),
+    icon: "edit",
+  },
+  { key: "offline-ready", label: "Offline Ready", icon: "shield" },
+  { key: "multiple-accounts", label: "Multiple Accounts", icon: "users" },
+];
 
 export function HeroScene({ liveCount }: { liveCount: number }) {
   const hero = home.hero;
@@ -8,8 +29,7 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
   const socialProof = newsletter.socialProof;
 
   return (
-    <section className="relative flex min-h-svh w-full flex-col overflow-hidden">
-      {/* Background: dimmed poster + tints */}
+    <section className="relative flex min-h-[720px] w-full flex-col overflow-hidden border-b border-white/8 lg:min-h-[780px]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -22,81 +42,112 @@ export function HeroScene({ liveCount }: { liveCount: number }) {
           fetchPriority="high"
           quality={60}
           sizes="(min-width: 1536px) 1455px, 100vw"
-          className="object-cover opacity-[0.22]"
+          className="object-cover opacity-[0.1]"
         />
-
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0.56)_0%,rgba(10,10,10,0.82)_58%,#0a0a0a_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_15%_24%,rgba(255,56,60,0.20),transparent_68%),radial-gradient(760px_460px_at_82%_20%,rgba(61,166,255,0.14),transparent_66%),radial-gradient(780px_520px_at_75%_86%,rgba(48,209,88,0.10),transparent_70%)]" />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-[0.18]"
           style={{
-            background:
-              "radial-gradient(ellipse 800px 500px at 15% 25%, rgba(255,56,60,0.22), transparent 65%), " +
-              "radial-gradient(ellipse 700px 500px at 85% 70%, rgba(255,115,110,0.18), transparent 65%), " +
-              "radial-gradient(ellipse 900px 600px at 50% 50%, rgba(10,10,10,0.35), transparent 70%)",
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, black 18%, black 72%, transparent 100%)",
           }}
         />
-
-        <div className="absolute inset-0 bg-linear-to-b from-bg/55 via-bg/30 to-bg" />
       </div>
 
-      {/* Foreground content */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-16 pt-10 text-center md:gap-6 md:pt-16">
-        <Image
-          src={hero.iconSrc}
-          alt="hora Calendar icon"
-          width={88}
-          height={88}
-          className="rounded-2xl drop-shadow-[0_18px_36px_rgba(255,56,60,0.28)]"
-          priority
-        />
+      <div className="relative z-10 mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-8 px-6 pb-14 pt-10 md:grid-cols-[0.72fr_1.28fr] md:gap-8 md:pb-12 md:pt-12 lg:gap-10">
+        <div className="max-w-[35rem] text-left">
+          <div className="inline-flex items-center rounded-md border border-accent/35 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+            Coming soon to Mac
+          </div>
 
-        <h1 className="font-brand text-5xl font-normal leading-[1.2] tracking-tight md:text-[64px]">
-          <span className="inline-block pr-[0.12em] pl-[0.04em]">
-            {hero.title.prefix}
-          </span>
-          <span aria-hidden>{"\u00A0"}</span>
-          <span className="inline-block bg-linear-to-br from-accent to-accent-glow bg-clip-text pr-[0.12em] pl-[0.04em] text-transparent">
-            {hero.title.suffixGradient}
-          </span>
-        </h1>
+          <h1 className="mt-6 max-w-[12ch] text-5xl font-semibold leading-[1.02] tracking-tight text-text md:text-[68px] lg:text-[78px]">
+            The Mac Calendar{" "}
+            <span className="text-accent">Google never built.</span>
+          </h1>
 
-        <p className="max-w-2xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text md:text-3xl">
-          {hero.tagline}
-        </p>
+          <p className="mt-5 max-w-md text-pretty text-lg leading-8 text-muted md:text-[19px]">
+            Fast, Native, Beautiful. Built for keyboard-driven workflows.
+            Finally, Google Calendar feels at home on your Mac.
+          </p>
 
-        <WaitlistCard
-          id="newsletter"
-          eyebrow={newsletter.eyebrow}
-          headline={newsletter.headline}
-          subheadline={newsletter.subheadline}
-          subheadlineMobile={newsletter.subheadlineMobile}
-          liveCount={liveCount}
-          socialLabel={socialProof.label}
-          avatars={socialProof.avatars}
-          variant="hero"
-          className="mt-4 max-w-xl scroll-mt-24 md:mt-8"
-        />
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <a
+              href="#newsletter"
+              data-scroll-align="center"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-semibold text-white shadow-[0_16px_40px_-18px_rgba(255,56,60,0.9),inset_0_1px_0_rgba(255,255,255,0.22)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              Join Waitlist
+              <span aria-hidden>→</span>
+            </a>
+            <a
+              href="#watch-demo"
+              data-scroll-align="center"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-white/12 bg-white/[0.055] px-5 text-sm font-semibold text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-colors hover:border-white/24 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              Watch 1:35 Demo
+              <span aria-hidden>▸</span>
+            </a>
+          </div>
 
-        <a
-          href="#watch-demo"
-          data-scroll-align="center"
-          className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm text-muted backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors hover:border-accent/60 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        >
-          <span>{newsletter.watchDemoCtaLabel}</span>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="md:animate-bounce"
+          <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <div className="flex -space-x-2" aria-hidden>
+              {socialProof.avatars.slice(0, 5).map((avatar) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={avatar.src}
+                  src={avatar.src}
+                  alt=""
+                  width={34}
+                  height={34}
+                  className="h-[34px] w-[34px] rounded-full border-2 border-bg object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ))}
+            </div>
+            <p className="max-w-[19rem] text-sm leading-snug text-muted sm:max-w-[17rem]">
+              <span className="font-semibold text-text">
+                {liveCount.toLocaleString()}+ Mac users
+              </span>{" "}
+              are already signed up. Be first. Shape the product.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative md:-mt-14 lg:-mt-18">
+          <div
             aria-hidden
-          >
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </a>
+            className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(ellipse_at_50%_45%,rgba(255,56,60,0.24),transparent_62%)] blur-2xl"
+          />
+          <div className="relative overflow-hidden rounded-[18px] shadow-[0_36px_100px_-42px_rgba(0,0,0,0.9)]">
+            <Image
+              src="/assets/redesign/hora_hero_screenshot.webp"
+              alt="hora Calendar macOS app interface"
+              width={1800}
+              height={1140}
+              priority
+              quality={90}
+              sizes="(min-width: 1280px) 820px, (min-width: 1024px) 68vw, 100vw"
+              className="w-full object-contain"
+            />
+          </div>
+
+          <div className="relative mx-auto mt-3 grid max-w-3xl grid-cols-2 gap-2 text-xs text-muted sm:grid-cols-4 md:absolute md:-bottom-7 md:left-6 md:right-6 md:mt-0 lg:left-8 lg:right-8">
+            {heroPills.map((item) => (
+                <div
+                  key={item.key}
+                  className="flex h-10 items-center justify-center gap-2 rounded-md border border-white/10 bg-[#111216]/88 px-2.5 text-[10px] font-medium leading-none shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] backdrop-blur-xl lg:text-[11px]"
+                >
+                  <Icon name={item.icon} size={14} className="text-accent" />
+                  <span className="truncate">{item.label}</span>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -50,10 +50,11 @@ export const home = {
     },
     demo: {
       videoSources: [
-        { src: "/assets/horus_demo_new.webm", type: "video/webm" },
-        { src: "/assets/hora_demo_new.mp4", type: "video/mp4" },
+        { src: "/assets/redesign/hora_demo.webm", type: "video/webm" },
+        { src: "/assets/redesign_raw/hora_demo.mp4", type: "video/mp4" },
       ],
-      posterSrc: "/assets/hero_image.webp",
+      posterSrc: "/assets/redesign/hora_hero_screenshot.webp",
+      demoPosterSrc: "/assets/redesign/hora_demo_poster.webp",
       videoPosterSrc: "/assets/hero_image_poster.webp",
       captionsSrc: "/assets/hora-demo.vtt",
       ariaLabel:
@@ -78,6 +79,13 @@ export const home = {
         width: 140.8,
         height: 40,
       },
+      {
+        href: "https://microlaunch.net/p/horacalendar?utm_source=badge-winner-microlaunch&utm_medium=badge",
+        src: "https://wild-dust-0517.microlaunch.workers.dev/microlaunch-challenger-badges/ml_challenger_v5.svg",
+        alt: "Microlaunch - Launch, get feedback, exposure and first customers over a month",
+        width: 306,
+        height: 96,
+      },
     ],
   },
 
@@ -101,7 +109,7 @@ export const home = {
     eyebrow: "Already testing",
     heading: { prefix: "Already in", suffixGradient: "real Mac calendars" },
     description:
-      "hora is already running in real schedules, with feedback coming from Mac users who live in Google Calendar every day.",
+      "Mac users are already trying hora in their daily Google Calendar workflows.",
     stat: {
       count: 200,
       value: "200+",
@@ -118,9 +126,9 @@ export const home = {
 
   features: {
     eyebrow: "Built for Mac",
-    heading: { prefix: "Native macOS Calendar", suffixGradient: "Features" },
+    heading: { prefix: "Built for how you work", suffixGradient: "on Mac." },
     description:
-      "Six things nobody else quite gets right on macOS. Here's how hora does them.",
+      "hora brings Google Calendar to macOS the way it should have always been.",
     items: [
       {
         icon: "app-window" as const,
@@ -138,12 +146,12 @@ export const home = {
         body: "See what's coming up from the menu bar and join it in one click. No app switching.",
       },
       {
-        icon: "sync" as const,
+        icon: "check" as const,
         title: "Google Calendar, done right",
         body: "Multiple accounts, color-coded calendars, and native Meet, Zoom, and Teams links.",
       },
       {
-        icon: "command" as const,
+        icon: "gauge" as const,
         title: "Built for speed",
         body: "Familiar Google Calendar-style shortcuts. Stay in flow without reaching for the mouse.",
       },
@@ -195,11 +203,43 @@ export const home = {
     heading: "Want to try it early?",
     subtitle: "Join the beta and help shape the product.",
     note: "Early access via TestFlight.",
-    cardHeadline: "Be a founding user.",
+    cardHeadline: "Join the Mac beta.",
     cardSubheadline:
-      "Drop your email, get the invite, and help shape the first cut of hora.",
+      "Get TestFlight access, try early builds, and help shape the beta before launch.",
     footnote:
       "If you've ever felt like your calendar is either too simple or too complex, you'll probably understand why hora exists.",
+  },
+
+  pricing: {
+    heading: { prefix: "Simple pricing", suffixGradient: "rules forever." },
+    appStoreLabel: "Download on the App Store (Soon)",
+    oneTime: "$49 one-time",
+    yearly: "$30 / year",
+    body:
+      "Pick a one-time purchase or a lower annual plan. Both include Family Sharing. TestFlight access stays free during beta.",
+    crossPlatform:
+      "Shared across macOS and iOS/iPad apps (coming soon).",
+    comparison: [
+      {
+        name: "hora Calendar",
+        price: "$49 lifetime or $30/year",
+        detail: "Native, Google-focused, Family Sharing included.",
+      },
+      {
+        name: "Fantastical",
+        price: "$57–$84/year",
+        detail: "Broader suite, higher annual cost for Google-only use.",
+      },
+      {
+        name: "Notion Calendar",
+        price: "Free",
+        detail: "Good free option, but web-tech based and less native.",
+      },
+    ],
+    comparisonCta: {
+      label: "Compare against Fantastical in detail →",
+      href: "/blog/2026-05-06-fantastical-alternative-google-calendar/",
+    },
   },
 
   roadmap: {

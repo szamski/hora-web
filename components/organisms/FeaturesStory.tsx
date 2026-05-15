@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/atoms/Icon";
-import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { home } from "@/content/home";
 
 type FeatureIconKey =
@@ -9,7 +8,9 @@ type FeatureIconKey =
   | "bell"
   | "sync"
   | "command"
-  | "shield";
+  | "shield"
+  | "check"
+  | "gauge";
 
 const iconMap: Record<FeatureIconKey, IconName> = {
   "app-window": "app-window",
@@ -18,75 +19,69 @@ const iconMap: Record<FeatureIconKey, IconName> = {
   sync: "sync",
   command: "command",
   shield: "shield",
+  check: "check",
+  gauge: "gauge",
 };
 
 export function FeaturesStory() {
   const f = home.features;
 
   return (
-    <section id="features" className="relative overflow-hidden py-24 md:py-36">
-      {/* Ambient dot grid */}
+    <section
+      id="features"
+      className="relative overflow-hidden border-y border-white/8 bg-[#0b0c0f] py-20 md:py-24"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="pointer-events-none absolute inset-0 opacity-[0.16]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
           maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 85%)",
+            "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
         }}
       />
-
-      {/* Warm edge glows */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 700px 400px at 0% 10%, rgba(255,56,60,0.12), transparent 60%)," +
-            "radial-gradient(ellipse 700px 500px at 100% 40%, rgba(255,115,110,0.08), transparent 60%)," +
-            "radial-gradient(ellipse 900px 500px at 50% 100%, rgba(255,56,60,0.08), transparent 60%)",
+            "radial-gradient(ellipse 720px 420px at 0% 0%, rgba(255,56,60,0.10), transparent 64%)," +
+            "radial-gradient(ellipse 760px 480px at 100% 36%, rgba(131,199,255,0.10), transparent 64%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-page px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,56,60,0.95)]" />
-            {f.eyebrow}
-          </span>
-          <div className="mt-5">
-            <SectionHeading heading={f.heading} />
-          </div>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted md:text-lg">
-            {f.description}
-          </p>
+      <div className="relative mx-auto max-w-[1180px] px-6">
+        <div className="max-w-5xl">
+          <h2 className="text-4xl font-semibold leading-tight tracking-tight text-text md:text-5xl">
+            {f.heading.prefix}
+            <span className="text-accent"> {f.heading.suffixGradient}</span>
+          </h2>
         </div>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 md:gap-6 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 md:mt-14 lg:grid-cols-3">
           {f.items.map((item) => {
             const icon = iconMap[item.icon];
             return (
               <article
                 key={item.title}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/4 p-6 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_24px_60px_-30px_rgba(0,0,0,0.65)] transition-[transform,border-color,background-color] duration-500 hover:-translate-y-1 hover:border-accent/40 hover:bg-white/6 md:p-7"
+                className="group relative min-h-[14.5rem] overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] transition-colors duration-300 hover:border-accent/25 hover:bg-white/[0.055] md:p-7"
               >
-                {/* Per-tile warm halo */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full opacity-60 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                  className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(255,56,60,0.35) 0%, transparent 70%)",
+                      "radial-gradient(circle, rgba(255,56,60,0.22) 0%, transparent 70%)",
                   }}
                 />
 
-                <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_0_24px_rgba(255,56,60,0.25)]">
+                <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-md border border-accent/30 bg-accent/10 text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
                   <Icon name={icon} size={20} />
                 </span>
 
-                <h3 className="relative mt-5 text-lg font-semibold leading-tight tracking-tight text-text md:text-xl">
+                <h3 className="relative mt-8 text-lg font-semibold leading-tight tracking-tight text-text md:text-xl">
                   {item.title}
                 </h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-muted md:text-[15px]">
@@ -100,7 +95,7 @@ export function FeaturesStory() {
         <div className="mt-16 text-center md:mt-20">
           <Link
             href={f.allFeaturesLink.href}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-muted backdrop-blur-xl transition-all hover:border-accent/60 hover:bg-white/8 hover:text-text hover:shadow-[0_0_30px_rgba(255,56,60,0.25)]"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm text-muted transition-colors hover:border-accent/40 hover:bg-white/[0.07] hover:text-text"
           >
             {f.allFeaturesLink.label}
           </Link>
