@@ -1,4 +1,5 @@
 import { Icon } from "@/components/atoms/Icon";
+import { LazyLoopingVideo } from "@/components/organisms/LazyLoopingVideo";
 import { VideoShowcaseNativeVideo } from "@/components/organisms/VideoShowcaseNativeVideo";
 import { home } from "@/content/home";
 
@@ -10,7 +11,7 @@ const actionCards = [
     body: "Block deep work without breaking your week.",
     mediaKind: "media" as const,
     panel: (
-      <LoopingVideo
+      <LazyLoopingVideo
         src="/assets/redesign/focus_time.webm"
         fallbackSrc="/assets/redesign_raw/focus_time.mp4"
         label="hora Calendar focus time scheduling demo"
@@ -22,7 +23,7 @@ const actionCards = [
     body: "Type like you talk. Hora handles the rest.",
     mediaKind: "media" as const,
     panel: (
-      <LoopingVideo
+      <LazyLoopingVideo
         src="/assets/redesign/hora_quick_add.webm"
         fallbackSrc="/assets/redesign_raw/hora_quick_add.mp4"
         label="hora Calendar natural language quick add demo"
@@ -115,31 +116,6 @@ export function VideoShowcase() {
         </div>
       </div>
     </section>
-  );
-}
-
-function LoopingVideo({
-  src,
-  fallbackSrc,
-  label,
-}: {
-  src: string;
-  fallbackSrc: string;
-  label: string;
-}) {
-  return (
-    <video
-      className="h-full w-full bg-black object-cover"
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      aria-label={label}
-    >
-      <source src={src} type="video/webm" />
-      <source src={fallbackSrc} type="video/mp4" />
-    </video>
   );
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 
 type VideoSource = {
@@ -24,12 +24,15 @@ export function VideoShowcaseNativeVideo({
   const trackedPlayedRef = useRef(false);
   const trackedUnmutedRef = useRef(false);
   const trackedQuartilesRef = useRef<Set<number>>(new Set());
+  const [shouldLoad, setShouldLoad] = useState(
+    () => typeof window !== "undefined" && !("IntersectionObserver" in window),
+  );
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    if (!("IntersectionObserver" in window)) {
+    if (shouldLoad) {
+      if (trackedViewedRef.current) return;
       trackedViewedRef.current = true;
       track("demo_viewed", { asset: "hero_gif" });
       return;
@@ -38,16 +41,17 @@ export function VideoShowcaseNativeVideo({
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting || trackedViewedRef.current) return;
+        setShouldLoad(true);
         trackedViewedRef.current = true;
         track("demo_viewed", { asset: "hero_gif" });
         io.disconnect();
       },
-      { threshold: 0.4 },
+      { rootMargin: "360px 0px", threshold: 0.25 },
     );
 
     io.observe(video);
     return () => io.disconnect();
-  }, []);
+  }, [shouldLoad]);
 
   const trackProgress = useCallback(() => {
     const video = videoRef.current;
@@ -94,9 +98,11 @@ export function VideoShowcaseNativeVideo({
       onTimeUpdate={trackProgress}
       onVolumeChange={trackUnmuted}
     >
-      {sources.map((source) => (
-        <source key={source.src} src={source.src} type={source.type} />
-      ))}
+      {shouldLoad
+        ? sources.map((source) => (
+            <source key={source.src} src={source.src} type={source.type} />
+          ))
+        : null}
     </video>
   );
 }
