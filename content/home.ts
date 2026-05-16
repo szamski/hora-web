@@ -51,7 +51,7 @@ export const home = {
     demo: {
       videoSources: [
         { src: "/assets/redesign/hora_demo.webm", type: "video/webm" },
-        { src: "/assets/redesign_raw/hora_demo.mp4", type: "video/mp4" },
+        { src: "/assets/redesign/hora_demo.mp4", type: "video/mp4" },
       ],
       posterSrc: "/assets/redesign/hora_hero_screenshot.webp",
       demoPosterSrc: "/assets/redesign/hora_demo_poster.webp",

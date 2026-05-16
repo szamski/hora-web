@@ -24,9 +24,32 @@ export function VideoShowcaseNativeVideo({
   const trackedPlayedRef = useRef(false);
   const trackedUnmutedRef = useRef(false);
   const trackedQuartilesRef = useRef<Set<number>>(new Set());
+  const [reducedMotion, setReducedMotion] = useState(true);
   const [shouldLoad, setShouldLoad] = useState(
     () => typeof window !== "undefined" && !("IntersectionObserver" in window),
   );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (reducedMotion) {
+      video.pause();
+      return;
+    }
+
+    if (shouldLoad) {
+      video.play().catch(() => {});
+    }
+  }, [reducedMotion, shouldLoad]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -86,9 +109,9 @@ export function VideoShowcaseNativeVideo({
     <video
       ref={videoRef}
       className="aspect-video w-full bg-black object-cover"
-      autoPlay
+      autoPlay={!reducedMotion}
       controls
-      loop
+      loop={!reducedMotion}
       muted
       playsInline
       preload="metadata"
