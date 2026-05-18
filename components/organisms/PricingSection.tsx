@@ -45,8 +45,8 @@ export function PricingSection() {
               {pricing.crossPlatform}
             </p>
             <p className="mt-6 rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-muted">
-              At launch: <span className="font-semibold text-text">$49 one-time</span>{" "}
-              or <span className="font-semibold text-text">$30/year</span>. Family
+              At launch: <span className="font-semibold text-text">$49.90 one-time</span>{" "}
+              or <span className="font-semibold text-text">$29.99/year</span>. Family
               Sharing included.
             </p>
             <Link

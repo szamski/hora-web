@@ -306,7 +306,7 @@ export const home = {
       },
       {
         q: "Is hora free?",
-        a: "hora will be a paid app. At launch there's a limited-time one-time purchase for $49, or a $30/year subscription — both include Family Sharing. The TestFlight beta is free to join.",
+        a: "hora will be a paid app. At launch there's a limited-time one-time purchase for $49.90, or a $29.99/year subscription — both include Family Sharing. The TestFlight beta is free to join.",
       },
       {
         q: "When does hora launch?",
