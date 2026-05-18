@@ -86,6 +86,13 @@ export const home = {
         width: 306,
         height: 96,
       },
+      {
+        href: "https://peerlist.io/szamski/project/hora-calendar--native-macos-google-calendar",
+        src: "https://peerlist.io/api/v1/projects/embed/PRJH8OEN79LEKDP7BFRBOA6BR6R6GQ?showUpvote=false&theme=dark",
+        alt: "hora Calendar — Native macOS Google Calendar",
+        width: 288,
+        height: 72,
+      },
     ],
   },
 
