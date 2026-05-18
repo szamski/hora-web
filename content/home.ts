@@ -220,8 +220,8 @@ export const home = {
   pricing: {
     heading: { prefix: "Simple pricing", suffixGradient: "rules forever." },
     appStoreLabel: "Download on the App Store (Soon)",
-    oneTime: "$49 one-time",
-    yearly: "$30 / year",
+    oneTime: "$49.99 one-time",
+    yearly: "$29.99 / year",
     body:
       "Pick a one-time purchase or a lower annual plan. Both include Family Sharing. TestFlight access stays free during beta.",
     crossPlatform:
@@ -229,7 +229,7 @@ export const home = {
     comparison: [
       {
         name: "hora Calendar",
-        price: "$49 lifetime or $30/year",
+        price: "$49.99 lifetime or $29.99/year",
         detail: "Native, Google-focused, Family Sharing included.",
       },
       {
