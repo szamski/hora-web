@@ -1,4 +1,4 @@
-import { normalizeEmail } from "@/lib/identity";
+import { isTestEmail, normalizeEmail } from "@/lib/identity";
 
 declare global {
   interface Window {
@@ -72,7 +72,7 @@ async function sha256Hex(text: string): Promise<string | null> {
 export async function redditIdentify(email: string) {
   if (typeof window === "undefined") return;
   const normalized = normalizeEmail(email);
-  if (!normalized) return;
+  if (!normalized || isTestEmail(normalized)) return;
   const hashed = await sha256Hex(normalized);
   if (!hashed) return;
   if (typeof window.rdt === "function") {
@@ -90,7 +90,7 @@ export function redditTrack(event: string, props?: EventProps) {
 export function identify(distinctId: string, props?: EventProps) {
   if (typeof window === "undefined" || !distinctId) return;
   const normalizedDistinctId = normalizeEmail(distinctId);
-  if (!normalizedDistinctId) return;
+  if (!normalizedDistinctId || isTestEmail(normalizedDistinctId)) return;
   loadPostHog().then((posthog) => {
     posthog.identify(normalizedDistinctId, props);
   });
