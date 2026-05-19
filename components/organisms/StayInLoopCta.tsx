@@ -46,6 +46,7 @@ export async function StayInLoopCta() {
 
         <div className="mx-auto mt-10 max-w-[780px] md:mt-12">
           <WaitlistCard
+            placement="stay_in_loop"
             headline={cta.cardHeadline}
             subheadline={cta.cardSubheadline}
             liveCount={liveCount}

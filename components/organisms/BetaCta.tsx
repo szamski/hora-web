@@ -68,6 +68,7 @@ export async function BetaCta() {
 
           <WaitlistCard
             id="newsletter"
+            placement="beta_cta"
             headline={cta.cardHeadline}
             subheadline={cta.cardSubheadline}
             liveCount={liveCount}

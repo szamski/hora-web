@@ -1,4 +1,5 @@
 import { NewsletterForm } from "@/components/molecules/NewsletterForm";
+import { WaitlistImpression } from "@/components/molecules/WaitlistImpression";
 import { Icon } from "@/components/atoms/Icon";
 import { cn } from "@/lib/cn";
 
@@ -7,8 +8,14 @@ type Avatar = {
   alt: string;
 };
 
+export type WaitlistPlacement =
+  | "beta_cta"
+  | "stay_in_loop"
+  | "testflight";
+
 type Props = {
   id?: string;
+  placement: WaitlistPlacement;
   eyebrow?: string;
   headline: string;
   subheadline?: string;
@@ -24,6 +31,7 @@ type Props = {
 
 export function WaitlistCard({
   id,
+  placement,
   eyebrow,
   headline,
   subheadline,
@@ -50,6 +58,7 @@ export function WaitlistCard({
         className,
       )}
     >
+      <WaitlistImpression placement={placement} />
       <div
         aria-hidden
         className="pointer-events-none absolute -top-28 -right-28 h-56 w-56"

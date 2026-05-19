@@ -104,6 +104,7 @@ export default async function TestFlightPage() {
 
       <WaitlistCard
         id="newsletter"
+        placement="testflight"
         eyebrow={newsletter.eyebrow}
         headline={newsletter.headline}
         subheadline={newsletter.subheadline}
