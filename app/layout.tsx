@@ -6,6 +6,7 @@ import { Nav } from "@/components/organisms/Nav";
 import { Footer } from "@/components/organisms/Footer";
 import { AmbientGlow } from "@/components/organisms/AmbientGlow";
 import { LayoutEnhancements } from "@/components/molecules/LayoutEnhancements";
+import { REDDIT_PIXEL_ID } from "@/lib/analytics";
 import "./globals.css";
 
 const geist = Geist({
@@ -145,6 +146,12 @@ export default function RootLayout({
             window.gtag('js', new Date());
             window.gtag('config', '${GA_MEASUREMENT_ID}');
             window.gtag('config', '${GOOGLE_ADS_ID}');
+          `}
+        </Script>
+
+        <Script id="reddit-pixel" strategy="lazyOnload">
+          {`
+            !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js?pixel_id=${REDDIT_PIXEL_ID}",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','${REDDIT_PIXEL_ID}');rdt('track', 'PageVisit');
           `}
         </Script>
 

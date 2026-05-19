@@ -10,6 +10,8 @@ import {
   CONVERSION_TAGS,
   getAttribution,
   identify,
+  redditIdentify,
+  redditTrack,
   track,
   trackConversion,
 } from "@/lib/analytics";
@@ -51,6 +53,9 @@ export function NewsletterForm({ className }: { className?: string }) {
       });
       track("waitlist_success", { method: "email", ...attribution });
       trackConversion(CONVERSION_TAGS.waitlistSignup);
+      redditIdentify(normalizedEmail).then(() => {
+        redditTrack("SignUp");
+      });
     } catch {
       setStatus("error");
       setMessage(
