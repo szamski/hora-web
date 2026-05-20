@@ -2,11 +2,12 @@
 
 import { forwardRef, useImperativeHandle, useCallback } from "react";
 import type { AnimatedIconHandle, AnimatedIconProps } from "./types";
-import { motion, useAnimate } from "motion/react";
+import { motion } from "motion/react";
+import { useSafeAnimate } from "./useSafeAnimate";
 
 const DialpadIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   ({ size = 24, color = "currentColor", className = "" }, ref) => {
-    const [scope, animate] = useAnimate();
+    const [scope, animate] = useSafeAnimate();
 
     const start = useCallback(() => {
       animate(
